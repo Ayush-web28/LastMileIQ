@@ -5,6 +5,9 @@ import TimeSimulationControls from './components/TimeSimulationControls';
 import CommandCenterMap from './components/CommandCenterMap';
 import PredictiveDispatchPanel from './components/PredictiveDispatchPanel';
 import DriverDispatchQueue from './components/DriverDispatchQueue';
+import FleetEconomicsCalculator from './components/FleetEconomicsCalculator';
+import CityPlannerView from './components/CityPlannerView';
+import CommuterPreviewModal from './components/CommuterPreviewModal';
 import { SimulationProvider, useSimulation } from './context/SimulationContext';
 import { CORRIDORS } from './data/corridors';
 import { 
@@ -19,7 +22,10 @@ import {
   Sparkles,
   Zap,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  Building2,
+  Smartphone,
+  BarChart3
 } from 'lucide-react';
 
 function DashboardContent({ currentMode, setCurrentMode }) {
@@ -70,33 +76,36 @@ function DashboardContent({ currentMode, setCurrentMode }) {
             <div className="flex p-1 rounded-xl bg-slate-900 border border-slate-800 text-xs">
               <button
                 onClick={() => setCurrentMode('fleet')}
-                className={`px-3 py-1.5 rounded-lg font-medium transition ${
-                  currentMode === 'fleet' ? 'bg-emerald-500 text-slate-950 font-bold' : 'text-slate-400 hover:text-slate-200'
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition ${
+                  currentMode === 'fleet' ? 'bg-emerald-500 text-slate-950 font-bold shadow-md' : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
+                <Activity className="w-3.5 h-3.5" />
                 Fleet Operator
               </button>
               <button
                 onClick={() => setCurrentMode('planner')}
-                className={`px-3 py-1.5 rounded-lg font-medium transition ${
-                  currentMode === 'planner' ? 'bg-cyan-500 text-slate-950 font-bold' : 'text-slate-400 hover:text-slate-200'
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition ${
+                  currentMode === 'planner' ? 'bg-cyan-500 text-slate-950 font-bold shadow-md' : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
+                <Building2 className="w-3.5 h-3.5" />
                 City Planner
               </button>
               <button
                 onClick={() => setCurrentMode('commuter')}
-                className={`px-3 py-1.5 rounded-lg font-medium transition ${
-                  currentMode === 'commuter' ? 'bg-amber-400 text-slate-950 font-bold' : 'text-slate-400 hover:text-slate-200'
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition ${
+                  currentMode === 'commuter' ? 'bg-amber-400 text-slate-950 font-bold shadow-md' : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
+                <Smartphone className="w-3.5 h-3.5" />
                 ONDC Commuter
               </button>
             </div>
           </div>
         </div>
 
-        {/* Time-Machine Simulation & Stress Controls */}
+        {/* Time-Machine Simulation & Stress Controls (Always accessible) */}
         <TimeSimulationControls />
 
         {/* Live Operator Telemetry Bar */}
@@ -146,14 +155,45 @@ function DashboardContent({ currentMode, setCurrentMode }) {
           </div>
         </div>
 
-        {/* Interactive GIS Command Center Map (Centerpiece) */}
-        <CommandCenterMap />
+        {/* Dynamic View Rendering Based on Multi-Stakeholder Mode */}
+        {currentMode === 'fleet' && (
+          <div className="space-y-6 animate-fade-in">
+            {/* Interactive GIS Command Center Map (Centerpiece) */}
+            <CommandCenterMap />
 
-        {/* Dynamic Predictive Dispatch Engine Panel */}
-        <PredictiveDispatchPanel />
+            {/* Dynamic Predictive Dispatch Engine Panel */}
+            <PredictiveDispatchPanel />
 
-        {/* Live Driver Dispatch Queue & Telemetry */}
-        <DriverDispatchQueue />
+            {/* Live Driver Dispatch Queue & Telemetry */}
+            <DriverDispatchQueue />
+
+            {/* B2B Fleet Economics Calculator */}
+            <FleetEconomicsCalculator />
+          </div>
+        )}
+
+        {currentMode === 'planner' && (
+          <div className="space-y-6 animate-fade-in">
+            {/* City Planner Specialized View */}
+            <CityPlannerView />
+
+            {/* GIS Map for Bottlenecks inspection */}
+            <CommandCenterMap />
+
+            {/* Fleet Economics for Public Transit Bus ROI */}
+            <FleetEconomicsCalculator />
+          </div>
+        )}
+
+        {currentMode === 'commuter' && (
+          <div className="space-y-6 animate-fade-in">
+            {/* Commuter Mobile Phone View */}
+            <CommuterPreviewModal />
+
+            {/* Context Map */}
+            <CommandCenterMap />
+          </div>
+        )}
 
       </div>
     </div>
@@ -207,7 +247,10 @@ function AppShell({ currentMode, setCurrentMode, isDashboardOpen, handleLaunchDa
         currentCorridor={currentCorridorKey}
         setCorridor={setCurrentCorridorKey}
         corridors={CORRIDORS}
-        onSelectMode={(mode) => setCurrentMode(mode)}
+        onSelectMode={(mode) => {
+          setCurrentMode(mode);
+          handleLaunchDashboard();
+        }}
       />
 
       <DashboardContent
