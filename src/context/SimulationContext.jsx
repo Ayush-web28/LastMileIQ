@@ -63,7 +63,6 @@ class SoundFx {
       
       osc.connect(gain);
       gain.connect(this.ctx.destination);
-      osc.start(now);
       osc.stop(now + 0.35);
     } catch (e) {}
   }
@@ -72,8 +71,9 @@ class SoundFx {
 const soundFx = new SoundFx();
 
 export function SimulationProvider({ children }) {
-  const [currentCorridorKey, setCurrentCorridorKey] = useState('bengaluru-purple');
-  const [timeOfDay, setTimeOfDay] = useState(8.75); // 08:45 AM
+  // Default to Mumbai Metro Line 1 (Versova - Andheri - Ghatkopar)
+  const [currentCorridorKey, setCurrentCorridorKey] = useState('mumbai-metro-1');
+  const [timeOfDay, setTimeOfDay] = useState(8.75); // 08:45 AM (Peak Morning Egress)
   const [isPlaying, setIsPlaying] = useState(false);
   const [playSpeed, setPlaySpeed] = useState(1); // 1x, 2x, 5x
 
@@ -85,66 +85,95 @@ export function SimulationProvider({ children }) {
     megaEvent: false,
   });
 
-  // Selected Station for detailed inspector
-  const [selectedStationId, setSelectedStationId] = useState('stn-hodi'); // Default Hoodi or HITEC
+  // Selected Station for detailed inspector (default to Andheri Metro)
+  const [selectedStationId, setSelectedStationId] = useState('stn-m1-and');
   
-  // Real-time train countdowns (seconds remaining until next train arrives per station)
+  // Real-time train / local countdowns (seconds remaining until next arrival per station)
   const [trainCountdowns, setTrainCountdowns] = useState({
-    'stn-byph': 195,
-    'stn-bnhl': 340,
-    'stn-krpr': 140,
-    'stn-grcp': 260,
-    'stn-hodi': 225, // 3m 45s
-    'stn-itpl': 180,
-    'stn-kndh': 310,
-    'stn-whfd': 120,
-    'stn-ampt': 210,
-    'stn-mdhp': 160,
-    'stn-durg': 290,
-    'stn-htec': 175,
-    'stn-rdrg': 240,
+    'stn-m1-vsv': 210,
+    'stn-m1-dnn': 165,
+    'stn-m1-and': 140, // 2m 20s
+    'stn-m1-weh': 280,
+    'stn-m1-mrln': 195,
+    'stn-m1-sknk': 110,
+    'stn-m1-ghtk': 175,
+    'stn-m2a-dhs': 240,
+    'stn-m2a-borw': 180,
+    'stn-m2a-kndw': 220,
+    'stn-m2a-mldw': 150,
+    'stn-m2a-grgw': 210,
+    'stn-m2a-dnn': 190,
+    'stn-m7-dhs': 230,
+    'stn-m7-npk': 170,
+    'stn-m7-dnd': 195,
+    'stn-m7-gnd': 145,
+    'stn-m3-ary': 260,
+    'stn-m3-spz': 160,
+    'stn-m3-t2': 185,
+    'stn-m3-bkc': 120,
+    'stn-m2b-dnn': 220,
+    'stn-m2b-bnd': 180,
+    'stn-m2b-bkc': 130,
+    'stn-m2b-chm': 240,
+    'stn-m6-ssn': 230,
+    'stn-m6-iit': 150,
+    'stn-m6-vkh': 260,
+    'stn-wr-chg': 180,
+    'stn-wr-ddr': 90,
+    'stn-wr-bnd': 110,
+    'stn-wr-and': 80,
+    'stn-wr-bor': 130,
+    'stn-cr-csmt': 175,
+    'stn-cr-ddr': 85,
+    'stn-cr-krl': 105,
+    'stn-cr-ght': 95,
+    'stn-cr-thn': 120,
+    'stn-hr-vdl': 210,
+    'stn-hr-krl': 140,
+    'stn-hr-vsh': 160,
+    'stn-hr-pnv': 240,
   });
 
-  // Dynamic dispatch history & active moving vehicles
+  // Dynamic dispatch history with Mumbai license plates (MH-01, MH-02, MH-03, MH-04)
   const [dispatchEvents, setDispatchEvents] = useState([
     {
       id: 'disp-001',
-      plate: 'KA-03-ER-4821',
-      driver: 'Ramesh Gowda',
-      type: 'EV Auto (Mahindra Treo)',
-      battery: 84,
-      targetGate: 'Gate 2 (EPIP Zone Feeder)',
-      stationName: 'Hoodi',
+      plate: 'MH-02-ER-4192',
+      driver: 'Sachin Shinde',
+      type: 'Mahindra Treo EV Auto',
+      battery: 86,
+      targetGate: 'Gate 1 (Andheri Railway Skywalk)',
+      stationName: 'Andheri Metro',
       status: 'En-route',
-      etaSec: 140,
+      etaSec: 120,
       timestamp: 'Just now',
-      fareEstimate: '₹45',
+      fareEstimate: '₹35 (Pool ₹20)',
     },
     {
       id: 'disp-002',
-      plate: 'KA-53-E-9012',
-      driver: 'Syed Farooq',
+      plate: 'MH-03-E-8812',
+      driver: 'Prakash Patil',
       type: 'Piaggio Ape E-City',
-      battery: 76,
-      targetGate: 'Gate 1 (Park Square Mall)',
-      stationName: 'ITPL',
+      battery: 79,
+      targetGate: 'Gate 2 (LBS Marg Feeder)',
+      stationName: 'Ghatkopar Metro',
       status: 'Dispatched',
-      etaSec: 90,
+      etaSec: 85,
       timestamp: '1 min ago',
-      fareEstimate: '₹50',
+      fareEstimate: '₹30',
     },
     {
       id: 'disp-003',
-      plate: 'KA-04-MB-3310',
-      driver: 'Manjunath K.',
-      type: 'BMTC Feeder Minibus',
-      battery: 92,
-      targetGate: 'Gate 1 (Ring Road Southbound)',
-      stationName: 'KR Pura',
+      plate: 'MH-01-BF-9040',
+      driver: 'Nilesh Sawant',
+      type: 'BEST Feeder Minibus (Olectra)',
+      battery: 94,
+      targetGate: 'Gate 1 (ICICI Bank BKC)',
+      stationName: 'Bandra-Kurla Complex (BKC)',
       status: 'Boarding',
-      etaSec: 30,
+      etaSec: 25,
       timestamp: '2 mins ago',
-      fareEstimate: '₹20 (Fixed)',
+      fareEstimate: '₹15 (BEST Flat)',
     },
   ]);
 
@@ -159,8 +188,8 @@ export function SimulationProvider({ children }) {
         const next = { ...prev };
         Object.keys(next).forEach((stnId) => {
           if (next[stnId] <= 1) {
-            // Train arrived, reset to randomized 4 to 7 minutes
-            next[stnId] = Math.floor(240 + Math.random() * 180);
+            // Train/Local arrived, reset to randomized 3 to 6 minutes
+            next[stnId] = Math.floor(180 + Math.random() * 180);
           } else {
             next[stnId] -= 1;
           }
@@ -171,9 +200,9 @@ export function SimulationProvider({ children }) {
       // 2. Advance time of day if auto-playing
       if (isPlaying) {
         setTimeOfDay((prevTime) => {
-          const step = (0.015 * playSpeed);
+          const step = 0.015 * playSpeed;
           let newTime = prevTime + step;
-          if (newTime >= 23.5) newTime = 6.0; // loop to morning
+          if (newTime >= 23.5) newTime = 6.0;
           return +newTime.toFixed(2);
         });
       }
@@ -194,7 +223,7 @@ export function SimulationProvider({ children }) {
 
   // Active corridor configuration
   const activeCorridor = useMemo(() => {
-    return CORRIDOR_DATA_MAP[currentCorridorKey] || CORRIDOR_DATA_MAP['bengaluru-purple'];
+    return CORRIDOR_DATA_MAP[currentCorridorKey] || CORRIDOR_DATA_MAP['mumbai-metro-1'];
   }, [currentCorridorKey]);
 
   // Ensure selected station belongs to active corridor
@@ -232,7 +261,7 @@ export function SimulationProvider({ children }) {
         stn.stands
       );
 
-      const countdownSec = trainCountdowns[stn.id] || 180;
+      const countdownSec = trainCountdowns[stn.id] || 150;
       const countdownMin = Math.floor(countdownSec / 60);
       const countdownSecRem = countdownSec % 60;
       const countdownFormatted = `${countdownMin}m ${countdownSecRem < 10 ? '0' : ''}${countdownSecRem}s`;
@@ -271,15 +300,15 @@ export function SimulationProvider({ children }) {
     const criticalStationsCount = computedStations.filter((s) => s.lmsi.level === 'CRITICAL').length;
     
     // Utilization rate
-    const utilizationRate = Math.min(96, Math.max(54, Math.round(72 + (1 - totalDeficit / (totalSupply + 50)) * 22)));
+    const utilizationRate = Math.min(96, Math.max(58, Math.round(76 + (1 - totalDeficit / (totalSupply + 50)) * 20)));
 
     // Economics
     const economics = calculateFleetEconomics({
       fleetSize: totalSupply * 2,
-      dailyTrips: 15,
-      avgFare: 55,
-      deadKmSavedPercent: 34,
-      evRatio: 0.7,
+      dailyTrips: 16,
+      avgFare: 45, // Mumbai competitive pooling fare
+      deadKmSavedPercent: 36,
+      evRatio: 0.72,
     });
 
     return {
@@ -303,45 +332,53 @@ export function SimulationProvider({ children }) {
     const rebalanceCount = plan ? plan.dispatchCount : 8;
     const targetGateName = stn.highDeficitGate.gateName;
 
-    // Create simulated Indian registration plates
-    const cityPrefix = currentCorridorKey.includes('hyderabad') ? 'TS' : 'KA';
-    const rto = currentCorridorKey.includes('hyderabad') ? '09' : '03';
+    // Mumbai registration plate generation (MH-01, MH-02, MH-03, MH-04)
+    const rtoPrefixes = ['MH-01', 'MH-02', 'MH-03', 'MH-04', 'MH-47'];
+    const rto = rtoPrefixes[Math.floor(Math.random() * rtoPrefixes.length)];
     const randomNum = Math.floor(1000 + Math.random() * 9000);
-    const plate = `${cityPrefix}-${rto}-ER-${randomNum}`;
+    const plate = `${rto}-ER-${randomNum}`;
     
     const driverNames = [
-      'Ramesh Gowda', 'Suresh Kumar', 'Venkat Reddy', 'Malleshappa',
-      'Syed Farooq', 'Rajendra Prasad', 'Anil Naik', 'Shivanna'
+      'Sachin Shinde', 'Prakash Patil', 'Ganesh More', 'Nilesh Sawant',
+      'Deepak Kamble', 'Santosh Jadhav', 'Pradeep Pawar', 'Vinod Gaikwad'
     ];
     const randomDriver = driverNames[Math.floor(Math.random() * driverNames.length)];
+
+    const vehicleTypes = [
+      'Mahindra Treo EV Auto',
+      'Bajaj RE Electric',
+      'Piaggio Ape E-City',
+      'BEST Metro Feeder (Olectra)',
+    ];
+    const randomVehicle = vehicleTypes[Math.floor(Math.random() * vehicleTypes.length)];
 
     const newDispatch = {
       id: `disp-${Date.now()}`,
       plate,
       driver: randomDriver,
-      type: Math.random() > 0.4 ? 'Mahindra Treo EV' : 'Piaggio Ape E-City',
-      battery: Math.floor(70 + Math.random() * 28),
+      type: randomVehicle,
+      battery: Math.floor(74 + Math.random() * 24),
       targetGate: targetGateName,
       stationName: stn.name,
       status: 'Dispatched (En-route)',
-      etaSec: 90 + Math.floor(Math.random() * 60),
+      etaSec: 60 + Math.floor(Math.random() * 50),
       timestamp: 'Just now',
-      fareEstimate: '₹45 (Pool ₹25)',
+      fareEstimate: '₹35 (Pool ₹20)',
     };
 
     setDispatchEvents((prev) => [newDispatch, ...prev.slice(0, 9)]);
 
     // Trigger toast notification
     setActiveToast({
-      title: 'Dynamic Rebalancing Dispatched',
-      message: `Rebalanced ${rebalanceCount} EV feeders to ${stn.name} (${targetGateName}). Wait time projected to drop to 5.2m!`,
+      title: 'Mumbai Feeder Rebalance Dispatched',
+      message: `Rebalanced ${rebalanceCount} EV units to ${stn.name} (${targetGateName}). Commuter wait time capped at 4.5m!`,
       type: 'success',
     });
 
     setTimeout(() => {
       setActiveToast(null);
     }, 4500);
-  }, [computedStations, selectedStationId, currentCorridorKey]);
+  }, [computedStations, selectedStationId]);
 
   // Toggle scenario
   const toggleScenario = useCallback((scenarioKey) => {
