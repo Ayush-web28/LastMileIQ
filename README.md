@@ -1,4 +1,4 @@
-# LastMileIQ — B2B Last-Mile Mobility Intelligence & Dynamic Dispatch Platform
+# LastMileIQ — B2B Last-Mile Mobility Intelligence & Dynamic Dispatch Platform (Mumbai Public Transit)
 
 [![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?style=flat&logo=vite)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-18.3-61DAFB?style=flat&logo=react)](https://reactjs.org/)
@@ -7,123 +7,73 @@
 [![ONDC Enabled](https://img.shields.io/badge/ONDC-Open%20Mobility-10B981?style=flat)](https://ondc.org/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-> **"The Operating System for India's Last-Mile Mobility"**  
-> AI-powered spatio-temporal transit intelligence platform tackling the 1–5 km last-mile transit crisis across high-density Indian metro corridors.
+> **"The Operating System for Mumbai's Last-Mile Mobility"**  
+> AI-powered spatio-temporal transit intelligence platform tackling the 1–5 km last-mile transit crisis across high-density Mumbai Metro and Suburban Railway networks.
 
 ---
 
 ## 1. Executive Summary & Problem Context
 
-In Indian tier-1 metro catchments (such as Bengaluru's Outer Ring Road / Whitefield and Hyderabad's HITEC City / Mindspace corridors), metro rail systems efficiently transport hundreds of thousands of commuters along trunk lines. However, the system fractures during the **first and last 1–5 km**:
+Mumbai represents one of the highest-density commuter ecosystems in the world. The Mumbai Suburban Railway ("the Lifeline of Mumbai") transports over 7.5 million daily commuters, while the expanding Mumbai Metro network handles rapid east-west and arterial suburban transfers.
 
-- **Severe Commuter Deficits**: When a 6-coach train discharges 600–1,100 commuters at a station, exit gates experience sudden, acute surges. Commuters face 15–25 minute waiting queues for feeder transit or face predatory surge fares.
-- **Operator Dead Mileage**: Private auto-rickshaw syndicates, EV feeder fleets (e-rickshaws, e-bikes), and minibuses waste 35–45% of their daily runtime cruising empty or queuing blindly at the wrong station gates.
-- **Municipal Equity Blindspots**: Transit authorities (DULT, BBMP, BMRCL, HMDA) lack granular gate-level spatio-temporal telemetry to identify transit deserts, bottlenecks, and micro-mobility infrastructure ROI.
+However, station exit gates (such as Andheri, Dadar, Kurla, Ghatkopar, and BKC) experience severe **first/last-mile transit bottlenecks**:
+- **Exit Surges**: When a local train discharges 1,200–2,500 passengers at peak hours, exit concourses face acute vehicular deficits and predatory waiting lines.
+- **Operator Dead Mileage**: Mumbai auto-rickshaws, shared syndicates, and BEST feeder minibuses waste 35–45% of daily shift time cruising empty or stuck in uncoordinated queues.
+- **Municipal Equity Gaps**: Transit bodies (MMRDA, BMC, BEST, Central & Western Railway) require real-time gate-level demand telemetry to evaluate curb lane segregation and feeder electrification ROI.
 
-**LastMileIQ** solves this mismatch with predictive demand modeling and real-time dynamic rebalancing. It synchronizes incoming metro train timetables with feeder vehicle supply, repositioning idle electric fleets to exit gates *before* commuters step off the concourse.
-
----
-
-## 2. Key Capabilities & Architecture
-
-```
-                    ┌──────────────────────────────────────────────┐
-                    │      Metro Telemetry & Timetable Stream      │
-                    └──────────────────────┬───────────────────────┘
-                                           │
-                                           ▼
-                    ┌──────────────────────────────────────────────┐
-                    │  Spatio-Temporal Egress Forecast (Poisson)   │
-                    └──────────────────────┬───────────────────────┘
-                                           │
-                        ┌──────────────────┴──────────────────┐
-                        ▼                                     ▼
-      ┌──────────────────────────────────┐  ┌──────────────────────────────────┐
-      │  Last-Mile Stress Index (LMSI)   │  │   Dynamic Rebalance Optimizer    │
-      │   Demand/Supply x Wait-Time^0.8  │  │  Min-Cost Repositioning Engine   │
-      └─────────────────┬────────────────┘  └─────────────────┬────────────────┘
-                        │                                     │
-                        └──────────────────┬──────────────────┘
-                                           │
-                                           ▼
-      ┌────────────────────────────────────────────────────────────────────────┐
-      │                      Multi-Stakeholder Interfaces                      │
-      ├──────────────────────┬─────────────────────────┬───────────────────────┤
-      │  B2B Fleet Operator  │   B2G City Planner      │   B2C ONDC Commuter   │
-      │  • GIS Command Map   │   • Transit Equity Index│   • Concourse Guide   │
-      │  • 1-Click Rebalance │   • Bottleneck Ranking  │   • Live Feeder Wait  │
-      │  • Driver Queue Feed │   • Policy Lane ROI     │   • Fixed-Fare Token  │
-      └──────────────────────┴─────────────────────────┴───────────────────────┘
-```
-
-### A. Spatio-Temporal Train Egress Forecasting
-Predicts passenger egress volume per station gate 4–8 minutes before train arrival using Poisson arrival rate modeling, historical alighting distributions, and tech-park shift schedules.
-
-### B. Last-Mile Stress Index (LMSI)
-A real-time operational metric calculated continuously across all corridor stations:
-$$\text{LMSI} = \left( \frac{\text{Demand Rate}}{\text{Supply Rate}} \right) \times \left( \frac{\text{Current Wait Time}}{\text{Target Wait Time (5 min)}} \right)^{0.8}$$
-- **Green ($\text{LMSI} < 1.2$)**: Optimal supply, $< 5$ min average commuter wait time.
-- **Electric Amber ($1.2 \le \text{LMSI} \le 2.4$)**: Approaching capacity, $5 - 12$ min wait time.
-- **Coral Red ($\text{LMSI} > 2.4$)**: Transit desert / acute vehicle shortage, $> 15$ min wait time.
-
-### C. Dynamic Vehicle Rebalancing Algorithm
-Matches gate-level passenger deficits with nearby standby stands (within a 0.5–2.0 km radius). Reallocates available EV autos and feeder shuttles with minimal dead-km, capping commuter wait times below 6 minutes.
-
-### D. B2B Fleet Economics Calculator
-Models unit economics and ESG impacts for fleet syndicates:
-- **Daily Revenue Uplift**: $+₹420$ per vehicle per day via $+2.4$ additional peak trips.
-- **Dead Mileage Eliminated**: $-34\%$ reduction in uncoordinated cruising.
-- **Emissions Abated**: Audited CO2 reduction metrics for fleet electrification.
+**LastMileIQ** synchronizes incoming train arrival streams with vehicle supply, dynamic rebalancing, and Last-Mile Stress Index (LMSI) scoring.
 
 ---
 
-## 3. Real Indian Metro Corridors
+## 2. Active Corridors — Mumbai Public Transports (9 Lines)
 
-LastMileIQ features detailed topological and geospatial datasets for two of India's most critical transit spines:
+LastMileIQ is exclusively configured for Mumbai's transit corridors:
 
-1. **Bengaluru: Indiranagar - Whitefield Metro Corridor (Purple Line)**
-   - 16 Stations | 22.4 km | High-density tech corridor (ITPL, Bagmane WTC, EPIP Zone).
-   - Coordinates, concourse gates, and smart stands mapped for Baiyappanahalli, Benniganahalli, KR Pura, Garudacharpalya, Hoodi, Kundalahalli, Pattandur Agrahara (ITPL), and Whitefield.
-2. **Hyderabad: HITEC City Cyber Towers Corridor (Blue Line)**
-   - 9 Stations | 14.8 km | Financial & technology corridor.
-   - Coordinates, concourse gates, and feeder stands mapped for Ameerpet Interchange, Madhapur, Durgam Cheruvu, HITEC City (Cyber Towers), and Raidurg (Mindspace / Knowledge City).
+### 🚇 The 6 Mumbai Metro Lines
+1. **Metro Line 1 (Blue Line)**: Versova – Andheri – Ghatkopar (11.4 km)  
+   *Interchanges with Western Railway at Andheri and Central Railway at Ghatkopar.*
+2. **Metro Line 2A (Yellow Line)**: Dahisar East – D.N. Nagar (18.6 km)  
+   *Western arterial corridor along Link Road (Borivali West, Kandivali West, Malad West).*
+3. **Metro Line 7 (Red Line)**: Dahisar East – Gundavali / Andheri East (16.5 km)  
+   *Western Express Highway spine connecting Dahisar, National Park, Dindoshi, and Gundavali.*
+4. **Metro Line 3 (Aqua Line)**: Aarey JVLR – BKC – Colaba (Underground)  
+   *Phase 1 operational connecting Aarey JVLR, SEEPZ, CSMIA Airport T2/T1, and BKC Financial Hub.*
+5. **Metro Line 2B (Yellow Line Ext)**: D.N. Nagar – BKC – Mandale (23.6 km)  
+   *Cross-suburban link connecting Bandra, BKC, Kurla East, and Chembur.*
+6. **Metro Line 6 (Pink Line)**: Swami Samarth Nagar – JVLR – Vikhroli (15.3 km)  
+   *Arterial link traversing JVLR, SEEPZ Village, IIT Bombay Powai, and Vikhroli EEH.*
+
+### 🚆 The 3 Mumbai Suburban Local Lines
+7. **Western Railway Local (WR)**: Churchgate – Dadar – Andheri – Borivali (34.2 km)  
+   *The premier suburban corridor connecting South Mumbai, Bandra, and northern suburbs.*
+8. **Central Railway Local (CR)**: CSMT – Dadar – Kurla – Ghatkopar – Thane (33.8 km)  
+   *The historic spine connecting CSMT, Dadar super interchange, Kurla, and Thane.*
+9. **Harbour Railway Local (HR)**: CSMT – Vadala Road – Kurla – Vashi – Panvel (48.5 km)  
+   *Connects island city CSMT, Kurla, across Thane Creek to Navi Mumbai and Panvel.*
+
+---
+
+## 3. Self-Contained Architecture (Zero API Keys)
+
+> **Important**: LastMileIQ runs **100% locally with zero external API key requirements**.
+- **Maps**: Uses CartoDB Dark Matter tiles via OpenStreetMap standards. No Mapbox, Google Maps, or external developer tokens are needed.
+- **Simulation**: Mathematical Poisson egress forecasting, LMSI calculation, and dispatch rebalancing run completely in-browser via JavaScript Web Audio and Canvas APIs.
 
 ---
 
 ## 4. Multi-Stakeholder Operational Views
 
-- **B2B Fleet Operator Mode (Default)**: Full telemetry, incoming train radar, one-click "Execute Auto-Dispatch", interactive CartoDB dark GIS map with glowing SVG markers, driver queue with Indian registration plates (`KA-03-ER-4821`), and ROI calculator.
-- **B2G City Planner Mode**: Aggregated Transit Equity Index (84.6/100), 15-minute isochrone coverage maps, modal split breakdown, prioritized bottleneck rankings, and infrastructure investment ROI.
-- **B2C ONDC Commuter Preview**: High-fidelity smartphone mockup demonstrating what a commuter exiting the metro gate sees on an ONDC-enabled app (fixed-fare shared EV rickshaws at ₹25, route safety rating, OTP boarding confirmation).
+- **B2B Fleet Operator**: Live GIS command center, incoming train radar, 1-click auto-dispatch, and live driver feed with Mumbai registration plates (`MH-02-ER-4192`, `MH-01`, `MH-03`).
+- **B2G City Planner**: MMRDA & BMC transit equity score, suburban chokepoint ranking, and BEST feeder minibus lane ROI.
+- **B2C ONDC Commuter**: Interactive smartphone preview of Namma Yatri / Chalo app with fixed-fare shared EV seats (₹20) and OTP boarding token.
+- **Fleet ROI Economics**: Unit economics simulator calculating daily fuel savings and dead-mileage reduction.
 
 ---
 
-## 5. Technology Stack & Design System
-
-- **Frontend Framework**: React 18+ (Vite)
-- **Styling**: Tailwind CSS with custom glassmorphism utilities and responsive typography
-- **Mapping**: Leaflet with CartoDB Dark Matter tile layer (100% free, zero external API keys)
-- **Icons**: Lucide React
-- **Audio & Animations**: Synthesized Web Audio API sound effects, HTML5 Canvas streaming particle engine, and canvas-confetti
-- **Design Tokens**:
-  - Background: `#0B0F19` Deep Slate
-  - Primary Status: Cyber Emerald `#10B981`
-  - Warning/Surge: Electric Amber `#F59E0B`
-  - Transit Desert / Deficit: Coral Red `#EF4444`
-  - Telemetry: Neon Cyan `#06B6D4`
-
----
-
-## 6. Quickstart & Local Installation
-
-### Prerequisites
-- Node.js 18.x or higher
-- npm 9.x or higher
-
-### Installation Steps
+## 5. Quickstart & Local Installation
 
 ```bash
-# 1. Clone the repository
+# 1. Clone repository
 git clone https://github.com/akshat-vidyarthi/LastMileIQ.git
 cd LastMileIQ
 
@@ -132,41 +82,26 @@ npm install
 
 # 3. Start local development server
 npm run dev
-```
 
-Visit `http://localhost:3000` (or the port specified by Vite) in your browser.
-
-### Production Build
-
-```bash
-# Build production bundle
+# 4. Build production bundle
 npm run build
-
-# Preview production build locally
-npm run preview
 ```
 
 ---
 
-## 7. Project Authors & Git Commit History
+## 6. Project Authors & Git Commit Sequence
 
-The project followed a strictly structured 4-phase sequential engineering roadmap:
-
-1. **Phase 1: Foundation, Design System & Hero Experience**
-   - Author: `Akshat Vidyarthi <akshatvidyarthi@gmail.com>`
-   - Commit: `feat: initialize LastMileIQ platform with cinematic hero and design system`
-2. **Phase 2: Simulation Engine & Mathematical Models**
-   - Author: `Ayush Trivedi <ayush.ct0406@gmail.com>`
-   - Commit: `feat: implement spatio-temporal transit simulation engine and gap detection logic`
-3. **Phase 3: Interactive Geospatial Command Center & B2B Dispatch UI**
-   - Author: `Harsh Thakkar <harsht1103@gmail.com>`
-   - Commit: `feat: integrate interactive dark-mode GIS map with real-time B2B dispatch dashboard`
-4. **Phase 4: Fleet ROI Analytics, Multi-Stakeholder Views & Polish**
-   - Author: `Akshat Vidyarthi <akshatvidyarthi@gmail.com>`
-   - Commit: `feat: complete fleet telemetry analytics, multi-stakeholder views and production polish`
+Strictly structured sequential roadmap:
+1. `Akshat Vidyarthi <akshatvidyarthi@gmail.com>`
+2. `Ayush Trivedi <ayush.ct0406@gmail.com>`
+3. `Harsh Thakkar <harsht1103@gmail.com>`
+4. `Akshat Vidyarthi <akshatvidyarthi@gmail.com>`
+5. `Ayush Trivedi <ayush.ct0406@gmail.com>`
+6. `Harsh Thakkar <harsht1103@gmail.com>`
+7. `Akshat Vidyarthi <akshatvidyarthi@gmail.com>`
 
 ---
 
-## 8. License
+## 7. License
 
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+MIT License — see [LICENSE](LICENSE) for details.
