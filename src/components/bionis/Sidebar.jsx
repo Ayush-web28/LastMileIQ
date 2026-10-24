@@ -11,8 +11,6 @@ import {
   Sun,
   Moon,
   ShieldCheck,
-  ChevronRight,
-  ChevronLeft,
   Sparkles,
   Layers
 } from 'lucide-react';
@@ -180,95 +178,111 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
           </button>
         </div>
 
-        {/* Selected Line Display with Small Inline Arrow Switcher */}
+        {/* Network Mode Slider (Metro vs Suburban Local) */}
         {!isCollapsed && (
-          <div className="relative" ref={corridorRef}>
-            <div className={`text-[10px] font-mono uppercase tracking-wider mb-1 font-bold ${
-              theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
+          <div className="relative space-y-2" ref={corridorRef}>
+            {/* Segmented Slider Track (Replaces 'ACTIVE TRANSIT CORRIDOR' text) */}
+            <div className={`p-1 rounded-xl border flex items-center relative transition-colors ${
+              theme === 'dark' 
+                ? 'bg-[#0B132B] border-[#1E2F5B]' 
+                : 'bg-slate-200/80 border-slate-300/80'
             }`}>
-              Active Transit Corridor:
-            </div>
-
-            {/* Single Unified Container */}
-            <div className={`flex items-center justify-between p-2 rounded-xl border transition shadow-md gap-1 ${
-              theme === 'dark'
-                ? 'bg-[#111C38] border-[#1E2F5B]'
-                : 'bg-slate-50 border-slate-200'
-            }`}>
-              {/* Left Arrow Button (switches between metro & local, minimal space) */}
               <button
                 type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleCorridorCategory();
+                onClick={() => {
+                  if (corridorCategory !== 'metro') {
+                    setCorridorMenuOpen(false);
+                    setCorridorCategory('metro');
+                    if (activeCorridor?.category !== 'metro') {
+                      const firstMetro = metroLines[0]?.[0] || 'mumbai-metro-1';
+                      setCurrentCorridorKey(firstMetro);
+                    }
+                  }
                 }}
-                className={`p-1 rounded-md transition shrink-0 flex items-center justify-center ${
-                  theme === 'dark'
-                    ? 'text-slate-400 hover:text-amber-400 hover:bg-[#162347]'
-                    : 'text-slate-500 hover:text-amber-600 hover:bg-slate-100'
+                className={`flex-1 py-1.5 px-2 rounded-lg text-[11px] font-mono font-bold transition-all text-center flex items-center justify-center gap-1.5 cursor-pointer ${
+                  corridorCategory === 'metro'
+                    ? theme === 'dark'
+                      ? 'bg-[#162347] text-sky-400 border border-sky-500/40 shadow-md'
+                      : 'bg-white text-sky-800 border border-slate-300/80 shadow-sm'
+                    : theme === 'dark'
+                      ? 'text-slate-400 hover:text-slate-200 border border-transparent'
+                      : 'text-slate-600 hover:text-slate-900 border border-transparent'
                 }`}
-                title={corridorCategory === 'metro' ? 'Switch to Suburban Local Lines' : 'Switch to Metro Lines'}
-                aria-label="Previous transit mode"
+                title="Switch to Mumbai Metro Lines"
               >
-                <ChevronLeft className="w-3.5 h-3.5" />
+                <span>🚇</span>
+                <span>Metro</span>
               </button>
 
-              {/* Clickable Line Dropdown Trigger */}
               <button
                 type="button"
-                onClick={() => setCorridorMenuOpen(!corridorMenuOpen)}
-                className="flex-1 flex items-center justify-between min-w-0 px-1 text-left cursor-pointer group"
-                title={`Click to open ${corridorCategory === 'metro' ? 'Metro Lines' : 'Suburban Local Lines'} dropdown`}
+                onClick={() => {
+                  if (corridorCategory !== 'local') {
+                    setCorridorMenuOpen(false);
+                    setCorridorCategory('local');
+                    if (activeCorridor?.category !== 'local') {
+                      const firstLocal = localLines[0]?.[0] || 'mumbai-local-western';
+                      setCurrentCorridorKey(firstLocal);
+                    }
+                  }
+                }}
+                className={`flex-1 py-1.5 px-2 rounded-lg text-[11px] font-mono font-bold transition-all text-center flex items-center justify-center gap-1.5 cursor-pointer ${
+                  corridorCategory === 'local'
+                    ? theme === 'dark'
+                      ? 'bg-[#162347] text-amber-400 border border-amber-500/40 shadow-md'
+                      : 'bg-white text-amber-800 border border-slate-300/80 shadow-sm'
+                    : theme === 'dark'
+                      ? 'text-slate-400 hover:text-slate-200 border border-transparent'
+                      : 'text-slate-600 hover:text-slate-900 border border-transparent'
+                }`}
+                title="Switch to Mumbai Suburban Local Lines"
               >
-                <div className="flex items-center gap-2 min-w-0 flex-1">
-                  <span 
-                    className="w-3 h-3 rounded-full shrink-0 shadow-md ring-2 ring-white/20 mt-0.5" 
-                    style={{ backgroundColor: activeCorridor.color }} 
-                  />
-                  <div className="min-w-0 flex-1">
-                    <span className={`text-[9px] font-mono font-bold block uppercase tracking-wide leading-none mb-0.5 ${
-                      corridorCategory === 'metro'
-                        ? (theme === 'dark' ? 'text-sky-400' : 'text-sky-700')
-                        : (theme === 'dark' ? 'text-amber-400' : 'text-amber-700')
-                    }`}>
-                      {corridorCategory === 'metro' ? 'Metro Line' : 'Suburban Local'}
-                    </span>
-                    <span className={`font-black text-xs leading-tight block break-words ${
-                      theme === 'dark' ? 'text-white' : 'text-slate-900'
-                    }`}>
-                      {activeCorridor.shortName}
-                    </span>
-                    <span className={`text-[10px] block leading-tight mt-0.5 ${
-                      theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
-                    }`}>
-                      {activeCorridor.stationsCount} Stations • {activeCorridor.lengthKm} km
-                    </span>
-                  </div>
+                <span>🚆</span>
+                <span>Local</span>
+              </button>
+            </div>
+
+            {/* Clean Line Dropdown Card (Zero Chevron Repetition) */}
+            <button
+              type="button"
+              onClick={() => setCorridorMenuOpen(!corridorMenuOpen)}
+              className={`w-full flex items-center justify-between p-3 rounded-xl border transition shadow-md text-left cursor-pointer group ${
+                theme === 'dark'
+                  ? 'bg-[#111C38] border-[#1E2F5B] hover:border-sky-500/50 hover:bg-[#162347]'
+                  : 'bg-slate-50 border-slate-200 hover:border-sky-500/50 hover:bg-slate-100'
+              }`}
+              title={`Click to choose from ${corridorCategory === 'metro' ? 'Mumbai Metro Lines' : 'Mumbai Suburban Local Lines'}`}
+            >
+              <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                <span 
+                  className="w-3.5 h-3.5 rounded-full shrink-0 shadow-md ring-2 ring-white/20 mt-0.5" 
+                  style={{ backgroundColor: activeCorridor.color }} 
+                />
+                <div className="min-w-0 flex-1">
+                  <span className={`text-[9px] font-mono font-bold block uppercase tracking-wide leading-none mb-1 ${
+                    corridorCategory === 'metro'
+                      ? (theme === 'dark' ? 'text-sky-400' : 'text-sky-700')
+                      : (theme === 'dark' ? 'text-amber-400' : 'text-amber-700')
+                  }`}>
+                    {corridorCategory === 'metro' ? 'Metro Line' : 'Suburban Local'}
+                  </span>
+                  <span className={`font-black text-xs leading-tight block break-words ${
+                    theme === 'dark' ? 'text-white' : 'text-slate-900'
+                  }`}>
+                    {activeCorridor.shortName}
+                  </span>
+                  <span className={`text-[10px] block leading-tight mt-1 ${
+                    theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
+                  }`}>
+                    {activeCorridor.stationsCount} Stations • {activeCorridor.lengthKm} km
+                  </span>
                 </div>
+              </div>
 
-                <ChevronDown className={`w-3.5 h-3.5 shrink-0 transition-transform duration-200 ml-1 ${
-                  corridorMenuOpen ? 'rotate-180' : ''
-                } ${theme === 'dark' ? 'text-slate-400 group-hover:text-white' : 'text-slate-500 group-hover:text-slate-900'}`} />
-              </button>
-
-              {/* Right Arrow Button (switches between metro & local, minimal space) */}
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleCorridorCategory();
-                }}
-                className={`p-1 rounded-md transition shrink-0 flex items-center justify-center ${
-                  theme === 'dark'
-                    ? 'text-slate-400 hover:text-amber-400 hover:bg-[#162347]'
-                    : 'text-slate-500 hover:text-amber-600 hover:bg-slate-100'
-                }`}
-                title={corridorCategory === 'metro' ? 'Switch to Suburban Local Lines' : 'Switch to Metro Lines'}
-                aria-label="Next transit mode"
-              >
-                <ChevronRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
+              <ChevronDown className={`w-4 h-4 shrink-0 transition-transform duration-200 ml-2 ${
+                corridorMenuOpen ? 'rotate-180' : ''
+              } ${theme === 'dark' ? 'text-slate-400 group-hover:text-white' : 'text-slate-500 group-hover:text-slate-900'}`} />
+            </button>
 
             {/* Categorized Corridor Dropdown Menu */}
             {corridorMenuOpen && (
