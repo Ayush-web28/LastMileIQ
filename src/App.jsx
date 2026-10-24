@@ -11,15 +11,14 @@ import CommuterPreviewModal from './components/CommuterPreviewModal';
 import { SimulationProvider, useSimulation } from './context/SimulationContext';
 import { CORRIDORS } from './data/corridors';
 import { 
-  Activity, 
-  Building2, 
-  Smartphone, 
-  Calculator,
-  CheckCircle2
+  CheckCircle2, 
+  UserCheck
 } from 'lucide-react';
 
-function DashboardContent({ currentMode, setCurrentMode }) {
+function DashboardContent() {
   const {
+    activeAccountRole,
+    currentAccount,
     activeCorridor,
     corridorTelemetry,
     activeToast,
@@ -42,7 +41,7 @@ function DashboardContent({ currentMode, setCurrentMode }) {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
         
-        {/* Section Header & View Tabs */}
+        {/* Section Header: Corridor & Active Account Persona */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
           <div>
             <div className="flex items-center gap-2 text-[10px] font-mono text-emerald-400 font-bold uppercase">
@@ -54,44 +53,22 @@ function DashboardContent({ currentMode, setCurrentMode }) {
             </h2>
           </div>
 
-          {/* Mode Switcher Tabs */}
-          <div className="flex items-center p-1 rounded-xl bg-slate-900 border border-slate-800 text-xs self-start sm:self-center">
-            <button
-              onClick={() => setCurrentMode('fleet')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition ${
-                currentMode === 'fleet' ? 'bg-emerald-500 text-slate-950 font-bold shadow-md' : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <Activity className="w-3.5 h-3.5" />
-              Dispatch Console
-            </button>
-            <button
-              onClick={() => setCurrentMode('planner')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition ${
-                currentMode === 'planner' ? 'bg-cyan-500 text-slate-950 font-bold shadow-md' : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <Building2 className="w-3.5 h-3.5" />
-              City Planner
-            </button>
-            <button
-              onClick={() => setCurrentMode('commuter')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition ${
-                currentMode === 'commuter' ? 'bg-amber-400 text-slate-950 font-bold shadow-md' : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <Smartphone className="w-3.5 h-3.5" />
-              Commuter
-            </button>
-            <button
-              onClick={() => setCurrentMode('economics')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition ${
-                currentMode === 'economics' ? 'bg-teal-500 text-slate-950 font-bold shadow-md' : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <Calculator className="w-3.5 h-3.5" />
-              Fleet ROI
-            </button>
+          {/* Active Account Role Indicator */}
+          <div className="flex items-center gap-2 self-start sm:self-center">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono">
+              <UserCheck className="w-3.5 h-3.5 text-emerald-400" />
+              <span className="text-slate-400">Active View:</span>
+              <strong className="text-white">{currentAccount.name}</strong>
+              <span 
+                className="px-2 py-0.5 rounded-md text-[10px] font-bold"
+                style={{ 
+                  backgroundColor: `${currentAccount.badgeColor}20`, 
+                  color: currentAccount.badgeColor 
+                }}
+              >
+                {currentAccount.title}
+              </span>
+            </div>
           </div>
         </div>
 
@@ -125,8 +102,8 @@ function DashboardContent({ currentMode, setCurrentMode }) {
           </div>
         </div>
 
-        {/* Dynamic Multi-Stakeholder Views */}
-        {currentMode === 'fleet' && (
+        {/* Dynamic Views Rendered Automatically by Logged-in Account Role */}
+        {activeAccountRole === 'fleet' && (
           <div className="space-y-4 animate-fade-in">
             {/* Interactive GIS Command Center Map */}
             <CommandCenterMap />
@@ -136,26 +113,23 @@ function DashboardContent({ currentMode, setCurrentMode }) {
 
             {/* Driver Queue Feed */}
             <DriverDispatchQueue />
+
+            {/* Fleet Unit Economics */}
+            <FleetEconomicsCalculator />
           </div>
         )}
 
-        {currentMode === 'planner' && (
+        {activeAccountRole === 'planner' && (
           <div className="space-y-4 animate-fade-in">
             <CityPlannerView />
             <CommandCenterMap />
           </div>
         )}
 
-        {currentMode === 'commuter' && (
+        {activeAccountRole === 'commuter' && (
           <div className="space-y-4 animate-fade-in">
             <CommuterPreviewModal />
             <CommandCenterMap />
-          </div>
-        )}
-
-        {currentMode === 'economics' && (
-          <div className="space-y-4 animate-fade-in">
-            <FleetEconomicsCalculator />
           </div>
         )}
 
@@ -165,11 +139,7 @@ function DashboardContent({ currentMode, setCurrentMode }) {
 }
 
 export default function App() {
-  const [currentMode, setCurrentMode] = useState('fleet');
-  const [isDashboardOpen, setIsDashboardOpen] = useState(false);
-
   const handleLaunchDashboard = () => {
-    setIsDashboardOpen(true);
     setTimeout(() => {
       const el = document.getElementById('command-center-root');
       if (el) {
@@ -180,18 +150,13 @@ export default function App() {
 
   return (
     <SimulationProvider>
-      <AppShell
-        currentMode={currentMode}
-        setCurrentMode={setCurrentMode}
-        isDashboardOpen={isDashboardOpen}
-        handleLaunchDashboard={handleLaunchDashboard}
-      />
+      <AppShell handleLaunchDashboard={handleLaunchDashboard} />
     </SimulationProvider>
   );
 }
 
-function AppShell({ currentMode, setCurrentMode, isDashboardOpen, handleLaunchDashboard }) {
-  const { currentCorridorKey, setCurrentCorridorKey, formattedTime } = useSimulation();
+function AppShell({ handleLaunchDashboard }) {
+  const { currentCorridorKey, setCurrentCorridorKey } = useSimulation();
 
   return (
     <div className="min-h-screen bg-[#0B0F19] text-slate-100 flex flex-col font-sans selection:bg-emerald-500/30 selection:text-emerald-300">
@@ -199,30 +164,13 @@ function AppShell({ currentMode, setCurrentMode, isDashboardOpen, handleLaunchDa
         currentCorridor={currentCorridorKey}
         setCorridor={setCurrentCorridorKey}
         corridors={CORRIDORS}
-        currentMode={currentMode}
-        setMode={setCurrentMode}
-        onLaunchDashboard={handleLaunchDashboard}
-        isDashboardOpen={isDashboardOpen}
-        simTime={formattedTime}
       />
 
-      <Hero
-        onLaunchDashboard={handleLaunchDashboard}
-        currentCorridor={currentCorridorKey}
-        setCorridor={setCurrentCorridorKey}
-        corridors={CORRIDORS}
-        onSelectMode={(mode) => {
-          setCurrentMode(mode);
-          handleLaunchDashboard();
-        }}
-      />
+      <Hero onLaunchDashboard={handleLaunchDashboard} />
 
-      <DashboardContent
-        currentMode={currentMode}
-        setCurrentMode={setCurrentMode}
-      />
+      <DashboardContent />
 
-      {/* Clean Footer */}
+      {/* Clean Minimal Footer */}
       <footer className="border-t border-slate-800/80 bg-slate-950 py-6 text-center text-xs text-slate-500 font-mono">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2">
