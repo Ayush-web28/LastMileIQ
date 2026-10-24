@@ -9,7 +9,7 @@ export const CORRIDORS = {
     name: 'Metro Line 1: Versova – Andheri – Ghatkopar (Blue Line)',
     shortName: 'Metro 1: Versova - Ghatkopar',
     lineCode: 'Line 1',
-    color: '#0284C7', // Blue
+    color: '#0284C7', // Sky Blue
     city: 'Mumbai',
     stationsCount: 12,
     lengthKm: 11.4,
@@ -32,7 +32,7 @@ export const CORRIDORS = {
     name: 'Metro Line 2A: Dahisar East – D.N. Nagar (Yellow Line)',
     shortName: 'Metro 2A: Dahisar - D.N. Nagar',
     lineCode: 'Line 2A',
-    color: '#EAB308', // Yellow
+    color: '#EAB308', // Bright Yellow
     city: 'Mumbai',
     stationsCount: 17,
     lengthKm: 18.6,
@@ -55,7 +55,7 @@ export const CORRIDORS = {
     name: 'Metro Line 7: Dahisar East – Gundavali / Andheri East (Red Line)',
     shortName: 'Metro 7: Dahisar - Gundavali',
     lineCode: 'Line 7',
-    color: '#EF4444', // Red
+    color: '#F97316', // Red-Orange Line
     city: 'Mumbai',
     stationsCount: 14,
     lengthKm: 16.5,
@@ -78,7 +78,7 @@ export const CORRIDORS = {
     name: 'Metro Line 3: Aarey JVLR – BKC – Colaba (Aqua Line)',
     shortName: 'Metro 3: Aarey - BKC - Colaba',
     lineCode: 'Line 3',
-    color: '#06B6D4', // Aqua
+    color: '#06B6D4', // Aqua Cyan
     city: 'Mumbai',
     stationsCount: 10,
     lengthKm: 12.4,
@@ -101,7 +101,7 @@ export const CORRIDORS = {
     name: 'Metro Line 2B: D.N. Nagar – BKC – Mandale (Yellow Line Ext)',
     shortName: 'Metro 2B: D.N. Nagar - BKC - Mandale',
     lineCode: 'Line 2B',
-    color: '#F59E0B', // Amber
+    color: '#D97706', // Warm Amber
     city: 'Mumbai',
     stationsCount: 11,
     lengthKm: 23.6,
@@ -124,7 +124,7 @@ export const CORRIDORS = {
     name: 'Metro Line 6: Swami Samarth Nagar – JVLR – Vikhroli (Pink Line)',
     shortName: 'Metro 6: Lokhandwala - JVLR - Vikhroli',
     lineCode: 'Line 6',
-    color: '#EC4899', // Pink
+    color: '#EC4899', // Hot Pink
     city: 'Mumbai',
     stationsCount: 13,
     lengthKm: 15.3,
@@ -141,7 +141,7 @@ export const CORRIDORS = {
     }
   },
 
-  // --- 3 MUMBAI SUBURBAN LOCAL LINES (The Lifeline of Mumbai) ---
+  // --- 3 MUMBAI SUBURBAN LOCAL LINES (Distinct High-Contrast Dot Colors) ---
   'mumbai-local-western': {
     id: 'mumbai-local-western',
     category: 'local',
@@ -149,7 +149,7 @@ export const CORRIDORS = {
     name: 'Western Railway Local: Churchgate – Dadar – Andheri – Borivali',
     shortName: 'Western Local: Churchgate - Borivali',
     lineCode: 'WR Local',
-    color: '#10B981', // Emerald Green
+    color: '#EF4444', // Distinct Vibrant Crimson Red
     city: 'Mumbai',
     stationsCount: 16,
     lengthKm: 34.2,
@@ -172,7 +172,7 @@ export const CORRIDORS = {
     name: 'Central Railway Local: CSMT – Dadar – Kurla – Ghatkopar – Thane',
     shortName: 'Central Local: CSMT - Dadar - Thane',
     lineCode: 'CR Local',
-    color: '#8B5CF6', // Purple / Violet
+    color: '#F59E0B', // Distinct Vibrant Electric Amber / Gold
     city: 'Mumbai',
     stationsCount: 15,
     lengthKm: 33.8,
@@ -195,7 +195,7 @@ export const CORRIDORS = {
     name: 'Harbour Railway Local: CSMT – Vadala – Kurla – Vashi – Panvel',
     shortName: 'Harbour Local: CSMT - Vashi - Panvel',
     lineCode: 'HR Local',
-    color: '#14B8A6', // Teal
+    color: '#8B5CF6', // Distinct Vibrant Royal Purple / Violet
     city: 'Mumbai',
     stationsCount: 14,
     lengthKm: 48.5,

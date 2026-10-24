@@ -7,6 +7,45 @@ import {
   calculateFleetEconomics 
 } from '../services/mathModels';
 
+export const ACCOUNTS = {
+  fleet: {
+    id: 'acc-fleet',
+    roleKey: 'fleet',
+    name: 'Rohan Mehta',
+    title: 'Fleet Dispatch Director',
+    organization: 'Maha-EV Feeder Syndicate',
+    initials: 'RM',
+    badgeColor: '#10B981',
+    badgeBg: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
+    description: 'Live dispatch control, station deficit alerts, driver queue & unit economics',
+    viewLabel: 'Fleet Operator Command View',
+  },
+  planner: {
+    id: 'acc-planner',
+    roleKey: 'planner',
+    name: 'Dr. Anjali Deshmukh',
+    title: 'Senior Urban Transit Planner',
+    organization: 'MMRDA Infrastructure Wing',
+    initials: 'AD',
+    badgeColor: '#06B6D4',
+    badgeBg: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30',
+    description: 'Suburban transit equity, bottleneck chokepoints & dedicated feeder lane ROI',
+    viewLabel: 'B2G Municipal Planning View',
+  },
+  commuter: {
+    id: 'acc-commuter',
+    roleKey: 'commuter',
+    name: 'Aditya Sharma',
+    title: 'Daily Metro & Suburban Rider',
+    organization: 'ONDC / Chalo Network',
+    initials: 'AS',
+    badgeColor: '#F59E0B',
+    badgeBg: 'bg-amber-500/10 text-amber-400 border-amber-500/30',
+    description: 'Concourse exit guide, shared EV auto booking & fixed-fare OTP token',
+    viewLabel: 'B2C Commuter Mobile View',
+  },
+};
+
 const SimulationContext = createContext(null);
 
 // Audio synthesizer for dispatch pings and alerts (Pure Web Audio API - zero external files)
@@ -30,9 +69,9 @@ class SoundFx {
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
       osc.type = 'sine';
-      osc.frequency.setValueAtTime(523.25, now); // C5
-      osc.frequency.exponentialRampToValueAtTime(783.99, now + 0.12); // G5
-      osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.28); // C6
+      osc.frequency.setValueAtTime(523.25, now);
+      osc.frequency.exponentialRampToValueAtTime(783.99, now + 0.12);
+      osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.28);
       
       gain.gain.setValueAtTime(0.2, now);
       gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
@@ -41,9 +80,7 @@ class SoundFx {
       gain.connect(this.ctx.destination);
       osc.start(now);
       osc.stop(now + 0.45);
-    } catch (e) {
-      // Audio not permitted or supported
-    }
+    } catch (e) {}
   }
   playAlertWarning() {
     try {
@@ -63,6 +100,7 @@ class SoundFx {
       
       osc.connect(gain);
       gain.connect(this.ctx.destination);
+      osc.start(now);
       osc.stop(now + 0.35);
     } catch (e) {}
   }
@@ -71,11 +109,14 @@ class SoundFx {
 const soundFx = new SoundFx();
 
 export function SimulationProvider({ children }) {
+  // Account Role System (Default: Fleet Operator)
+  const [activeAccountRole, setActiveAccountRole] = useState('fleet'); // 'fleet' | 'planner' | 'commuter'
+
   // Default to Mumbai Metro Line 1 (Versova - Andheri - Ghatkopar)
   const [currentCorridorKey, setCurrentCorridorKey] = useState('mumbai-metro-1');
-  const [timeOfDay, setTimeOfDay] = useState(8.75); // 08:45 AM (Peak Morning Egress)
+  const [timeOfDay, setTimeOfDay] = useState(8.75); // 08:45 AM
   const [isPlaying, setIsPlaying] = useState(false);
-  const [playSpeed, setPlaySpeed] = useState(1); // 1x, 2x, 5x
+  const [playSpeed, setPlaySpeed] = useState(1);
 
   // Scenarios
   const [scenarios, setScenarios] = useState({
@@ -88,11 +129,11 @@ export function SimulationProvider({ children }) {
   // Selected Station for detailed inspector (default to Andheri Metro)
   const [selectedStationId, setSelectedStationId] = useState('stn-m1-and');
   
-  // Real-time train / local countdowns (seconds remaining until next arrival per station)
+  // Real-time train / local countdowns
   const [trainCountdowns, setTrainCountdowns] = useState({
     'stn-m1-vsv': 210,
     'stn-m1-dnn': 165,
-    'stn-m1-and': 140, // 2m 20s
+    'stn-m1-and': 140,
     'stn-m1-weh': 280,
     'stn-m1-mrln': 195,
     'stn-m1-sknk': 110,
@@ -134,7 +175,7 @@ export function SimulationProvider({ children }) {
     'stn-hr-pnv': 240,
   });
 
-  // Dynamic dispatch history with Mumbai license plates (MH-01, MH-02, MH-03, MH-04)
+  // Dynamic dispatch history with Mumbai license plates
   const [dispatchEvents, setDispatchEvents] = useState([
     {
       id: 'disp-001',
@@ -183,12 +224,10 @@ export function SimulationProvider({ children }) {
   // Time ticker effect
   useEffect(() => {
     const timer = setInterval(() => {
-      // 1. Tick train countdowns
       setTrainCountdowns((prev) => {
         const next = { ...prev };
         Object.keys(next).forEach((stnId) => {
           if (next[stnId] <= 1) {
-            // Train/Local arrived, reset to randomized 3 to 6 minutes
             next[stnId] = Math.floor(180 + Math.random() * 180);
           } else {
             next[stnId] -= 1;
@@ -197,7 +236,6 @@ export function SimulationProvider({ children }) {
         return next;
       });
 
-      // 2. Advance time of day if auto-playing
       if (isPlaying) {
         setTimeOfDay((prevTime) => {
           const step = 0.015 * playSpeed;
@@ -226,6 +264,11 @@ export function SimulationProvider({ children }) {
     return CORRIDOR_DATA_MAP[currentCorridorKey] || CORRIDOR_DATA_MAP['mumbai-metro-1'];
   }, [currentCorridorKey]);
 
+  // Active Account Profile
+  const currentAccount = useMemo(() => {
+    return ACCOUNTS[activeAccountRole] || ACCOUNTS.fleet;
+  }, [activeAccountRole]);
+
   // Ensure selected station belongs to active corridor
   useEffect(() => {
     const exists = activeCorridor.stations.some((s) => s.id === selectedStationId);
@@ -243,18 +286,15 @@ export function SimulationProvider({ children }) {
         scenarios,
       });
 
-      // Find highest deficit gate
       const sortedGates = [...forecast.gateForecasts].sort((a, b) => b.deficit - a.deficit);
       const highDeficitGate = sortedGates[0];
 
-      // Station-wide LMSI
       const lmsi = calculateLMSI(
         forecast.lastMileSeekers,
         forecast.totalSupply * 2.5,
         forecast.avgWaitTime
       );
 
-      // Rebalancing recommendation
       const rebalancingPlan = generateRebalancingPlan(
         stn,
         highDeficitGate,
@@ -299,16 +339,14 @@ export function SimulationProvider({ children }) {
     );
     const criticalStationsCount = computedStations.filter((s) => s.lmsi.level === 'CRITICAL').length;
     
-    // Utilization rate
     const utilizationRate = Math.min(96, Math.max(58, Math.round(76 + (1 - totalDeficit / (totalSupply + 50)) * 20)));
 
-    // Economics
     const economics = calculateFleetEconomics({
       fleetSize: totalSupply * 2,
       dailyTrips: 16,
-      avgFare: 45, // Mumbai competitive pooling fare
+      avgFare: 40,
       deadKmSavedPercent: 36,
-      evRatio: 0.72,
+      evRatio: 0.75,
     });
 
     return {
@@ -332,7 +370,6 @@ export function SimulationProvider({ children }) {
     const rebalanceCount = plan ? plan.dispatchCount : 8;
     const targetGateName = stn.highDeficitGate.gateName;
 
-    // Mumbai registration plate generation (MH-01, MH-02, MH-03, MH-04)
     const rtoPrefixes = ['MH-01', 'MH-02', 'MH-03', 'MH-04', 'MH-47'];
     const rto = rtoPrefixes[Math.floor(Math.random() * rtoPrefixes.length)];
     const randomNum = Math.floor(1000 + Math.random() * 9000);
@@ -368,7 +405,6 @@ export function SimulationProvider({ children }) {
 
     setDispatchEvents((prev) => [newDispatch, ...prev.slice(0, 9)]);
 
-    // Trigger toast notification
     setActiveToast({
       title: 'Mumbai Feeder Rebalance Dispatched',
       message: `Rebalanced ${rebalanceCount} EV units to ${stn.name} (${targetGateName}). Commuter wait time capped at 4.5m!`,
@@ -392,6 +428,10 @@ export function SimulationProvider({ children }) {
   return (
     <SimulationContext.Provider
       value={{
+        activeAccountRole,
+        setActiveAccountRole,
+        currentAccount,
+        ACCOUNTS,
         currentCorridorKey,
         setCurrentCorridorKey,
         timeOfDay,
