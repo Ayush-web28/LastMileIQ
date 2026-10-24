@@ -117,25 +117,6 @@ function DashboardLayout() {
 
         </main>
 
-        {/* Minimal Clean Single-Line Footer */}
-        <footer className={`border-t py-2 px-6 text-[11px] font-mono shrink-0 flex flex-col sm:flex-row items-center justify-between gap-1.5 transition-colors ${
-          theme === 'dark' 
-            ? 'border-slate-800/80 bg-[#0B0F19] text-slate-500' 
-            : 'border-slate-200 bg-white text-slate-600'
-        }`}>
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className={`font-bold ${theme === 'dark' ? 'text-slate-300' : 'text-slate-800'}`}>
-              LastMileIQ Mumbai Transit Dispatch OS
-            </span>
-            <span className="text-slate-600">|</span>
-            <span>6 Metro Lines + 3 Suburban Local Lines</span>
-          </div>
-          <div className="text-emerald-500 font-bold">
-            Google Maps Engine • Zero API Key Required
-          </div>
-        </footer>
-
       </div>
 
     </div>

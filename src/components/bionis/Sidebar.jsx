@@ -108,12 +108,12 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
       {/* Top Section: Brand Header & Selected Corridor Display */}
       <div className={`p-4 space-y-3.5 border-b ${theme === 'dark' ? 'border-slate-800/80' : 'border-slate-200'}`}>
         
-        {/* Brand Header */}
+        {/* Brand Header with Subtle Minimal Light/Dark Toggle */}
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3 overflow-hidden">
-            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/20 to-teal-500/10 border border-emerald-500/40 shrink-0 shadow-lg shadow-emerald-500/10">
-              <Zap className="w-5 h-5 text-emerald-400" />
-              <div className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+          <div className="flex items-center gap-2.5 overflow-hidden">
+            <div className="relative flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500/20 to-teal-500/10 border border-emerald-500/40 shrink-0 shadow-lg shadow-emerald-500/10">
+              <Zap className="w-4 h-4 text-emerald-400" />
+              <div className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             </div>
             {!isCollapsed && (
               <div>
@@ -121,7 +121,7 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
                   <span className={`font-black text-base tracking-tight ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
                     LastMile<span className="text-emerald-500">IQ</span>
                   </span>
-                  <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-500 border border-emerald-500/30">
+                  <span className="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-emerald-500/15 text-emerald-500 border border-emerald-500/30">
                     Mumbai
                   </span>
                 </div>
@@ -131,6 +131,23 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
               </div>
             )}
           </div>
+
+          {/* Subtle Minimal Light/Dark Toggle */}
+          <button
+            onClick={toggleTheme}
+            className={`p-1.5 rounded-lg border transition ${
+              theme === 'dark'
+                ? 'border-slate-800 text-slate-400 hover:text-amber-300 hover:border-slate-700 bg-slate-900/60'
+                : 'border-slate-200 text-slate-500 hover:text-slate-900 hover:border-slate-300 bg-slate-50'
+            }`}
+            title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
+          >
+            {theme === 'dark' ? (
+              <Sun className="w-3.5 h-3.5" />
+            ) : (
+              <Moon className="w-3.5 h-3.5" />
+            )}
+          </button>
         </div>
 
         {/* Selected Line Display (Here and here only) */}
@@ -324,38 +341,9 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
         })}
       </div>
 
-      {/* Bottom Section: Light/Dark Toggle & 2-Account Switcher */}
+      {/* Bottom Section: 2-Account Persona Switcher */}
       <div className={`p-3 border-t space-y-2.5 ${theme === 'dark' ? 'border-slate-800/80' : 'border-slate-200'}`}>
         
-        {/* Light / Dark Mode Toggle Button */}
-        <button
-          onClick={toggleTheme}
-          className={`w-full flex items-center justify-between p-2.5 rounded-xl border transition text-xs font-semibold ${
-            theme === 'dark'
-              ? 'bg-slate-900 border-slate-800 text-slate-300 hover:text-white hover:border-slate-700'
-              : 'bg-slate-50 border-slate-200 text-slate-700 hover:text-slate-900 hover:border-slate-300'
-          } ${isCollapsed ? 'justify-center' : ''}`}
-          title="Toggle Light / Dark Mode"
-        >
-          <div className="flex items-center gap-2">
-            {theme === 'dark' ? (
-              <Moon className="w-4 h-4 text-cyan-400 shrink-0" />
-            ) : (
-              <Sun className="w-4 h-4 text-amber-500 shrink-0" />
-            )}
-            {!isCollapsed && (
-              <span>{theme === 'dark' ? 'Dark Command View' : 'Light Precision View'}</span>
-            )}
-          </div>
-          {!isCollapsed && (
-            <span className={`text-[10px] font-mono uppercase px-1.5 py-0.5 rounded ${
-              theme === 'dark' ? 'bg-slate-800 text-slate-400' : 'bg-slate-200 text-slate-600'
-            }`}>
-              {theme}
-            </span>
-          )}
-        </button>
-
         {/* 2-Account System Role Switcher (Fleet Dispatch Director & Transit Planner) */}
         <div className="relative" ref={accountRef}>
           <button
@@ -365,7 +353,7 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
                 ? 'bg-slate-900 border-slate-800 hover:border-slate-700'
                 : 'bg-slate-50 border-slate-200 hover:border-slate-300'
             } ${isCollapsed ? 'justify-center' : 'justify-between'}`}
-            title="Switch User Role (Fleet Dispatch Director / Transit Planner)"
+            title="Switch Stakeholder Persona (Fleet Dispatch Director / Transit Planner)"
           >
             <div className="flex items-center gap-2.5 min-w-0">
               <div 

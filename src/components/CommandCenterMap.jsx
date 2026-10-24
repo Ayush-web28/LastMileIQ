@@ -2,14 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import { useSimulation } from '../context/SimulationContext';
 import { 
-  Layers, 
-  MapPin, 
   RefreshCw,
   Eye,
   EyeOff,
-  CheckCircle2,
-  Navigation,
-  Compass
+  Navigation
 } from 'lucide-react';
 
 export default function CommandCenterMap({ className = '' }) {
@@ -75,7 +71,7 @@ export default function CommandCenterMap({ className = '' }) {
       }
     }
 
-    // Actual Google Maps Roadmap tiles (100% Free, zero API key needed, zero watermark)
+    // Google Maps Tiles
     const googleTilesUrl = mapType === 'satellite'
       ? 'https://mt{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}'
       : 'https://mt{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}';
@@ -132,7 +128,6 @@ export default function CommandCenterMap({ className = '' }) {
       attribution: '&copy; Google Maps',
     }).addTo(map);
 
-    // Keep base tiles below features
     newTiles.bringToBack();
     tileLayerRef.current = newTiles;
   }, [mapType]);
@@ -273,7 +268,7 @@ export default function CommandCenterMap({ className = '' }) {
           </div>
           <div style="background: #F1F5F9; border-radius: 8px; padding: 6px 8px; font-size: 11px; margin-bottom: 6px; line-height: 1.4;">
             <div><strong>Deficit Gate:</strong> ${stn.highDeficitGate.gateName}</div>
-            <div><strong>Exit Commuters:</strong> ${stn.highDeficitGate.expectedCommuters} pax</div>
+            <div><strong>Exit Commuters:</strong> ${stn.highDeficitGate.expectedCommuters || stn.highDeficitGate.lastMileSeekers} pax</div>
             <div><strong>Vehicle Shortage:</strong> <span style="color: ${lmsiColor}; font-weight: bold;">${stn.highDeficitGate.deficit} vehicles</span></div>
             <div><strong>Wait Time:</strong> ${stn.lmsi.expectedWaitMinutes} min (${stn.lmsi.level})</div>
           </div>
@@ -368,105 +363,137 @@ export default function CommandCenterMap({ className = '' }) {
   }, [activeCorridor, mapType]);
 
   return (
-    <div className={`relative w-full h-full min-h-[460px] rounded-2xl overflow-hidden border shadow-2xl ${
-      theme === 'dark' ? 'border-slate-800 bg-[#080C14]' : 'border-slate-200 bg-white'
-    } ${className}`}>
-      {/* Map DOM Canvas */}
-      <div ref={mapContainerRef} className="w-full h-full z-0" />
+    <div className={`w-full flex-1 flex flex-col min-h-0 ${className}`}>
+      {/* Map Canvas Frame */}
+      <div className={`relative w-full flex-1 min-h-[420px] rounded-2xl overflow-hidden border shadow-xl ${
+        theme === 'dark' ? 'border-slate-800 bg-[#080C14]' : 'border-slate-200 bg-white'
+      }`}>
+        {/* Leaflet Map Canvas */}
+        <div ref={mapContainerRef} className="w-full h-full z-0" />
 
-      {/* Floating HUD (Top Left): Map Navigation & Google Layer Type (NO corridor label here to avoid duplicate) */}
-      <div className="absolute top-3 left-3 z-10 flex items-center gap-2">
-        {/* Recenter Button */}
-        <button
-          onClick={() => {
-            const map = mapInstanceRef.current;
-            if (map && activeCorridor) {
-              map.flyTo(activeCorridor.center, activeCorridor.zoom, { duration: 0.8 });
-            }
-          }}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/95 border border-slate-700/90 hover:border-emerald-500/60 text-slate-200 transition text-xs font-mono backdrop-blur-md shadow-lg"
-          title="Recenter Map on Corridor"
-        >
-          <RefreshCw className="w-3.5 h-3.5 text-emerald-400" />
-          <span className="font-semibold">Recenter</span>
-        </button>
-
-        {/* Google Map Mode Toggle: Roadmap vs Satellite */}
-        <div className="flex items-center p-0.5 rounded-xl bg-slate-900/95 border border-slate-700/90 backdrop-blur-md shadow-lg text-xs font-mono">
+        {/* ONLY Recenter Floating Icon Button (Top Left) */}
+        <div className="absolute top-3 left-3 z-10">
           <button
-            onClick={() => setMapType('roadmap')}
-            className={`px-2.5 py-1 rounded-lg text-[10px] transition font-bold ${
-              mapType === 'roadmap'
-                ? 'bg-emerald-500 text-slate-950 shadow-sm'
-                : 'text-slate-400 hover:text-white'
+            onClick={() => {
+              const map = mapInstanceRef.current;
+              if (map && activeCorridor) {
+                map.flyTo(activeCorridor.center, activeCorridor.zoom, { duration: 0.8 });
+              }
+            }}
+            className={`p-2.5 rounded-xl border backdrop-blur-md shadow-lg transition active:scale-95 ${
+              theme === 'dark'
+                ? 'bg-slate-900/90 border-slate-700/80 text-slate-200 hover:text-white hover:border-emerald-500/60'
+                : 'bg-white/95 border-slate-300 text-slate-700 hover:text-black hover:border-emerald-500/60'
             }`}
+            title="Recenter Map on Corridor"
           >
-            🗺️ Roadmap
+            <RefreshCw className="w-4 h-4 text-emerald-400" />
           </button>
-          <button
-            onClick={() => setMapType('satellite')}
-            className={`px-2.5 py-1 rounded-lg text-[10px] transition font-bold ${
-              mapType === 'satellite'
-                ? 'bg-cyan-500 text-slate-950 shadow-sm'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            🛰️ Satellite
-          </button>
-        </div>
-
-        {/* Active Station Count Pill */}
-        <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700/80 backdrop-blur-md shadow-lg text-xs font-mono text-slate-300">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span>{computedStations.length} Stations Highlighted</span>
         </div>
       </div>
 
-      {/* Layer Visibility Toggles (Top Right) */}
-      <div className="absolute top-3 right-3 z-10 hidden sm:flex items-center gap-1 p-1 rounded-xl bg-slate-900/95 border border-slate-700/90 backdrop-blur-md shadow-lg text-xs">
-        <button
-          onClick={() => setShowHeatRings(!showHeatRings)}
-          className={`px-2.5 py-1 rounded-lg text-[10px] font-mono transition ${
-            showHeatRings ? 'bg-slate-800 text-emerald-400 font-bold border border-emerald-500/30' : 'text-slate-500'
-          }`}
-        >
-          Stress Rings
-        </button>
-        <button
-          onClick={() => setShowStands(!showStands)}
-          className={`px-2.5 py-1 rounded-lg text-[10px] font-mono transition ${
-            showStands ? 'bg-slate-800 text-cyan-400 font-bold border border-cyan-500/30' : 'text-slate-500'
-          }`}
-        >
-          Feeder Stands
-        </button>
-        <button
-          onClick={() => setShowVehicles(!showVehicles)}
-          className={`px-2.5 py-1 rounded-lg text-[10px] font-mono transition ${
-            showVehicles ? 'bg-slate-800 text-emerald-400 font-bold border border-emerald-500/30' : 'text-slate-500'
-          }`}
-        >
-          Active Fleet
-        </button>
-      </div>
+      {/* Control Bar Below the Map Border (Replacing the former bottom line) */}
+      <div className={`mt-2.5 px-3.5 py-2 rounded-xl border flex flex-wrap items-center justify-between gap-3 text-xs font-mono transition ${
+        theme === 'dark'
+          ? 'bg-slate-900/90 border-slate-800 text-slate-300'
+          : 'bg-white border-slate-200 text-slate-700 shadow-sm'
+      }`}>
+        {/* Left: Map Mode Toggle, Station Count & Legend */}
+        <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
+          {/* Roadmap vs Satellite Toggle */}
+          <div className={`flex items-center p-0.5 rounded-lg border ${
+            theme === 'dark' ? 'bg-slate-950 border-slate-800' : 'bg-slate-100 border-slate-200'
+          }`}>
+            <button
+              onClick={() => setMapType('roadmap')}
+              className={`px-2.5 py-1 rounded-md text-[10px] font-bold transition ${
+                mapType === 'roadmap'
+                  ? 'bg-emerald-500 text-slate-950 shadow-sm'
+                  : theme === 'dark' ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-black'
+              }`}
+            >
+              🗺️ Roadmap
+            </button>
+            <button
+              onClick={() => setMapType('satellite')}
+              className={`px-2.5 py-1 rounded-md text-[10px] font-bold transition ${
+                mapType === 'satellite'
+                  ? 'bg-cyan-500 text-slate-950 shadow-sm'
+                  : theme === 'dark' ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-black'
+              }`}
+            >
+              🛰️ Satellite
+            </button>
+          </div>
 
-      {/* Compact Bottom Legend & Google Maps Engine Verification */}
-      <div className="absolute bottom-3 left-3 z-10 p-2 sm:px-3 rounded-xl bg-slate-950/95 border border-slate-800/90 backdrop-blur-md shadow-2xl text-[10px] font-mono flex items-center gap-3">
-        <div className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-emerald-500" />
-          <span className="text-slate-300">&lt;5m wait</span>
+          {/* Station Count Pill */}
+          <div className="flex items-center gap-1.5 text-[11px] font-semibold">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className={theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}>
+              {computedStations.length} Stations Highlighted
+            </span>
+          </div>
+
+          {/* Stress Halos Legend */}
+          <div className={`flex items-center gap-2.5 text-[10px] pl-2 border-l ${
+            theme === 'dark' ? 'border-slate-800' : 'border-slate-200'
+          }`}>
+            <div className="flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full bg-emerald-500" />
+              <span className={theme === 'dark' ? 'text-slate-300' : 'text-slate-600'}>&lt;5m wait</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full bg-amber-500" />
+              <span className={theme === 'dark' ? 'text-slate-300' : 'text-slate-600'}>5-12m</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
+              <span className={theme === 'dark' ? 'text-slate-300' : 'text-slate-600'}>&gt;15m</span>
+            </div>
+          </div>
         </div>
-        <div className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-amber-500" />
-          <span className="text-slate-300">5-12m</span>
-        </div>
-        <div className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
-          <span className="text-slate-300">&gt;15m</span>
-        </div>
-        <div className="flex items-center gap-1 pl-2 border-l border-slate-800 text-emerald-400 font-semibold">
-          <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-          <span>Google Maps Engine (Zero API Key Required)</span>
+
+        {/* Right: Layer Visibility Toggles */}
+        <div className="flex items-center gap-1.5">
+          <span className="text-[10px] uppercase font-bold text-slate-500 mr-1 hidden md:inline">
+            Layers:
+          </span>
+          <button
+            onClick={() => setShowHeatRings(!showHeatRings)}
+            className={`px-2.5 py-1 rounded-lg text-[10px] font-mono transition border ${
+              showHeatRings
+                ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40 font-bold'
+                : theme === 'dark'
+                  ? 'bg-slate-950 border-slate-800 text-slate-500'
+                  : 'bg-slate-100 border-slate-200 text-slate-500'
+            }`}
+          >
+            Stress Rings
+          </button>
+          <button
+            onClick={() => setShowStands(!showStands)}
+            className={`px-2.5 py-1 rounded-lg text-[10px] font-mono transition border ${
+              showStands
+                ? 'bg-cyan-500/20 text-cyan-400 border-cyan-500/40 font-bold'
+                : theme === 'dark'
+                  ? 'bg-slate-950 border-slate-800 text-slate-500'
+                  : 'bg-slate-100 border-slate-200 text-slate-500'
+            }`}
+          >
+            Feeder Stands
+          </button>
+          <button
+            onClick={() => setShowVehicles(!showVehicles)}
+            className={`px-2.5 py-1 rounded-lg text-[10px] font-mono transition border ${
+              showVehicles
+                ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40 font-bold'
+                : theme === 'dark'
+                  ? 'bg-slate-950 border-slate-800 text-slate-500'
+                  : 'bg-slate-100 border-slate-200 text-slate-500'
+            }`}
+          >
+            Active Fleet
+          </button>
         </div>
       </div>
     </div>
