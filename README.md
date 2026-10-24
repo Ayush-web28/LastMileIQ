@@ -5,10 +5,11 @@
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-38B2AC?style=flat&logo=tailwind-css)](https://tailwindcss.com/)
 [![Leaflet](https://img.shields.io/badge/Leaflet-1.9.4-199900?style=flat&logo=leaflet)](https://leafletjs.com/)
 [![ONDC Enabled](https://img.shields.io/badge/ONDC-Open%20Mobility-10B981?style=flat)](https://ondc.org/)
+[![Template Reference](https://img.shields.io/badge/Template-Bionis%20Dashboard-8B5CF6?style=flat)](https://registry.watermelon.sh/r/bionis-dashboard.json)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 > **"The Operating System for Mumbai's Last-Mile Mobility"**  
-> AI-powered spatio-temporal transit intelligence platform tackling the 1–5 km last-mile transit crisis across high-density Mumbai Metro and Suburban Railway networks.
+> AI-powered spatio-temporal transit intelligence platform tackling the 1–5 km last-mile transit crisis across Mumbai Metro and Suburban Railway networks. Built on the modern Bionis Dashboard layout architecture.
 
 ---
 
@@ -38,15 +39,38 @@ LastMileIQ is exclusively configured for Mumbai's transit corridors:
 6. **Metro Line 6 (Pink Line)**: Swami Samarth Nagar (Lokhandwala) – JVLR – IIT Bombay Powai – Vikhroli EEH
 
 ### 🚆 The 3 Mumbai Suburban Local Lines (Distinct Dot Colors in Dropdown)
-7. **Western Railway Local (WR)**: Churchgate – Dadar WR – Bandra – Andheri – Borivali *(Vibrant Crimson Red)*
-8. **Central Railway Local (CR)**: CSMT – Byculla – Dadar CR – Kurla – Ghatkopar – Thane *(Electric Amber / Gold)*
-9. **Harbour Railway Local (HR)**: CSMT – Vadala Road – Kurla Harbour – Vashi – Panvel *(Royal Purple)*
+7. **Western Railway Local (WR)**: Churchgate – Dadar WR – Bandra – Andheri – Borivali *(Vibrant Crimson Red `#EF4444`)*
+8. **Central Railway Local (CR)**: CSMT – Byculla – Dadar CR – Kurla – Ghatkopar – Thane *(Electric Golden Amber `#F59E0B`)*
+9. **Harbour Railway Local (HR)**: CSMT – Vadala Road – Kurla Harbour – Vashi – Panvel *(Royal Purple `#8B5CF6`)*
 
 ---
 
-## 3. Account-Driven Multi-Stakeholder System
+## 3. Bionis Dashboard Template Architecture
 
-Rather than cluttered tab filters, LastMileIQ uses a realistic, executive **Account & Role Profile Switcher** located in the top-right of the navigation bar:
+Adopted from the clean, modern Bionis layout reference (`https://registry.watermelon.sh/r/bionis-dashboard.json`):
+
+- **Collapsible Modern Sidebar (`src/components/bionis/Sidebar.jsx`)**:
+  - Brand identity with live Mumbai transit pulse
+  - Categorized corridor selector dropdown with distinct color dots
+  - Navigation links: Live Dispatch, Geospatial Map, Fleet Analytics, City Planning, Commuter ONDC
+  - Account Profile Card with 1-click Role Switcher at the bottom
+- **Streamlined Topbar (`src/components/bionis/Topbar.jsx`)**:
+  - Sidebar collapse toggle
+  - Active line breadcrumbs and station count badge
+  - Quick Scenario Stress Injection pills (🌧️ Monsoon, 🚆 Local Rush, ⚡ Charging Shift)
+  - Active account persona indicator
+  - **Zero clutter**: No time box, no command view button
+- **Refined KPI Cards (`src/components/bionis/DashboardMetrics.jsx`)**:
+  - Fleet Utilization Rate (+14.2% trend)
+  - Avg Commuter Wait Time (-74% drop)
+  - Dead-Mileage Cut (-34% eliminated)
+  - Revenue Uplift (+₹420 / day per vehicle)
+
+---
+
+## 4. Account-Driven Multi-Stakeholder System
+
+Rather than cluttered tab filters, LastMileIQ uses a realistic, executive **Account & Role Profile Switcher** located in the sidebar & topbar:
 
 1. **Rohan Mehta (B2B Fleet Operator)**  
    *Apex Mobility / Maha-EV Feeder Syndicate*  
@@ -60,7 +84,7 @@ Rather than cluttered tab filters, LastMileIQ uses a realistic, executive **Acco
 
 ---
 
-## 4. Self-Contained Architecture (Zero API Keys)
+## 5. Self-Contained Architecture (Zero API Keys)
 
 > **Important**: LastMileIQ runs **100% locally with zero external API key requirements**.
 - **Maps**: Uses CartoDB Dark Matter tiles via OpenStreetMap standards (`https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png`), which do not require any tokens or API keys.
@@ -68,7 +92,7 @@ Rather than cluttered tab filters, LastMileIQ uses a realistic, executive **Acco
 
 ---
 
-## 5. Quickstart & Local Installation
+## 6. Quickstart & Local Installation
 
 ```bash
 # 1. Clone repository
@@ -84,22 +108,6 @@ npm run dev
 # 4. Build production bundle
 npm run build
 ```
-
----
-
-## 6. Project Authors & Git Commit Sequence
-
-Strictly structured sequential roadmap:
-1. `Akshat Vidyarthi <akshatvidyarthi@gmail.com>`
-2. `Ayush Trivedi <ayush.ct0406@gmail.com>`
-3. `Harsh Thakkar <harsht1103@gmail.com>`
-4. `Akshat Vidyarthi <akshatvidyarthi@gmail.com>`
-5. `Ayush Trivedi <ayush.ct0406@gmail.com>`
-6. `Harsh Thakkar <harsht1103@gmail.com>`
-7. `Akshat Vidyarthi <akshatvidyarthi@gmail.com>`
-8. `Ayush Trivedi <ayush.ct0406@gmail.com>`
-9. `Harsh Thakkar <harsht1103@gmail.com>`
-10. `Akshat Vidyarthi <akshatvidyarthi@gmail.com>`
 
 ---
 
