@@ -3,42 +3,28 @@ import HeroCanvas from './HeroCanvas';
 import { 
   Zap, 
   ArrowRight, 
-  TrendingUp, 
-  Clock, 
-  Sparkles,
-  MapPin, 
-  Building2,
-  Smartphone
+  Sparkles
 } from 'lucide-react';
 
-export default function Hero({ 
-  onLaunchDashboard, 
-  currentCorridor, 
-  setCorridor, 
-  corridors,
-  onSelectMode 
-}) {
-  const metroLines = Object.entries(corridors).filter(([_, item]) => item.category === 'metro');
-  const localLines = Object.entries(corridors).filter(([_, item]) => item.category === 'local');
-
+export default function Hero({ onLaunchDashboard }) {
   return (
-    <div className="relative min-h-[78vh] flex flex-col justify-center items-center overflow-hidden px-4 sm:px-6 lg:px-8 pt-8 pb-14">
+    <div className="relative min-h-[65vh] flex flex-col justify-center items-center overflow-hidden px-4 sm:px-6 lg:px-8 pt-8 pb-12">
       {/* Dynamic Transit Flow Canvas Background */}
       <HeroCanvas />
 
       {/* Main Content Container */}
-      <div className="relative z-10 max-w-5xl mx-auto text-center flex flex-col items-center">
+      <div className="relative z-10 max-w-4xl mx-auto text-center flex flex-col items-center">
         
         {/* Top Intelligence Badge */}
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-emerald-500/30 text-emerald-400 text-xs font-mono tracking-wide mb-6 backdrop-blur-md">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/90 border border-emerald-500/30 text-emerald-400 text-xs font-mono tracking-wide mb-6 backdrop-blur-md">
           <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
-          <span>MUMBAI PUBLIC TRANSIT ACTIVE</span>
+          <span>MUMBAI PUBLIC TRANSIT OS</span>
           <span className="text-slate-600">•</span>
-          <span className="text-slate-300">6 METRO LINES & 3 SUBURBAN LOCAL LINES</span>
+          <span className="text-slate-300">6 METRO LINES & 3 LOCAL LINES</span>
         </div>
 
         {/* Primary Cinematic Headline */}
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white max-w-4xl leading-[1.15]">
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white max-w-3xl leading-[1.15]">
           Dynamic Last-Mile Dispatch for{' '}
           <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
             Mumbai Transit
@@ -71,88 +57,15 @@ export default function Hero({
           </div>
         </div>
 
-        {/* Quick Mumbai Corridor Selector Chips */}
-        <div className="mt-8 w-full max-w-3xl space-y-3">
-          
-          {/* Metro Lines */}
-          <div className="flex flex-wrap items-center justify-center gap-2">
-            <span className="text-[11px] font-mono text-cyan-400 font-bold uppercase mr-1">
-              🚇 Metro:
-            </span>
-            {metroLines.map(([key, item]) => {
-              const isActive = currentCorridor === key;
-              return (
-                <button
-                  key={key}
-                  onClick={() => setCorridor(key)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition ${
-                    isActive
-                      ? 'bg-emerald-500/20 border border-emerald-500 text-emerald-300 font-semibold shadow-sm'
-                      : 'bg-slate-900/70 border border-slate-800 text-slate-400 hover:text-slate-200'
-                  }`}
-                >
-                  {item.lineCode}: {item.shortName.replace(/Metro \w+: /, '')}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Suburban Local Lines */}
-          <div className="flex flex-wrap items-center justify-center gap-2">
-            <span className="text-[11px] font-mono text-emerald-400 font-bold uppercase mr-1">
-              🚆 Local:
-            </span>
-            {localLines.map(([key, item]) => {
-              const isActive = currentCorridor === key;
-              return (
-                <button
-                  key={key}
-                  onClick={() => setCorridor(key)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition ${
-                    isActive
-                      ? 'bg-emerald-500/20 border border-emerald-500 text-emerald-300 font-semibold shadow-sm'
-                      : 'bg-slate-900/70 border border-slate-800 text-slate-400 hover:text-slate-200'
-                  }`}
-                >
-                  {item.name.split(':')[0]}
-                </button>
-              );
-            })}
-          </div>
-
-        </div>
-
-        {/* Action Buttons */}
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+        {/* Single Primary Action Button */}
+        <div className="mt-8">
           <button
             onClick={onLaunchDashboard}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm tracking-wide shadow-lg shadow-emerald-500/20 transition active:scale-95"
+            className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm tracking-wide shadow-lg shadow-emerald-500/25 transition active:scale-95 cursor-pointer"
           >
             <Zap className="w-4 h-4 fill-slate-950" />
             <span>Launch Live Dispatch Console</span>
             <ArrowRight className="w-4 h-4" />
-          </button>
-
-          <button
-            onClick={() => {
-              onSelectMode('planner');
-              onLaunchDashboard();
-            }}
-            className="inline-flex items-center gap-1.5 px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 hover:border-cyan-500/50 text-slate-300 text-xs font-semibold transition"
-          >
-            <Building2 className="w-3.5 h-3.5 text-cyan-400" />
-            <span>City Planner Heatmaps</span>
-          </button>
-
-          <button
-            onClick={() => {
-              onSelectMode('commuter');
-              onLaunchDashboard();
-            }}
-            className="inline-flex items-center gap-1.5 px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 hover:border-amber-500/50 text-slate-300 text-xs font-semibold transition"
-          >
-            <Smartphone className="w-3.5 h-3.5 text-amber-400" />
-            <span>Commuter ONDC View</span>
           </button>
         </div>
 
