@@ -202,10 +202,64 @@ export function SimulationProvider({ children }) {
     'stn-hr-pnv': 240,
   });
 
-  // Dynamic dispatch history with Mumbai license plates
+  // Persistent Geospatial Map Filters across tab switches
+  const [mapFilters, setMapFilters] = useState({
+    mapType: 'roadmap',       // 'roadmap' | 'satellite'
+    showHeatRings: true,      // Stress Rings
+    showStands: true,         // Feeder Stands
+    showVehicles: true,       // Active Fleet
+    showTransitTrack: true,   // Corridor Line
+  });
+
+  const toggleMapFilter = useCallback((key) => {
+    setMapFilters((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
+  }, []);
+
+  const setMapType = useCallback((type) => {
+    setMapFilters((prev) => ({
+      ...prev,
+      mapType: type,
+    }));
+  }, []);
+
+  // Dynamic dispatch history with Mumbai license plates and 3 pure lifecycle states:
+  // 'Dispatched' (initially) -> 'En Route' (after brief transit) -> 'Arrived' (at concourse gate)
   const [dispatchEvents, setDispatchEvents] = useState([
     {
       id: 'disp-001',
+      plate: 'MH-02-EV-8829',
+      driverName: 'Vinod Ghorpade',
+      rating: 4.85,
+      batteryPct: 75,
+      vehicleType: 'EV Feeder Auto',
+      fromStand: 'Ghatkopar Station East Hub',
+      toGate: 'Gate 1 (LBS Marg Concourse)',
+      stationName: 'Ghatkopar (Interchange with CR Local)',
+      timeAgo: 'Just now',
+      status: 'Dispatched',
+      createdAt: Date.now() - 2000,
+      surgeFare: '₹30 flat ONDC',
+    },
+    {
+      id: 'disp-002',
+      plate: 'MH-02-EV-1822',
+      driverName: 'Arun Jadhav',
+      rating: 4.81,
+      batteryPct: 76,
+      vehicleType: 'EV Feeder Auto',
+      fromStand: 'Ghatkopar Station East Hub',
+      toGate: 'Gate 2 (Pant Nagar)',
+      stationName: 'Ghatkopar (Interchange with CR Local)',
+      timeAgo: 'Just now',
+      status: 'Dispatched',
+      createdAt: Date.now() - 4000,
+      surgeFare: '₹30 flat ONDC',
+    },
+    {
+      id: 'disp-003',
       plate: 'MH-02-ER-3421',
       driverName: 'Ramesh Powar',
       rating: 4.88,
@@ -214,12 +268,13 @@ export function SimulationProvider({ children }) {
       fromStand: 'Andheri West Syndicate Stand',
       toGate: 'Gate 2 (SV Road West)',
       stationName: 'Andheri (Interchange with WR Local)',
-      timeAgo: 'Just now',
+      timeAgo: '1m ago',
       status: 'En Route',
+      createdAt: Date.now() - 14000,
       surgeFare: '₹35 flat fixed ONDC',
     },
     {
-      id: 'disp-002',
+      id: 'disp-004',
       plate: 'MH-03-EB-9104',
       driverName: 'Ganesh Shinde',
       rating: 4.92,
@@ -228,12 +283,13 @@ export function SimulationProvider({ children }) {
       fromStand: 'Ghatkopar Station East Hub',
       toGate: 'Gate 1 (LBS Marg Concourse)',
       stationName: 'Ghatkopar (Interchange with CR Local)',
-      timeAgo: '1m ago',
-      status: 'Arriving Gate',
+      timeAgo: '3m ago',
+      status: 'Arrived',
+      createdAt: Date.now() - 38000,
       surgeFare: '₹20 feeder hop',
     },
     {
-      id: 'disp-003',
+      id: 'disp-005',
       plate: 'MH-01-AR-5582',
       driverName: 'Sanjay Jadhav',
       rating: 4.79,
@@ -242,11 +298,69 @@ export function SimulationProvider({ children }) {
       fromStand: 'D.N. Nagar Metro Bay',
       toGate: 'Gate 1 (Link Road West)',
       stationName: 'D.N. Nagar (Interchange with Line 2A)',
-      timeAgo: '3m ago',
-      status: 'Boarding Commuters',
+      timeAgo: '5m ago',
+      status: 'Arrived',
+      createdAt: Date.now() - 65000,
       surgeFare: '₹30 metered',
     },
   ]);
+
+  // Automated dispatch lifecycle ticker:
+  // Dispatched -> En Route (after ~8-10s) -> Arrived (after ~22-25s)
+  useEffect(() => {
+    const lifecycleInterval = setInterval(() => {
+      setDispatchEvents((prevEvents) => {
+        let hasChanges = false;
+        const now = Date.now();
+        const updated = prevEvents.map((event) => {
+          const createdAt = event.createdAt || now;
+          const elapsedSec = (now - createdAt) / 1000;
+
+          if (event.status === 'Dispatched' && elapsedSec >= 9) {
+            hasChanges = true;
+            return {
+              ...event,
+              status: 'En Route',
+              timeAgo: 'En route to gate',
+            };
+          } else if (event.status === 'En Route' && elapsedSec >= 24) {
+            hasChanges = true;
+            return {
+              ...event,
+              status: 'Arrived',
+              timeAgo: 'Arrived at concourse',
+            };
+          }
+          return event;
+        });
+
+        return hasChanges ? updated : prevEvents;
+      });
+    }, 1500);
+
+    return () => clearInterval(lifecycleInterval);
+  }, []);
+
+  // Telematics Ping Action: sends gate bay assignment, chirps audio, and progresses status
+  const pingConcourseGate = useCallback((driverId) => {
+    soundFx.dispatchPing();
+    setDispatchEvents((prev) =>
+      prev.map((d) => {
+        if (d.id === driverId) {
+          // If vehicle was Dispatched, pinging accelerates transit to En Route
+          const nextStatus = d.status === 'Dispatched' ? 'En Route' : d.status;
+          return {
+            ...d,
+            status: nextStatus,
+            timeAgo: nextStatus === 'En Route' ? 'En route to gate' : d.timeAgo,
+            createdAt: nextStatus === 'En Route' && d.status === 'Dispatched' ? Date.now() - 10000 : d.createdAt,
+            lastPinged: Date.now(),
+          };
+        }
+        return d;
+      })
+    );
+  }, []);
 
   const [activeToast, setActiveToast] = useState(null);
 
@@ -425,7 +539,8 @@ export function SimulationProvider({ children }) {
       toGate: stn.highDeficitGate.gateName,
       stationName: stn.name,
       timeAgo: 'Just now',
-      status: 'Dispatched (Priority Surge)',
+      status: 'Dispatched',
+      createdAt: Date.now(),
       surgeFare: '₹30 flat ONDC',
     };
 
@@ -478,6 +593,10 @@ export function SimulationProvider({ children }) {
         corridorTelemetry,
         dispatchEvents,
         executeAutoDispatch,
+        pingConcourseGate,
+        mapFilters,
+        toggleMapFilter,
+        setMapType,
         activeToast,
       }}
     >

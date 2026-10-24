@@ -12,7 +12,7 @@ import {
   Navigation
 } from 'lucide-react';
 
-export default function CommandCenterMap({ className = '' }) {
+export default function CommandCenterMap({ className = '', isVisible = true }) {
   const mapContainerRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const tileLayerRef = useRef(null);
@@ -32,15 +32,35 @@ export default function CommandCenterMap({ className = '' }) {
     setSelectedStationId,
     dispatchEvents,
     executeAutoDispatch,
+    mapFilters,
+    toggleMapFilter,
+    setMapType,
   } = useSimulation();
 
-  // Layer Visibility Toggles
-  const [showHeatRings, setShowHeatRings] = useState(true);
-  const [showStands, setShowStands] = useState(true);
-  const [showVehicles, setShowVehicles] = useState(true);
-  const [showTransitTrack, setShowTransitTrack] = useState(true);
-  const [mapType, setMapType] = useState('roadmap'); // 'roadmap' | 'satellite'
+  // Persistent Layer & Map Type Filters from SimulationContext
+  const { 
+    mapType = 'roadmap', 
+    showHeatRings = true, 
+    showStands = true, 
+    showVehicles = true, 
+    showTransitTrack = true 
+  } = mapFilters || {};
+
   const [stationMenuOpen, setStationMenuOpen] = useState(false);
+
+  // Invalidate Leaflet map size when tab visibility switches to active
+  useEffect(() => {
+    if (isVisible && mapInstanceRef.current) {
+      const timer = setTimeout(() => {
+        try {
+          mapInstanceRef.current.invalidateSize();
+        } catch {
+          // ignore
+        }
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [isVisible]);
 
   // Close station dropup on outside click
   useEffect(() => {
@@ -572,7 +592,7 @@ export default function CommandCenterMap({ className = '' }) {
             Layers:
           </span>
           <button
-            onClick={() => setShowHeatRings(!showHeatRings)}
+            onClick={() => toggleMapFilter('showHeatRings')}
             className={`px-2.5 py-1 rounded-lg text-[10px] font-mono transition border ${
               showHeatRings
                 ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40 font-bold'
@@ -584,7 +604,7 @@ export default function CommandCenterMap({ className = '' }) {
             Stress Rings
           </button>
           <button
-            onClick={() => setShowStands(!showStands)}
+            onClick={() => toggleMapFilter('showStands')}
             className={`px-2.5 py-1 rounded-lg text-[10px] font-mono transition border ${
               showStands
                 ? 'bg-cyan-500/20 text-cyan-400 border-cyan-500/40 font-bold'
@@ -596,7 +616,7 @@ export default function CommandCenterMap({ className = '' }) {
             Feeder Stands
           </button>
           <button
-            onClick={() => setShowVehicles(!showVehicles)}
+            onClick={() => toggleMapFilter('showVehicles')}
             className={`px-2.5 py-1 rounded-lg text-[10px] font-mono transition border ${
               showVehicles
                 ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40 font-bold'

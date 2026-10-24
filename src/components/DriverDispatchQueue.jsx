@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 
 export default function DriverDispatchQueue() {
-  const { theme, dispatchEvents } = useSimulation();
+  const { theme, dispatchEvents, pingConcourseGate } = useSimulation();
   const [filterType, setFilterType] = useState('ALL');
   const [pingedDriverId, setPingedDriverId] = useState(null);
 
@@ -23,6 +23,9 @@ export default function DriverDispatchQueue() {
 
   const handlePingDriver = (id) => {
     setPingedDriverId(id);
+    if (pingConcourseGate) {
+      pingConcourseGate(id);
+    }
     setTimeout(() => {
       setPingedDriverId(null);
     }, 2200);
@@ -129,15 +132,24 @@ export default function DriverDispatchQueue() {
                 </div>
               </div>
 
-              <div className={`text-[11px] font-mono flex items-center justify-between pt-2 border-t ${
+              <div className={`text-[11px] font-mono flex items-center justify-between pt-2 border-t gap-2 ${
                 theme === 'dark' ? 'border-slate-800 text-slate-300' : 'border-slate-200 text-slate-600'
               }`}>
-                <span className="truncate">{driver.stationName}</span>
-                <span className="text-emerald-500 font-bold shrink-0">{driver.status || 'Dispatched'}</span>
+                <span className="truncate" title={driver.stationName}>{driver.stationName}</span>
+                <span className={`px-2 py-0.5 rounded text-[10px] font-bold shrink-0 border ${
+                  driver.status === 'Dispatched'
+                    ? 'bg-amber-500/15 text-amber-400 border-amber-500/30'
+                    : driver.status === 'En Route'
+                      ? 'bg-cyan-500/15 text-cyan-400 border-cyan-500/30'
+                      : 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
+                }`}>
+                  {driver.status || 'Dispatched'}
+                </span>
               </div>
 
               <button
                 onClick={() => handlePingDriver(driver.id)}
+                title="Broadcasts telematics dispatch ping to driver terminal and concourse gate beacon"
                 className={`w-full py-1.5 rounded-lg border text-xs font-mono font-semibold transition flex items-center justify-center gap-1.5 ${
                   isPinged
                     ? 'bg-emerald-500 text-slate-950 border-emerald-400 font-bold'
