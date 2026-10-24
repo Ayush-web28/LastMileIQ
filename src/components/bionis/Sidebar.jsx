@@ -13,9 +13,7 @@ import {
   ShieldCheck,
   ChevronRight,
   Sparkles,
-  Layers,
-  ArrowRight,
-  ArrowLeft
+  Layers
 } from 'lucide-react';
 
 export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsCollapsed, corridors }) {
@@ -181,36 +179,29 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
           </button>
         </div>
 
-        {/* Selected Line Display with Category Switcher Arrow */}
+        {/* Selected Line Display with Small Inline Arrow Switcher */}
         {!isCollapsed && (
           <div className="relative" ref={corridorRef}>
-            <div className="flex items-center justify-between mb-1.5">
-              <span className={`text-[10px] font-mono uppercase tracking-wider font-bold ${
-                theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
-              }`}>
-                Active Transit Corridor:
-              </span>
-              <span className={`text-[9px] font-mono font-bold px-1.5 py-0.2 rounded border ${
-                corridorCategory === 'metro'
-                  ? 'bg-sky-500/15 text-sky-400 border-sky-500/30'
-                  : 'bg-amber-500/15 text-amber-400 border-amber-500/30'
-              }`}>
-                {corridorCategory === 'metro' ? 'Metro Lines' : 'Suburban Local'}
-              </span>
+            <div className={`text-[10px] font-mono uppercase tracking-wider mb-1 font-bold ${
+              theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
+            }`}>
+              Active Transit Corridor:
             </div>
 
-            <div className="flex items-center gap-2">
-              {/* Dropdown Box for Current Category (Metro or Local) */}
+            {/* Single Unified Container */}
+            <div className={`flex items-center justify-between p-2.5 rounded-xl border transition shadow-md ${
+              theme === 'dark'
+                ? 'bg-[#111C38] border-[#1E2F5B]'
+                : 'bg-slate-50 border-slate-200'
+            }`}>
+              {/* Clickable Line Dropdown Trigger */}
               <button
+                type="button"
                 onClick={() => setCorridorMenuOpen(!corridorMenuOpen)}
-                className={`flex-1 min-w-0 flex items-center justify-between p-2.5 rounded-xl border transition text-left text-xs shadow-md ${
-                  theme === 'dark'
-                    ? 'bg-[#111C38] border-[#1E2F5B] hover:border-sky-500/60 hover:bg-[#162347]'
-                    : 'bg-slate-50 border-slate-200 hover:border-sky-500/60 hover:bg-slate-100'
-                }`}
-                title={`Click to choose from ${corridorCategory === 'metro' ? 'Mumbai Metro Lines' : 'Mumbai Suburban Local Lines'}`}
+                className="flex-1 flex items-center justify-between min-w-0 pr-2 text-left cursor-pointer group"
+                title={`Click to open ${corridorCategory === 'metro' ? 'Metro Lines' : 'Suburban Local Lines'} dropdown`}
               >
-                <div className="flex items-center gap-2 min-w-0">
+                <div className="flex items-center gap-2.5 min-w-0">
                   <span 
                     className="w-3.5 h-3.5 rounded-full shrink-0 shadow-md ring-2 ring-white/20" 
                     style={{ backgroundColor: activeCorridor.color }} 
@@ -231,45 +222,37 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
                     <span className={`text-[10px] block ${
                       theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
                     }`}>
-                      {activeCorridor.stationsCount} Stns • {activeCorridor.lengthKm} km
+                      {activeCorridor.stationsCount} Stations • {activeCorridor.lengthKm} km
                     </span>
                   </div>
                 </div>
 
-                <ChevronDown className={`w-4 h-4 shrink-0 transition-transform duration-200 ml-1 ${
+                <ChevronDown className={`w-3.5 h-3.5 shrink-0 transition-transform duration-200 ml-1.5 ${
                   corridorMenuOpen ? 'rotate-180' : ''
-                } ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`} />
+                } ${theme === 'dark' ? 'text-slate-400 group-hover:text-white' : 'text-slate-500 group-hover:text-slate-900'}`} />
               </button>
 
-              {/* Arrow Button to Switch between Metro Lines and Local Lines dropdown */}
+              {/* Vertical Separator */}
+              <div className={`h-8 w-px shrink-0 mx-1 ${
+                theme === 'dark' ? 'bg-[#1E2F5B]' : 'bg-slate-200'
+              }`} />
+
+              {/* Really small arrow inside container, pointing in the same side (ChevronRight >), zero text labels */}
               <button
-                onClick={toggleCorridorCategory}
-                className={`p-2 h-[58px] w-12 rounded-xl border transition flex flex-col items-center justify-center gap-0.5 shrink-0 shadow-md group ${
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleCorridorCategory();
+                }}
+                className={`p-1.5 rounded-lg border transition shrink-0 flex items-center justify-center ${
                   theme === 'dark'
-                    ? corridorCategory === 'metro'
-                      ? 'bg-[#111C38] border-[#1E2F5B] hover:border-amber-400 text-amber-400 hover:bg-[#162347]'
-                      : 'bg-[#111C38] border-[#1E2F5B] hover:border-sky-400 text-sky-400 hover:bg-[#162347]'
-                    : corridorCategory === 'metro'
-                      ? 'bg-slate-50 border-slate-200 hover:border-amber-500 text-amber-600 hover:bg-slate-100'
-                      : 'bg-slate-50 border-slate-200 hover:border-sky-500 text-sky-600 hover:bg-slate-100'
+                    ? 'border-transparent hover:border-[#1E2F5B] hover:bg-[#162347] text-slate-400 hover:text-amber-400'
+                    : 'border-transparent hover:border-slate-300 hover:bg-slate-100 text-slate-500 hover:text-amber-600'
                 }`}
-                title={
-                  corridorCategory === 'metro'
-                    ? 'Switch to Mumbai Suburban Local Lines dropdown'
-                    : 'Switch to Mumbai Metro Lines dropdown'
-                }
+                title={corridorCategory === 'metro' ? 'Switch to Suburban Local Lines dropdown' : 'Switch to Metro Lines dropdown'}
+                aria-label="Switch transit corridor mode"
               >
-                {corridorCategory === 'metro' ? (
-                  <>
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                    <span className="text-[8px] font-mono font-black uppercase tracking-tight">Local</span>
-                  </>
-                ) : (
-                  <>
-                    <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
-                    <span className="text-[8px] font-mono font-black uppercase tracking-tight">Metro</span>
-                  </>
-                )}
+                <ChevronRight className="w-4 h-4 transition-transform active:scale-90" />
               </button>
             </div>
 
