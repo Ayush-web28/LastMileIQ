@@ -171,9 +171,9 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
             title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
           >
             {theme === 'dark' ? (
-              <Sun className="w-3.5 h-3.5" />
-            ) : (
               <Moon className="w-3.5 h-3.5" />
+            ) : (
+              <Sun className="w-3.5 h-3.5" />
             )}
           </button>
         </div>
