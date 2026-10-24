@@ -12,6 +12,7 @@ import {
   Moon,
   ShieldCheck,
   ChevronRight,
+  ChevronLeft,
   Sparkles,
   Layers
 } from 'lucide-react';
@@ -189,37 +190,55 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
             </div>
 
             {/* Single Unified Container */}
-            <div className={`flex items-center justify-between p-2.5 rounded-xl border transition shadow-md ${
+            <div className={`flex items-center justify-between p-2 rounded-xl border transition shadow-md gap-1 ${
               theme === 'dark'
                 ? 'bg-[#111C38] border-[#1E2F5B]'
                 : 'bg-slate-50 border-slate-200'
             }`}>
+              {/* Left Arrow Button (switches between metro & local, minimal space) */}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleCorridorCategory();
+                }}
+                className={`p-1 rounded-md transition shrink-0 flex items-center justify-center ${
+                  theme === 'dark'
+                    ? 'text-slate-400 hover:text-amber-400 hover:bg-[#162347]'
+                    : 'text-slate-500 hover:text-amber-600 hover:bg-slate-100'
+                }`}
+                title={corridorCategory === 'metro' ? 'Switch to Suburban Local Lines' : 'Switch to Metro Lines'}
+                aria-label="Previous transit mode"
+              >
+                <ChevronLeft className="w-3.5 h-3.5" />
+              </button>
+
               {/* Clickable Line Dropdown Trigger */}
               <button
                 type="button"
                 onClick={() => setCorridorMenuOpen(!corridorMenuOpen)}
-                className="flex-1 flex items-center justify-between min-w-0 pr-2 text-left cursor-pointer group"
+                className="flex-1 flex items-center justify-between min-w-0 px-1 text-left cursor-pointer group"
                 title={`Click to open ${corridorCategory === 'metro' ? 'Metro Lines' : 'Suburban Local Lines'} dropdown`}
               >
-                <div className="flex items-center gap-2.5 min-w-0">
+                <div className="flex items-center gap-2 min-w-0 flex-1">
                   <span 
-                    className="w-3.5 h-3.5 rounded-full shrink-0 shadow-md ring-2 ring-white/20" 
+                    className="w-3 h-3 rounded-full shrink-0 shadow-md ring-2 ring-white/20 mt-0.5" 
                     style={{ backgroundColor: activeCorridor.color }} 
                   />
-                  <div className="truncate min-w-0">
-                    <span className={`text-[9px] font-mono font-bold block uppercase tracking-wide ${
+                  <div className="min-w-0 flex-1">
+                    <span className={`text-[9px] font-mono font-bold block uppercase tracking-wide leading-none mb-0.5 ${
                       corridorCategory === 'metro'
                         ? (theme === 'dark' ? 'text-sky-400' : 'text-sky-700')
                         : (theme === 'dark' ? 'text-amber-400' : 'text-amber-700')
                     }`}>
                       {corridorCategory === 'metro' ? 'Metro Line' : 'Suburban Local'}
                     </span>
-                    <span className={`font-black text-xs truncate block ${
+                    <span className={`font-black text-xs leading-tight block break-words ${
                       theme === 'dark' ? 'text-white' : 'text-slate-900'
                     }`}>
                       {activeCorridor.shortName}
                     </span>
-                    <span className={`text-[10px] block ${
+                    <span className={`text-[10px] block leading-tight mt-0.5 ${
                       theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
                     }`}>
                       {activeCorridor.stationsCount} Stations • {activeCorridor.lengthKm} km
@@ -227,32 +246,27 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
                   </div>
                 </div>
 
-                <ChevronDown className={`w-3.5 h-3.5 shrink-0 transition-transform duration-200 ml-1.5 ${
+                <ChevronDown className={`w-3.5 h-3.5 shrink-0 transition-transform duration-200 ml-1 ${
                   corridorMenuOpen ? 'rotate-180' : ''
                 } ${theme === 'dark' ? 'text-slate-400 group-hover:text-white' : 'text-slate-500 group-hover:text-slate-900'}`} />
               </button>
 
-              {/* Vertical Separator */}
-              <div className={`h-8 w-px shrink-0 mx-1 ${
-                theme === 'dark' ? 'bg-[#1E2F5B]' : 'bg-slate-200'
-              }`} />
-
-              {/* Really small arrow inside container, pointing in the same side (ChevronRight >), zero text labels */}
+              {/* Right Arrow Button (switches between metro & local, minimal space) */}
               <button
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
                   toggleCorridorCategory();
                 }}
-                className={`p-1.5 rounded-lg border transition shrink-0 flex items-center justify-center ${
+                className={`p-1 rounded-md transition shrink-0 flex items-center justify-center ${
                   theme === 'dark'
-                    ? 'border-transparent hover:border-[#1E2F5B] hover:bg-[#162347] text-slate-400 hover:text-amber-400'
-                    : 'border-transparent hover:border-slate-300 hover:bg-slate-100 text-slate-500 hover:text-amber-600'
+                    ? 'text-slate-400 hover:text-amber-400 hover:bg-[#162347]'
+                    : 'text-slate-500 hover:text-amber-600 hover:bg-slate-100'
                 }`}
-                title={corridorCategory === 'metro' ? 'Switch to Suburban Local Lines dropdown' : 'Switch to Metro Lines dropdown'}
-                aria-label="Switch transit corridor mode"
+                title={corridorCategory === 'metro' ? 'Switch to Suburban Local Lines' : 'Switch to Metro Lines'}
+                aria-label="Next transit mode"
               >
-                <ChevronRight className="w-4 h-4 transition-transform active:scale-90" />
+                <ChevronRight className="w-3.5 h-3.5" />
               </button>
             </div>
 
@@ -265,13 +279,10 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
               }`}>
                 {corridorCategory === 'metro' ? (
                   <>
-                    {/* 6 Metro Lines Dropdown Options */}
-                    <div className="flex items-center justify-between px-2.5 py-1 mb-1">
-                      <span className="text-[10px] font-mono text-sky-400 uppercase tracking-wider font-bold">
+                    {/* 6 Metro Lines Dropdown Header: Full Width, No 'All Lines' */}
+                    <div className="px-2.5 py-1.5 mb-1 border-b border-[#1E2F5B]/50">
+                      <span className="text-[10px] font-mono text-sky-400 uppercase tracking-wider font-bold block w-full">
                         🚇 Mumbai Metro (6 Lines)
-                      </span>
-                      <span className={`text-[9px] font-mono ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
-                        All Lines
                       </span>
                     </div>
                     {metroLines.map(([key, item]) => {
@@ -295,7 +306,7 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
                         >
                           <span className="w-3 h-3 rounded-full mt-0.5 shrink-0 shadow-sm" style={{ backgroundColor: item.color }} />
                           <div className="min-w-0 flex-1">
-                            <div className="font-bold truncate">{item.shortName || item.name}</div>
+                            <div className="font-bold text-xs break-words">{item.shortName || item.name}</div>
                             <div className={`text-[10px] ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
                               {item.stationsCount} Stations • {item.lengthKm} km
                             </div>
@@ -307,13 +318,10 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
                   </>
                 ) : (
                   <>
-                    {/* 3 Suburban Local Lines Dropdown Options */}
-                    <div className="flex items-center justify-between px-2.5 py-1 mb-1">
-                      <span className="text-[10px] font-mono text-amber-400 uppercase tracking-wider font-bold">
+                    {/* 3 Suburban Local Lines Dropdown Header: Full Width, No 'All Lines' */}
+                    <div className="px-2.5 py-1.5 mb-1 border-b border-[#1E2F5B]/50">
+                      <span className="text-[10px] font-mono text-amber-400 uppercase tracking-wider font-bold block w-full">
                         🚆 Mumbai Suburban Local (3 Lines)
-                      </span>
-                      <span className={`text-[9px] font-mono ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
-                        All Lines
                       </span>
                     </div>
                     {localLines.map(([key, item]) => {
@@ -337,7 +345,7 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
                         >
                           <span className="w-3 h-3 rounded-full mt-0.5 shrink-0 shadow-md ring-1 ring-white/30" style={{ backgroundColor: item.color }} />
                           <div className="min-w-0 flex-1">
-                            <div className="font-bold truncate">{item.shortName || item.name}</div>
+                            <div className="font-bold text-xs break-words">{item.shortName || item.name}</div>
                             <div className={`text-[10px] ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
                               {item.stationsCount} Stations • {item.lengthKm} km
                             </div>
