@@ -12,7 +12,7 @@ import {
   Compass
 } from 'lucide-react';
 
-export default function CommandCenterMap() {
+export default function CommandCenterMap({ className = '' }) {
   const mapContainerRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const tileLayerRef = useRef(null);
@@ -357,8 +357,20 @@ export default function CommandCenterMap() {
     mapType,
   ]);
 
+  // Invalidate map size on view or dimension updates
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.invalidateSize();
+      }
+    }, 150);
+    return () => clearTimeout(timer);
+  }, [activeCorridor, mapType]);
+
   return (
-    <div className="relative w-full h-[470px] rounded-2xl overflow-hidden border border-slate-800 bg-[#080C14] shadow-2xl">
+    <div className={`relative w-full h-full min-h-[460px] rounded-2xl overflow-hidden border shadow-2xl ${
+      theme === 'dark' ? 'border-slate-800 bg-[#080C14]' : 'border-slate-200 bg-white'
+    } ${className}`}>
       {/* Map DOM Canvas */}
       <div ref={mapContainerRef} className="w-full h-full z-0" />
 

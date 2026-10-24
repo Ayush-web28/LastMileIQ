@@ -9,14 +9,16 @@ import {
   ArrowDownRight 
 } from 'lucide-react';
 
-export default function DashboardMetrics() {
+export default function DashboardMetrics({ compact = false, className = '' }) {
   const { theme, corridorTelemetry } = useSimulation();
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+    <div className={`grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 ${className}`}>
       
       {/* Metric 1: Fleet Utilization */}
-      <div className={`p-4 sm:p-5 rounded-2xl border backdrop-blur-md transition flex flex-col justify-between space-y-2 ${
+      <div className={`rounded-xl border backdrop-blur-md transition flex flex-col justify-between ${
+        compact ? 'p-2.5 sm:p-3 space-y-1' : 'p-4 sm:p-5 space-y-2'
+      } ${
         theme === 'dark'
           ? 'bg-slate-900/70 border-slate-800/80 hover:border-slate-700'
           : 'bg-white border-slate-200 hover:border-slate-300 shadow-sm'
@@ -27,24 +29,28 @@ export default function DashboardMetrics() {
           }`}>
             Fleet Utilization
           </span>
-          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/30 text-[10px] font-mono font-bold">
-            <ArrowUpRight className="w-3 h-3" /> +14.2%
+          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/30 text-[9px] font-mono font-bold">
+            <ArrowUpRight className="w-2.5 h-2.5" /> +14.2%
           </span>
         </div>
         <div>
-          <div className={`text-2xl sm:text-3xl font-black font-mono tracking-tight ${
+          <div className={`${compact ? 'text-xl sm:text-2xl' : 'text-2xl sm:text-3xl'} font-black font-mono tracking-tight ${
             theme === 'dark' ? 'text-white' : 'text-slate-900'
           }`}>
             {corridorTelemetry.utilizationRate}%
           </div>
-          <div className={`text-[11px] mt-1 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
-            Optimized active vehicle rotation
-          </div>
+          {!compact && (
+            <div className={`text-[11px] mt-1 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
+              Optimized active vehicle rotation
+            </div>
+          )}
         </div>
       </div>
 
       {/* Metric 2: Avg Wait Time */}
-      <div className={`p-4 sm:p-5 rounded-2xl border backdrop-blur-md transition flex flex-col justify-between space-y-2 ${
+      <div className={`rounded-xl border backdrop-blur-md transition flex flex-col justify-between ${
+        compact ? 'p-2.5 sm:p-3 space-y-1' : 'p-4 sm:p-5 space-y-2'
+      } ${
         theme === 'dark'
           ? 'bg-slate-900/70 border-slate-800/80 hover:border-slate-700'
           : 'bg-white border-slate-200 hover:border-slate-300 shadow-sm'
@@ -55,22 +61,26 @@ export default function DashboardMetrics() {
           }`}>
             Avg Commuter Wait
           </span>
-          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/30 text-[10px] font-mono font-bold">
-            <ArrowDownRight className="w-3 h-3" /> -74% Drop
+          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/30 text-[9px] font-mono font-bold">
+            <ArrowDownRight className="w-2.5 h-2.5" /> -74% Drop
           </span>
         </div>
         <div>
-          <div className="text-2xl sm:text-3xl font-black font-mono text-amber-500 tracking-tight">
+          <div className={`${compact ? 'text-xl sm:text-2xl' : 'text-2xl sm:text-3xl'} font-black font-mono text-amber-500 tracking-tight`}>
             {corridorTelemetry.avgWaitTime} min
           </div>
-          <div className={`text-[11px] mt-1 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
-            Down from 16.4 min uncoordinated baseline
-          </div>
+          {!compact && (
+            <div className={`text-[11px] mt-1 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
+              Down from 16.4 min uncoordinated baseline
+            </div>
+          )}
         </div>
       </div>
 
       {/* Metric 3: Dead Mileage Eliminated */}
-      <div className={`p-4 sm:p-5 rounded-2xl border backdrop-blur-md transition flex flex-col justify-between space-y-2 ${
+      <div className={`rounded-xl border backdrop-blur-md transition flex flex-col justify-between ${
+        compact ? 'p-2.5 sm:p-3 space-y-1' : 'p-4 sm:p-5 space-y-2'
+      } ${
         theme === 'dark'
           ? 'bg-slate-900/70 border-slate-800/80 hover:border-slate-700'
           : 'bg-white border-slate-200 hover:border-slate-300 shadow-sm'
@@ -81,22 +91,26 @@ export default function DashboardMetrics() {
           }`}>
             Dead-Mileage Cut
           </span>
-          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-cyan-500/10 text-cyan-500 border border-cyan-500/30 text-[10px] font-mono font-bold">
-            <ArrowDownRight className="w-3 h-3" /> -34%
+          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-full bg-cyan-500/10 text-cyan-500 border border-cyan-500/30 text-[9px] font-mono font-bold">
+            <ArrowDownRight className="w-2.5 h-2.5" /> -34%
           </span>
         </div>
         <div>
-          <div className="text-2xl sm:text-3xl font-black font-mono text-cyan-500 tracking-tight">
+          <div className={`${compact ? 'text-xl sm:text-2xl' : 'text-2xl sm:text-3xl'} font-black font-mono text-cyan-500 tracking-tight`}>
             {corridorTelemetry.economics.deadKmSavedDaily} km
           </div>
-          <div className={`text-[11px] mt-1 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
-            Non-revenue cruising eliminated daily
-          </div>
+          {!compact && (
+            <div className={`text-[11px] mt-1 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
+              Non-revenue cruising eliminated daily
+            </div>
+          )}
         </div>
       </div>
 
       {/* Metric 4: Daily Revenue Uplift */}
-      <div className={`p-4 sm:p-5 rounded-2xl border backdrop-blur-md transition flex flex-col justify-between space-y-2 ${
+      <div className={`rounded-xl border backdrop-blur-md transition flex flex-col justify-between ${
+        compact ? 'p-2.5 sm:p-3 space-y-1' : 'p-4 sm:p-5 space-y-2'
+      } ${
         theme === 'dark'
           ? 'bg-slate-900/70 border-slate-800/80 hover:border-slate-700'
           : 'bg-white border-slate-200 hover:border-slate-300 shadow-sm'
@@ -107,17 +121,19 @@ export default function DashboardMetrics() {
           }`}>
             Revenue Uplift / Veh
           </span>
-          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/30 text-[10px] font-mono font-bold">
-            <ArrowUpRight className="w-3 h-3" /> +2.4 Trips
+          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/30 text-[9px] font-mono font-bold">
+            <ArrowUpRight className="w-2.5 h-2.5" /> +2.4 Trips
           </span>
         </div>
         <div>
-          <div className="text-2xl sm:text-3xl font-black font-mono text-emerald-500 tracking-tight">
+          <div className={`${compact ? 'text-xl sm:text-2xl' : 'text-2xl sm:text-3xl'} font-black font-mono text-emerald-500 tracking-tight`}>
             +₹{corridorTelemetry.economics.dailyRevenueUpliftPerVehicle}
           </div>
-          <div className={`text-[11px] mt-1 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
-            Net daily gain per driver shift
-          </div>
+          {!compact && (
+            <div className={`text-[11px] mt-1 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
+              Net daily gain per driver shift
+            </div>
+          )}
         </div>
       </div>
 
