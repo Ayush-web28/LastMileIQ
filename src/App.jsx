@@ -75,45 +75,45 @@ function DashboardLayout() {
       {/* Main Viewport Container (Zero redundant top bars) */}
       <div className="flex-1 flex flex-col h-screen min-w-0 overflow-hidden">
         
-        {/* Main Tab Canvas (Views preserved across tab switches to retain map filters and pan/zoom state) */}
+        {/* Main Tab Canvas (Filters and state persisted in SimulationContext across tab switches) */}
         <main className="flex-1 overflow-hidden flex flex-col min-h-0">
           
           {/* Tab: Live Dispatch (Fleet Operator - Scrollable, full-width spacious layout) */}
-          <div className={`flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 scrollbar-thin ${
-            activeView === 'dispatch' ? 'block animate-fade-in' : 'hidden'
-          }`}>
-            <PredictiveDispatchPanel />
-            <DriverDispatchQueue />
-          </div>
+          {activeView === 'dispatch' && (
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 scrollbar-thin animate-fade-in">
+              <PredictiveDispatchPanel />
+              <DriverDispatchQueue />
+            </div>
+          )}
 
-          {/* Tab: Geospatial Map (Full-height Google Maps Command Center - Retained to preserve filters & zoom) */}
-          <div className={`flex-1 flex flex-col min-h-0 p-3 sm:p-4 overflow-hidden ${
-            activeView === 'map' ? 'flex animate-fade-in' : 'hidden'
-          }`}>
-            <CommandCenterMap className="flex-1 h-full min-h-0" isVisible={activeView === 'map'} />
-          </div>
+          {/* Tab: Geospatial Map (Full-height Google Maps Command Center - Rendered with verified DOM dimensions) */}
+          {activeView === 'map' && (
+            <div className="flex-1 flex flex-col min-h-0 p-3 sm:p-4 animate-fade-in overflow-hidden">
+              <CommandCenterMap className="flex-1 h-full min-h-0" />
+            </div>
+          )}
 
           {/* Tab: Fleet Analytics (Fleet Operator - Includes Executive KPIs + ROI Calculator) */}
-          <div className={`flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 scrollbar-thin ${
-            activeView === 'analytics' ? 'block animate-fade-in' : 'hidden'
-          }`}>
-            <DashboardMetrics />
-            <FleetEconomicsCalculator />
-          </div>
+          {activeView === 'analytics' && (
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 scrollbar-thin animate-fade-in">
+              <DashboardMetrics />
+              <FleetEconomicsCalculator />
+            </div>
+          )}
 
           {/* Tab: Municipal Planning (Transit Planner - MMRDA / BMC Transit Equity & Bottlenecks) */}
-          <div className={`flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 scrollbar-thin ${
-            activeView === 'planner' ? 'block animate-fade-in' : 'hidden'
-          }`}>
-            <CityPlannerView />
-          </div>
+          {activeView === 'planner' && (
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 scrollbar-thin animate-fade-in">
+              <CityPlannerView />
+            </div>
+          )}
 
           {/* Tab: Feeder Curb Policy (Transit Planner - MMRDA Feeder Bay Allocation & Briefs) */}
-          <div className={`flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 scrollbar-thin ${
-            activeView === 'policy' ? 'block animate-fade-in' : 'hidden'
-          }`}>
-            <TransitPolicyView />
-          </div>
+          {activeView === 'policy' && (
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 scrollbar-thin animate-fade-in">
+              <TransitPolicyView />
+            </div>
+          )}
 
         </main>
 

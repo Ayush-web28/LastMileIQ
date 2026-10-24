@@ -225,6 +225,12 @@ export function SimulationProvider({ children }) {
     }));
   }, []);
 
+  // Persistent map viewport center and zoom level across tabs
+  const [mapViewBounds, setMapViewBounds] = useState({
+    center: null,
+    zoom: null,
+  });
+
   // Dynamic dispatch history with Mumbai license plates and 3 pure lifecycle states:
   // 'Dispatched' (initially) -> 'En Route' (after brief transit) -> 'Arrived' (at concourse gate)
   const [dispatchEvents, setDispatchEvents] = useState([
@@ -597,6 +603,8 @@ export function SimulationProvider({ children }) {
         mapFilters,
         toggleMapFilter,
         setMapType,
+        mapViewBounds,
+        setMapViewBounds,
         activeToast,
       }}
     >

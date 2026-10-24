@@ -12,7 +12,7 @@ import {
   Navigation
 } from 'lucide-react';
 
-export default function CommandCenterMap({ className = '', isVisible = true }) {
+export default function CommandCenterMap({ className = '' }) {
   const mapContainerRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const tileLayerRef = useRef(null);
@@ -35,7 +35,12 @@ export default function CommandCenterMap({ className = '', isVisible = true }) {
     mapFilters,
     toggleMapFilter,
     setMapType,
+    mapViewBounds,
+    setMapViewBounds,
   } = useSimulation();
+
+  // Helper function to guard coordinate validity
+  const isValidCoord = (n) => typeof n === 'number' && !isNaN(n);
 
   // Persistent Layer & Map Type Filters from SimulationContext
   const { 
@@ -47,20 +52,6 @@ export default function CommandCenterMap({ className = '', isVisible = true }) {
   } = mapFilters || {};
 
   const [stationMenuOpen, setStationMenuOpen] = useState(false);
-
-  // Invalidate Leaflet map size when tab visibility switches to active
-  useEffect(() => {
-    if (isVisible && mapInstanceRef.current) {
-      const timer = setTimeout(() => {
-        try {
-          mapInstanceRef.current.invalidateSize();
-        } catch {
-          // ignore
-        }
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [isVisible]);
 
   // Close station dropup on outside click
   useEffect(() => {
@@ -82,8 +73,12 @@ export default function CommandCenterMap({ className = '', isVisible = true }) {
       delete mapContainerRef.current._leaflet_id;
     }
 
-    const initialCenter = activeCorridor?.center || [19.1176, 72.8680];
-    const initialZoom = activeCorridor?.zoom || 13;
+    const initialCenter = (mapViewBounds?.center && isValidCoord(mapViewBounds.center[0]) && isValidCoord(mapViewBounds.center[1]))
+      ? mapViewBounds.center
+      : (activeCorridor?.center || [19.1176, 72.8680]);
+    const initialZoom = (mapViewBounds?.zoom && isValidCoord(mapViewBounds.zoom))
+      ? mapViewBounds.zoom
+      : (activeCorridor?.zoom || 13);
 
     let map;
     try {
@@ -109,6 +104,19 @@ export default function CommandCenterMap({ className = '', isVisible = true }) {
         return;
       }
     }
+
+    // Persist user pan & zoom to context
+    map.on('moveend', () => {
+      try {
+        const center = map.getCenter();
+        const zoom = map.getZoom();
+        if (center && isValidCoord(center.lat) && isValidCoord(center.lng)) {
+          setMapViewBounds({ center: [center.lat, center.lng], zoom });
+        }
+      } catch {
+        // safe fallback
+      }
+    });
 
     // Google Maps Tiles
     const googleTilesUrl = mapType === 'satellite'
@@ -174,24 +182,46 @@ export default function CommandCenterMap({ className = '', isVisible = true }) {
   // Recenter when corridor changes
   useEffect(() => {
     const map = mapInstanceRef.current;
-    if (!map || !activeCorridor) return;
-    map.flyTo(activeCorridor.center, activeCorridor.zoom, {
-      duration: 1.0,
-      easeLinearity: 0.25,
-    });
-  }, [currentCorridorKey, activeCorridor]);
+    if (!map || !activeCorridor || !activeCorridor.center) return;
+    const [cLat, cLng] = activeCorridor.center;
+    if (!isValidCoord(cLat) || !isValidCoord(cLng)) return;
+
+    try {
+      map.flyTo([cLat, cLng], activeCorridor.zoom || 13, {
+        duration: 0.9,
+        easeLinearity: 0.25,
+      });
+    } catch {
+      map.setView([cLat, cLng], activeCorridor.zoom || 13);
+    }
+  }, [currentCorridorKey]);
 
   // Synchronize Map with selectedStationId: flyTo station and open its telemetry popup
   useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map || !currentStation) return;
+    const { lat, lng, id } = currentStation;
+    if (!isValidCoord(lat) || !isValidCoord(lng)) return;
 
-    map.flyTo([currentStation.lat, currentStation.lng], Math.max(map.getZoom(), 14), {
-      animate: true,
-      duration: 0.7,
-    });
+    let currentZoom = 13;
+    try {
+      const z = map.getZoom();
+      if (isValidCoord(z)) currentZoom = z;
+    } catch {
+      currentZoom = 13;
+    }
+    const targetZoom = Math.max(currentZoom, 14);
 
-    const marker = markersMapRef.current[currentStation.id];
+    try {
+      map.flyTo([lat, lng], targetZoom, {
+        animate: true,
+        duration: 0.7,
+      });
+    } catch {
+      map.setView([lat, lng], targetZoom);
+    }
+
+    const marker = markersMapRef.current[id];
     if (marker) {
       setTimeout(() => {
         try {
@@ -221,8 +251,12 @@ export default function CommandCenterMap({ className = '', isVisible = true }) {
     const corridorColor = activeCorridor.color || (isMetro ? '#0284C7' : '#EF4444');
 
     // 1. Draw High-Visibility Transit Track Polylines
-    if (showTransitTrack && computedStations.length > 1) {
-      const latlngs = computedStations.map((s) => [s.lat, s.lng]);
+    const validStations = computedStations.filter(
+      (s) => isValidCoord(s.lat) && isValidCoord(s.lng)
+    );
+
+    if (showTransitTrack && validStations.length > 1) {
+      const latlngs = validStations.map((s) => [s.lat, s.lng]);
 
       // Outer Glow Polyline
       L.polyline(latlngs, {
@@ -253,17 +287,18 @@ export default function CommandCenterMap({ className = '', isVisible = true }) {
 
     // 2. Plot Stations with Prominent Highlighting & LMSI Stress Rings
     computedStations.forEach((stn) => {
+      if (!isValidCoord(stn.lat) || !isValidCoord(stn.lng)) return;
       const isSelected = currentStation?.id === stn.id;
-      const lmsiColor = stn.lmsi.color;
+      const lmsiColor = stn.lmsi?.color || '#10B981';
 
       // LMSI Heat/Coverage Radial Ring
       if (showHeatRings) {
-        const radiusMeters = stn.lmsi.level === 'CRITICAL' ? 1000 : stn.lmsi.level === 'WARNING' ? 750 : 550;
+        const radiusMeters = stn.lmsi?.level === 'CRITICAL' ? 1000 : stn.lmsi?.level === 'WARNING' ? 750 : 550;
         const ring = L.circle([stn.lat, stn.lng], {
           radius: radiusMeters,
           color: lmsiColor,
           fillColor: lmsiColor,
-          fillOpacity: stn.lmsi.level === 'CRITICAL' ? 0.28 : 0.16,
+          fillOpacity: stn.lmsi?.level === 'CRITICAL' ? 0.28 : 0.16,
           weight: isSelected ? 2.5 : 1.2,
           dashArray: isSelected ? '4, 4' : null,
         }).addTo(markersLayer);
@@ -320,10 +355,10 @@ export default function CommandCenterMap({ className = '', isVisible = true }) {
             ${activeCorridor.shortName} • ${stn.code}
           </div>
           <div style="background: #F1F5F9; border-radius: 8px; padding: 6px 8px; font-size: 11px; margin-bottom: 6px; line-height: 1.4;">
-            <div><strong>Deficit Gate:</strong> ${stn.highDeficitGate.gateName}</div>
-            <div><strong>Exit Commuters:</strong> ${stn.highDeficitGate.expectedCommuters || stn.highDeficitGate.lastMileSeekers} pax</div>
-            <div><strong>Vehicle Shortage:</strong> <span style="color: ${lmsiColor}; font-weight: bold;">${stn.highDeficitGate.deficit} vehicles</span></div>
-            <div><strong>Wait Time:</strong> ${stn.lmsi.expectedWaitMinutes} min (${stn.lmsi.level})</div>
+            <div><strong>Deficit Gate:</strong> ${stn.highDeficitGate?.gateName || 'Main Gate'}</div>
+            <div><strong>Exit Commuters:</strong> ${stn.highDeficitGate?.expectedCommuters || stn.highDeficitGate?.lastMileSeekers || 0} pax</div>
+            <div><strong>Vehicle Shortage:</strong> <span style="color: ${lmsiColor}; font-weight: bold;">${stn.highDeficitGate?.deficit || 0} vehicles</span></div>
+            <div><strong>Wait Time:</strong> ${stn.lmsi?.expectedWaitMinutes || '0'} min (${stn.lmsi?.level || 'NOMINAL'})</div>
           </div>
           <div style="font-size: 10px; color: #64748B;">
             Station synchronized with bottom control dropdown
@@ -337,8 +372,9 @@ export default function CommandCenterMap({ className = '', isVisible = true }) {
       });
 
       // 3. Feeder Auto & EV Stands
-      if (showStands && stn.stands) {
+      if (showStands && stn.stands && Array.isArray(stn.stands)) {
         stn.stands.forEach((stand) => {
+          if (!stand || !isValidCoord(stand.lat) || !isValidCoord(stand.lng)) return;
           const isEv = stand.type === 'EV_STAND';
           const standIcon = L.divIcon({
             className: 'custom-stand-pin',
@@ -369,20 +405,22 @@ export default function CommandCenterMap({ className = '', isVisible = true }) {
     // 4. Moving Feeder Vehicles
     if (showVehicles && dispatchEvents.length > 0 && vectorsLayer) {
       dispatchEvents.slice(0, 5).forEach((disp, idx) => {
-        const stn = computedStations.find((s) => s.name === disp.stationName) || currentStation;
-        if (!stn) return;
+        const stn = computedStations.find((s) => s.name === disp.stationName || s.name.startsWith(disp.stationName?.split(' ')[0])) || currentStation;
+        if (!stn || !isValidCoord(stn.lat) || !isValidCoord(stn.lng)) return;
 
         const angle = (idx * 72 * Math.PI) / 180;
         const dist = 0.0035 + (idx % 2) * 0.002;
         const vLat = stn.lat + Math.sin(angle) * dist;
         const vLng = stn.lng + Math.cos(angle) * dist;
 
+        if (!isValidCoord(vLat) || !isValidCoord(vLng)) return;
+
         const vehicleIcon = L.divIcon({
           className: 'custom-vehicle-pin',
           html: `
             <div class="px-2 py-0.5 rounded-md bg-emerald-500 text-slate-950 font-mono text-[9px] font-black shadow-lg flex items-center gap-1 border border-white animate-pulse">
               <span>⚡</span>
-              <span>${disp.plate.slice(-4)}</span>
+              <span>${disp.plate ? disp.plate.slice(-4) : 'FEED'}</span>
             </div>
           `,
           iconSize: [40, 20],
@@ -429,8 +467,13 @@ export default function CommandCenterMap({ className = '', isVisible = true }) {
           <button
             onClick={() => {
               const map = mapInstanceRef.current;
-              if (map && activeCorridor) {
-                map.flyTo(activeCorridor.center, activeCorridor.zoom, { duration: 0.8 });
+              if (!map || !activeCorridor || !activeCorridor.center) return;
+              const [cLat, cLng] = activeCorridor.center;
+              if (!isValidCoord(cLat) || !isValidCoord(cLng)) return;
+              try {
+                map.flyTo([cLat, cLng], activeCorridor.zoom || 13, { duration: 0.8 });
+              } catch {
+                map.setView([cLat, cLng], activeCorridor.zoom || 13);
               }
             }}
             className={`p-2.5 rounded-xl border backdrop-blur-md shadow-lg transition active:scale-95 ${
