@@ -13,7 +13,9 @@ import {
   ShieldCheck,
   ChevronRight,
   Sparkles,
-  Layers
+  Layers,
+  ArrowRight,
+  ArrowLeft
 } from 'lucide-react';
 
 export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsCollapsed, corridors }) {
@@ -51,6 +53,35 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
 
   const metroLines = Object.entries(corridors).filter(([_, item]) => item.category === 'metro');
   const localLines = Object.entries(corridors).filter(([_, item]) => item.category === 'local');
+
+  // Corridor category state: 'metro' (default) or 'local'
+  const [corridorCategory, setCorridorCategory] = useState(
+    activeCorridor?.category === 'local' ? 'local' : 'metro'
+  );
+
+  // Sync corridorCategory if activeCorridor changes externally
+  useEffect(() => {
+    if (activeCorridor?.category) {
+      setCorridorCategory(activeCorridor.category);
+    }
+  }, [activeCorridor?.category]);
+
+  const toggleCorridorCategory = () => {
+    setCorridorMenuOpen(false);
+    if (corridorCategory === 'metro') {
+      setCorridorCategory('local');
+      if (activeCorridor?.category !== 'local') {
+        const firstLocal = localLines[0]?.[0] || 'mumbai-local-western';
+        setCurrentCorridorKey(firstLocal);
+      }
+    } else {
+      setCorridorCategory('metro');
+      if (activeCorridor?.category !== 'metro') {
+        const firstMetro = metroLines[0]?.[0] || 'mumbai-metro-1';
+        setCurrentCorridorKey(firstMetro);
+      }
+    }
+  };
 
   // Dynamic Navigation Items tailored per stakeholder role
   const navigationItems = activeAccountRole === 'fleet'
@@ -150,129 +181,190 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
           </button>
         </div>
 
-        {/* Selected Line Display (Here and here only) */}
+        {/* Selected Line Display with Category Switcher Arrow */}
         {!isCollapsed && (
           <div className="relative" ref={corridorRef}>
-            <div className={`text-[10px] font-mono uppercase tracking-wider mb-1 font-bold ${
-              theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
-            }`}>
-              Active Transit Corridor:
+            <div className="flex items-center justify-between mb-1.5">
+              <span className={`text-[10px] font-mono uppercase tracking-wider font-bold ${
+                theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
+              }`}>
+                Active Transit Corridor:
+              </span>
+              <span className={`text-[9px] font-mono font-bold px-1.5 py-0.2 rounded border ${
+                corridorCategory === 'metro'
+                  ? 'bg-sky-500/15 text-sky-400 border-sky-500/30'
+                  : 'bg-amber-500/15 text-amber-400 border-amber-500/30'
+              }`}>
+                {corridorCategory === 'metro' ? 'Metro Lines' : 'Suburban Local'}
+              </span>
             </div>
 
-            <button
-              onClick={() => setCorridorMenuOpen(!corridorMenuOpen)}
-              className={`w-full flex items-center justify-between p-3 rounded-xl border transition text-left text-xs shadow-md ${
-                theme === 'dark'
-                  ? 'bg-[#111C38] border-[#1E2F5B] hover:border-sky-500/60 hover:bg-[#162347]'
-                  : 'bg-slate-50 border-slate-200 hover:border-sky-500/60 hover:bg-slate-100'
-              }`}
-              title="Click to switch Mumbai Transit Corridor"
-            >
-              <div className="flex items-center gap-2.5 min-w-0">
-                <span 
-                  className="w-3.5 h-3.5 rounded-full shrink-0 shadow-md ring-2 ring-white/20" 
-                  style={{ backgroundColor: activeCorridor.color }} 
-                />
-                <div className="truncate">
-                  <span className={`text-[9px] font-mono font-bold block uppercase tracking-wide ${
-                    theme === 'dark' ? 'text-sky-400' : 'text-sky-700'
-                  }`}>
-                    {activeCorridor.categoryLabel || (activeCorridor.category === 'metro' ? 'Metro Line' : 'Suburban Local')}
-                  </span>
-                  <span className={`font-black text-xs truncate block ${
-                    theme === 'dark' ? 'text-white' : 'text-slate-900'
-                  }`}>
-                    {activeCorridor.shortName}
-                  </span>
-                  <span className={`text-[10px] block ${
-                    theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
-                  }`}>
-                    {activeCorridor.stationsCount} Stations • {activeCorridor.lengthKm} km
-                  </span>
+            <div className="flex items-center gap-2">
+              {/* Dropdown Box for Current Category (Metro or Local) */}
+              <button
+                onClick={() => setCorridorMenuOpen(!corridorMenuOpen)}
+                className={`flex-1 min-w-0 flex items-center justify-between p-2.5 rounded-xl border transition text-left text-xs shadow-md ${
+                  theme === 'dark'
+                    ? 'bg-[#111C38] border-[#1E2F5B] hover:border-sky-500/60 hover:bg-[#162347]'
+                    : 'bg-slate-50 border-slate-200 hover:border-sky-500/60 hover:bg-slate-100'
+                }`}
+                title={`Click to choose from ${corridorCategory === 'metro' ? 'Mumbai Metro Lines' : 'Mumbai Suburban Local Lines'}`}
+              >
+                <div className="flex items-center gap-2 min-w-0">
+                  <span 
+                    className="w-3.5 h-3.5 rounded-full shrink-0 shadow-md ring-2 ring-white/20" 
+                    style={{ backgroundColor: activeCorridor.color }} 
+                  />
+                  <div className="truncate min-w-0">
+                    <span className={`text-[9px] font-mono font-bold block uppercase tracking-wide ${
+                      corridorCategory === 'metro'
+                        ? (theme === 'dark' ? 'text-sky-400' : 'text-sky-700')
+                        : (theme === 'dark' ? 'text-amber-400' : 'text-amber-700')
+                    }`}>
+                      {corridorCategory === 'metro' ? 'Metro Line' : 'Suburban Local'}
+                    </span>
+                    <span className={`font-black text-xs truncate block ${
+                      theme === 'dark' ? 'text-white' : 'text-slate-900'
+                    }`}>
+                      {activeCorridor.shortName}
+                    </span>
+                    <span className={`text-[10px] block ${
+                      theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
+                    }`}>
+                      {activeCorridor.stationsCount} Stns • {activeCorridor.lengthKm} km
+                    </span>
+                  </div>
                 </div>
-              </div>
 
-              <ChevronDown className={`w-4 h-4 shrink-0 transition-transform duration-200 ${
-                corridorMenuOpen ? 'rotate-180' : ''
-              } ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`} />
-            </button>
+                <ChevronDown className={`w-4 h-4 shrink-0 transition-transform duration-200 ml-1 ${
+                  corridorMenuOpen ? 'rotate-180' : ''
+                } ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`} />
+              </button>
 
-            {/* Mumbai Corridor Dropdown Menu */}
+              {/* Arrow Button to Switch between Metro Lines and Local Lines dropdown */}
+              <button
+                onClick={toggleCorridorCategory}
+                className={`p-2 h-[58px] w-12 rounded-xl border transition flex flex-col items-center justify-center gap-0.5 shrink-0 shadow-md group ${
+                  theme === 'dark'
+                    ? corridorCategory === 'metro'
+                      ? 'bg-[#111C38] border-[#1E2F5B] hover:border-amber-400 text-amber-400 hover:bg-[#162347]'
+                      : 'bg-[#111C38] border-[#1E2F5B] hover:border-sky-400 text-sky-400 hover:bg-[#162347]'
+                    : corridorCategory === 'metro'
+                      ? 'bg-slate-50 border-slate-200 hover:border-amber-500 text-amber-600 hover:bg-slate-100'
+                      : 'bg-slate-50 border-slate-200 hover:border-sky-500 text-sky-600 hover:bg-slate-100'
+                }`}
+                title={
+                  corridorCategory === 'metro'
+                    ? 'Switch to Mumbai Suburban Local Lines dropdown'
+                    : 'Switch to Mumbai Metro Lines dropdown'
+                }
+              >
+                {corridorCategory === 'metro' ? (
+                  <>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                    <span className="text-[8px] font-mono font-black uppercase tracking-tight">Local</span>
+                  </>
+                ) : (
+                  <>
+                    <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+                    <span className="text-[8px] font-mono font-black uppercase tracking-tight">Metro</span>
+                  </>
+                )}
+              </button>
+            </div>
+
+            {/* Categorized Corridor Dropdown Menu */}
             {corridorMenuOpen && (
-              <div className={`absolute left-0 mt-2 w-80 rounded-2xl border shadow-2xl p-2.5 z-50 animate-in fade-in zoom-in-95 max-h-[440px] overflow-y-auto ${
+              <div className={`absolute left-0 mt-2 w-full rounded-2xl border shadow-2xl p-2.5 z-50 animate-in fade-in zoom-in-95 max-h-[360px] overflow-y-auto ${
                 theme === 'dark'
                   ? 'bg-[#111C38] border-[#1E2F5B] text-slate-200 shadow-2xl shadow-black/80'
                   : 'bg-white border-slate-200 text-slate-800'
               }`}>
-                {/* 6 Metro Lines */}
-                <div className="text-[10px] font-mono text-sky-400 px-2.5 py-1 uppercase tracking-wider font-bold">
-                  🚇 Mumbai Metro (6 Lines)
-                </div>
-                {metroLines.map(([key, item]) => {
-                  const isSelected = currentCorridorKey === key;
-                  return (
-                    <button
-                      key={key}
-                      onClick={() => {
-                        setCurrentCorridorKey(key);
-                        setCorridorMenuOpen(false);
-                      }}
-                      className={`w-full text-left p-2.5 rounded-xl flex items-start gap-2.5 transition text-xs mb-1 ${
-                        isSelected
-                          ? theme === 'dark'
-                            ? 'bg-sky-500/20 border border-sky-500/50 text-white font-bold'
-                            : 'bg-sky-50 border border-sky-500/50 text-sky-950 font-bold'
-                          : theme === 'dark'
-                            ? 'hover:bg-[#162347] text-slate-300'
-                            : 'hover:bg-slate-100 text-slate-700'
-                      }`}
-                    >
-                      <span className="w-3 h-3 rounded-full mt-0.5 shrink-0 shadow-sm" style={{ backgroundColor: item.color }} />
-                      <div className="min-w-0 flex-1">
-                        <div className="font-bold truncate">{item.shortName || item.name}</div>
-                        <div className={`text-[10px] ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
-                          {item.stationsCount} Stations • {item.lengthKm} km
-                        </div>
-                      </div>
-                      {isSelected && <Check className="w-3.5 h-3.5 text-sky-400 shrink-0 mt-0.5" />}
-                    </button>
-                  );
-                })}
-
-                {/* 3 Suburban Local Lines */}
-                <div className="text-[10px] font-mono text-amber-400 px-2.5 pt-3 py-1 uppercase tracking-wider font-bold border-t border-[#1E2F5B] mt-2">
-                  🚆 Mumbai Suburban Local (3 Lines)
-                </div>
-                {localLines.map(([key, item]) => {
-                  const isSelected = currentCorridorKey === key;
-                  return (
-                    <button
-                      key={key}
-                      onClick={() => {
-                        setCurrentCorridorKey(key);
-                        setCorridorMenuOpen(false);
-                      }}
-                      className={`w-full text-left p-2.5 rounded-xl flex items-start gap-2.5 transition text-xs mb-1 ${
-                        isSelected
-                          ? theme === 'dark'
-                            ? 'bg-amber-500/20 border border-amber-500/50 text-white font-bold'
-                            : 'bg-amber-50 border border-amber-500/50 text-amber-950 font-bold'
-                          : theme === 'dark'
-                            ? 'hover:bg-[#162347] text-slate-300'
-                            : 'hover:bg-slate-100 text-slate-700'
-                      }`}
-                    >
-                      <span className="w-3 h-3 rounded-full mt-0.5 shrink-0 shadow-md ring-1 ring-white/30" style={{ backgroundColor: item.color }} />
-                      <div className="min-w-0 flex-1">
-                        <div className="font-bold truncate">{item.shortName || item.name}</div>
-                        <div className={`text-[10px] ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
-                          {item.stationsCount} Stations • {item.lengthKm} km
-                        </div>
-                      </div>
-                      {isSelected && <Check className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />}
-                    </button>
-                  );
-                })}
+                {corridorCategory === 'metro' ? (
+                  <>
+                    {/* 6 Metro Lines Dropdown Options */}
+                    <div className="flex items-center justify-between px-2.5 py-1 mb-1">
+                      <span className="text-[10px] font-mono text-sky-400 uppercase tracking-wider font-bold">
+                        🚇 Mumbai Metro (6 Lines)
+                      </span>
+                      <span className={`text-[9px] font-mono ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
+                        All Lines
+                      </span>
+                    </div>
+                    {metroLines.map(([key, item]) => {
+                      const isSelected = currentCorridorKey === key;
+                      return (
+                        <button
+                          key={key}
+                          onClick={() => {
+                            setCurrentCorridorKey(key);
+                            setCorridorMenuOpen(false);
+                          }}
+                          className={`w-full text-left p-2.5 rounded-xl flex items-start gap-2.5 transition text-xs mb-1 ${
+                            isSelected
+                              ? theme === 'dark'
+                                ? 'bg-sky-500/20 border border-sky-500/50 text-white font-bold'
+                                : 'bg-sky-50 border border-sky-500/50 text-sky-950 font-bold'
+                              : theme === 'dark'
+                                ? 'hover:bg-[#162347] text-slate-300'
+                                : 'hover:bg-slate-100 text-slate-700'
+                          }`}
+                        >
+                          <span className="w-3 h-3 rounded-full mt-0.5 shrink-0 shadow-sm" style={{ backgroundColor: item.color }} />
+                          <div className="min-w-0 flex-1">
+                            <div className="font-bold truncate">{item.shortName || item.name}</div>
+                            <div className={`text-[10px] ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
+                              {item.stationsCount} Stations • {item.lengthKm} km
+                            </div>
+                          </div>
+                          {isSelected && <Check className="w-3.5 h-3.5 text-sky-400 shrink-0 mt-0.5" />}
+                        </button>
+                      );
+                    })}
+                  </>
+                ) : (
+                  <>
+                    {/* 3 Suburban Local Lines Dropdown Options */}
+                    <div className="flex items-center justify-between px-2.5 py-1 mb-1">
+                      <span className="text-[10px] font-mono text-amber-400 uppercase tracking-wider font-bold">
+                        🚆 Mumbai Suburban Local (3 Lines)
+                      </span>
+                      <span className={`text-[9px] font-mono ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
+                        All Lines
+                      </span>
+                    </div>
+                    {localLines.map(([key, item]) => {
+                      const isSelected = currentCorridorKey === key;
+                      return (
+                        <button
+                          key={key}
+                          onClick={() => {
+                            setCurrentCorridorKey(key);
+                            setCorridorMenuOpen(false);
+                          }}
+                          className={`w-full text-left p-2.5 rounded-xl flex items-start gap-2.5 transition text-xs mb-1 ${
+                            isSelected
+                              ? theme === 'dark'
+                                ? 'bg-amber-500/20 border border-amber-500/50 text-white font-bold'
+                                : 'bg-amber-50 border border-amber-500/50 text-amber-950 font-bold'
+                              : theme === 'dark'
+                                ? 'hover:bg-[#162347] text-slate-300'
+                                : 'hover:bg-slate-100 text-slate-700'
+                          }`}
+                        >
+                          <span className="w-3 h-3 rounded-full mt-0.5 shrink-0 shadow-md ring-1 ring-white/30" style={{ backgroundColor: item.color }} />
+                          <div className="min-w-0 flex-1">
+                            <div className="font-bold truncate">{item.shortName || item.name}</div>
+                            <div className={`text-[10px] ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
+                              {item.stationsCount} Stations • {item.lengthKm} km
+                            </div>
+                          </div>
+                          {isSelected && <Check className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />}
+                        </button>
+                      );
+                    })}
+                  </>
+                )}
               </div>
             )}
           </div>
