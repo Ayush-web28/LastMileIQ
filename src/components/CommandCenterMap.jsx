@@ -43,15 +43,37 @@ export default function CommandCenterMap() {
     if (!mapContainerRef.current) return;
     if (mapInstanceRef.current) return;
 
-    const initialCenter = activeCorridor.center || [19.1176, 72.8680];
-    const initialZoom = activeCorridor.zoom || 13;
+    if (mapContainerRef.current._leaflet_id) {
+      delete mapContainerRef.current._leaflet_id;
+    }
 
-    const map = L.map(mapContainerRef.current, {
-      center: initialCenter,
-      zoom: initialZoom,
-      zoomControl: false,
-      attributionControl: false,
-    });
+    const initialCenter = activeCorridor?.center || [19.1176, 72.8680];
+    const initialZoom = activeCorridor?.zoom || 13;
+
+    let map;
+    try {
+      map = L.map(mapContainerRef.current, {
+        center: initialCenter,
+        zoom: initialZoom,
+        zoomControl: false,
+        attributionControl: false,
+      });
+    } catch (e) {
+      if (mapContainerRef.current._leaflet_id) {
+        delete mapContainerRef.current._leaflet_id;
+      }
+      try {
+        map = L.map(mapContainerRef.current, {
+          center: initialCenter,
+          zoom: initialZoom,
+          zoomControl: false,
+          attributionControl: false,
+        });
+      } catch (err) {
+        console.error('Failed to initialize map:', err);
+        return;
+      }
+    }
 
     // Actual Google Maps Roadmap tiles (100% Free, zero API key needed, zero watermark)
     const googleTilesUrl = mapType === 'satellite'
@@ -79,8 +101,17 @@ export default function CommandCenterMap() {
     dispatchVectorsLayerRef.current = dispatchVectorsLayer;
 
     return () => {
-      map.remove();
+      try {
+        if (map) {
+          map.remove();
+        }
+      } catch {
+        // ignore
+      }
       mapInstanceRef.current = null;
+      if (mapContainerRef.current && mapContainerRef.current._leaflet_id) {
+        delete mapContainerRef.current._leaflet_id;
+      }
     };
   }, []);
 

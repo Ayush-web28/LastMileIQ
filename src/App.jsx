@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ErrorBoundary from './components/ErrorBoundary';
 import Sidebar from './components/bionis/Sidebar';
 import DashboardMetrics from './components/bionis/DashboardMetrics';
 import CommandCenterMap from './components/CommandCenterMap';
@@ -132,8 +133,10 @@ function DashboardLayout() {
 
 export default function App() {
   return (
-    <SimulationProvider>
-      <DashboardLayout />
-    </SimulationProvider>
+    <ErrorBoundary>
+      <SimulationProvider>
+        <DashboardLayout />
+      </SimulationProvider>
+    </ErrorBoundary>
   );
 }

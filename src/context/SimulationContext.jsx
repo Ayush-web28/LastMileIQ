@@ -319,7 +319,7 @@ export function SimulationProvider({ children }) {
 
   // Compute live station telemetry
   const computedStations = useMemo(() => {
-    if (!activeCorridor.stations) return [];
+    if (!activeCorridor.stations || activeCorridor.stations.length === 0) return [];
     return activeCorridor.stations.map((stn) => {
       const forecast = forecastCommuterEgress({
         station: stn,
@@ -327,15 +327,16 @@ export function SimulationProvider({ children }) {
         scenarios,
       });
 
-      const highDeficitGate = forecast.gates.reduce((worst, g) => {
-        return g.deficit > worst.deficit ? g : worst;
-      }, forecast.gates[0] || { deficit: 0, gateName: 'Gate 1', currentSupply: 5, expectedCommuters: 20 });
+      const gatesList = forecast.gateForecasts || forecast.gates || [];
+      const highDeficitGate = gatesList.reduce((worst, g) => {
+        return (g.deficit || 0) > (worst.deficit || 0) ? g : worst;
+      }, gatesList[0] || { deficit: 0, gateName: 'Gate 1', currentSupply: 5, expectedCommuters: 20, lastMileSeekers: 20, waitTimeMinutes: 4.5 });
 
-      const lmsi = calculateLMSI({
-        commutersNeedingRides: highDeficitGate.expectedCommuters,
-        availableVehicles: highDeficitGate.currentSupply,
-        baselineWaitMinutes: 5.0,
-      });
+      const lmsi = calculateLMSI(
+        highDeficitGate.lastMileSeekers || highDeficitGate.expectedCommuters || 25,
+        highDeficitGate.currentSupply || 8,
+        highDeficitGate.waitTimeMinutes || 5.0
+      );
 
       const rebalancingPlan = generateRebalancingPlan(
         stn,
@@ -376,10 +377,12 @@ export function SimulationProvider({ children }) {
       };
     }
 
-    const totalDemand = computedStations.reduce((sum, s) => sum + s.forecast.totalExits, 0);
-    const totalDeficit = computedStations.reduce((sum, s) => sum + Math.max(0, s.highDeficitGate.deficit), 0);
-    const avgWaitTime = Number((computedStations.reduce((sum, s) => sum + s.lmsi.expectedWaitMinutes, 0) / computedStations.length).toFixed(1));
-    const criticalStationsCount = computedStations.filter((s) => s.lmsi.level === 'CRITICAL').length;
+    const totalDemand = computedStations.reduce((sum, s) => sum + (s.forecast.baseTrainEgress || s.forecast.totalExits || 0), 0);
+    const totalDeficit = computedStations.reduce((sum, s) => sum + Math.max(0, s.highDeficitGate?.deficit || 0), 0);
+    const avgWaitTime = computedStations.length > 0
+      ? Number((computedStations.reduce((sum, s) => sum + (s.lmsi?.expectedWaitMinutes || s.highDeficitGate?.waitTimeMinutes || 5.0), 0) / computedStations.length).toFixed(1))
+      : 6.4;
+    const criticalStationsCount = computedStations.filter((s) => s.lmsi?.level === 'CRITICAL').length;
     
     const activeVehicles = 340;
     const utilizationRate = Math.min(96.5, Number((72 + (totalDemand / 60) * 2.2).toFixed(1)));
