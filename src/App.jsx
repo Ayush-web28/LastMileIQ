@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import TimeSimulationControls from './components/TimeSimulationControls';
+import Sidebar from './components/bionis/Sidebar';
+import Topbar from './components/bionis/Topbar';
+import DashboardMetrics from './components/bionis/DashboardMetrics';
 import CommandCenterMap from './components/CommandCenterMap';
 import PredictiveDispatchPanel from './components/PredictiveDispatchPanel';
 import DriverDispatchQueue from './components/DriverDispatchQueue';
@@ -10,22 +10,21 @@ import CityPlannerView from './components/CityPlannerView';
 import CommuterPreviewModal from './components/CommuterPreviewModal';
 import { SimulationProvider, useSimulation } from './context/SimulationContext';
 import { CORRIDORS } from './data/corridors';
-import { 
-  CheckCircle2, 
-  UserCheck
-} from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
 
-function DashboardContent() {
-  const {
-    activeAccountRole,
-    currentAccount,
-    activeCorridor,
-    corridorTelemetry,
-    activeToast,
+function DashboardLayout() {
+  const { 
+    activeAccountRole, 
+    activeToast 
   } = useSimulation();
 
+  // Active navigation view (default synced with account role)
+  const [activeView, setActiveView] = useState('dispatch'); // 'dispatch' | 'map' | 'analytics' | 'planner' | 'commuter'
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
   return (
-    <div id="command-center-root" className="relative z-20 border-t border-slate-800/80 bg-[#0B0F19] pt-6 pb-20">
+    <div className="min-h-screen bg-[#080C14] text-slate-100 flex font-sans selection:bg-emerald-500/30 selection:text-emerald-300">
+      
       {/* Toast Alert */}
       {activeToast && (
         <div className="fixed bottom-6 right-6 z-50 max-w-sm p-3.5 rounded-xl bg-slate-900 border border-emerald-500/50 shadow-2xl text-white animate-in slide-in-from-bottom-5">
@@ -39,151 +38,101 @@ function DashboardContent() {
         </div>
       )}
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
-        
-        {/* Section Header: Corridor & Active Account Persona */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
-          <div>
-            <div className="flex items-center gap-2 text-[10px] font-mono text-emerald-400 font-bold uppercase">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>MUMBAI DISPATCH CONSOLE</span>
-            </div>
-            <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight mt-0.5">
-              {activeCorridor.name}
-            </h2>
-          </div>
-
-          {/* Active Account Role Indicator */}
-          <div className="flex items-center gap-2 self-start sm:self-center">
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono">
-              <UserCheck className="w-3.5 h-3.5 text-emerald-400" />
-              <span className="text-slate-400">Active View:</span>
-              <strong className="text-white">{currentAccount.name}</strong>
-              <span 
-                className="px-2 py-0.5 rounded-md text-[10px] font-bold"
-                style={{ 
-                  backgroundColor: `${currentAccount.badgeColor}20`, 
-                  color: currentAccount.badgeColor 
-                }}
-              >
-                {currentAccount.title}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Compact Time & Scenario Simulation Controls */}
-        <TimeSimulationControls />
-
-        {/* Streamlined 3-Metric KPI Ribbon */}
-        <div className="grid grid-cols-3 gap-3">
-          <div className="p-3 rounded-xl bg-slate-900/70 border border-slate-800 text-left">
-            <div className="text-[10px] font-mono text-slate-400 uppercase">FLEET UTILIZATION</div>
-            <div className="text-xl sm:text-2xl font-black text-white mt-0.5">{corridorTelemetry.utilizationRate}%</div>
-            <div className="text-[10px] text-emerald-400 font-mono mt-0.5">Active Rotation</div>
-          </div>
-
-          <div className="p-3 rounded-xl bg-slate-900/70 border border-slate-800 text-left">
-            <div className="text-[10px] font-mono text-slate-400 uppercase">AVG COMMUTER WAIT</div>
-            <div className="text-xl sm:text-2xl font-black text-amber-400 mt-0.5">
-              {corridorTelemetry.avgWaitTime} min
-            </div>
-            <div className="text-[10px] text-slate-400 font-mono mt-0.5">
-              Baseline: 16.4 min
-            </div>
-          </div>
-
-          <div className="p-3 rounded-xl bg-slate-900/70 border border-slate-800 text-left">
-            <div className="text-[10px] font-mono text-slate-400 uppercase">DEAD-KM ELIMINATED</div>
-            <div className="text-xl sm:text-2xl font-black text-cyan-400 mt-0.5">-34%</div>
-            <div className="text-[10px] text-emerald-400 font-mono mt-0.5">
-              +₹{corridorTelemetry.economics.dailyRevenueUpliftPerVehicle} / veh / day
-            </div>
-          </div>
-        </div>
-
-        {/* Dynamic Views Rendered Automatically by Logged-in Account Role */}
-        {activeAccountRole === 'fleet' && (
-          <div className="space-y-4 animate-fade-in">
-            {/* Interactive GIS Command Center Map */}
-            <CommandCenterMap />
-
-            {/* Predictive Dispatch Action Panel */}
-            <PredictiveDispatchPanel />
-
-            {/* Driver Queue Feed */}
-            <DriverDispatchQueue />
-
-            {/* Fleet Unit Economics */}
-            <FleetEconomicsCalculator />
-          </div>
-        )}
-
-        {activeAccountRole === 'planner' && (
-          <div className="space-y-4 animate-fade-in">
-            <CityPlannerView />
-            <CommandCenterMap />
-          </div>
-        )}
-
-        {activeAccountRole === 'commuter' && (
-          <div className="space-y-4 animate-fade-in">
-            <CommuterPreviewModal />
-            <CommandCenterMap />
-          </div>
-        )}
-
-      </div>
-    </div>
-  );
-}
-
-export default function App() {
-  const handleLaunchDashboard = () => {
-    setTimeout(() => {
-      const el = document.getElementById('command-center-root');
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
-      }
-    }, 100);
-  };
-
-  return (
-    <SimulationProvider>
-      <AppShell handleLaunchDashboard={handleLaunchDashboard} />
-    </SimulationProvider>
-  );
-}
-
-function AppShell({ handleLaunchDashboard }) {
-  const { currentCorridorKey, setCurrentCorridorKey } = useSimulation();
-
-  return (
-    <div className="min-h-screen bg-[#0B0F19] text-slate-100 flex flex-col font-sans selection:bg-emerald-500/30 selection:text-emerald-300">
-      <Navbar
-        currentCorridor={currentCorridorKey}
-        setCorridor={setCurrentCorridorKey}
+      {/* Bionis-style Sidebar */}
+      <Sidebar
+        activeView={activeView}
+        setActiveView={setActiveView}
+        isCollapsed={isCollapsed}
+        setIsCollapsed={setIsCollapsed}
         corridors={CORRIDORS}
       />
 
-      <Hero onLaunchDashboard={handleLaunchDashboard} />
+      {/* Main Viewport Container */}
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        
+        {/* Bionis-style Topbar */}
+        <Topbar
+          isCollapsed={isCollapsed}
+          setIsCollapsed={setIsCollapsed}
+        />
 
-      <DashboardContent />
+        {/* Scrollable Dashboard Canvas */}
+        <main className="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+          
+          {/* Executive KPI Metric Cards (Bionis template pattern) */}
+          <DashboardMetrics />
 
-      {/* Clean Minimal Footer */}
-      <footer className="border-t border-slate-800/80 bg-slate-950 py-6 text-center text-xs text-slate-500 font-mono">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+          {/* View 1: Live Dispatch Command Center (Default Operator View) */}
+          {activeView === 'dispatch' && (
+            <div className="space-y-6 animate-fade-in">
+              {/* Interactive GIS Command Center Map */}
+              <CommandCenterMap />
+
+              {/* Actionable Predictive Dispatch Panel */}
+              <PredictiveDispatchPanel />
+
+              {/* Live Driver Telemetry Queue */}
+              <DriverDispatchQueue />
+            </div>
+          )}
+
+          {/* View 2: Pure Map Inspector */}
+          {activeView === 'map' && (
+            <div className="space-y-6 animate-fade-in">
+              <CommandCenterMap />
+              <PredictiveDispatchPanel />
+            </div>
+          )}
+
+          {/* View 3: Fleet Analytics & Unit Economics */}
+          {activeView === 'analytics' && (
+            <div className="space-y-6 animate-fade-in">
+              <FleetEconomicsCalculator />
+              <CommandCenterMap />
+            </div>
+          )}
+
+          {/* View 4: City Planning & Transit Equity (MMRDA/BMC) */}
+          {activeView === 'planner' && (
+            <div className="space-y-6 animate-fade-in">
+              <CityPlannerView />
+              <CommandCenterMap />
+            </div>
+          )}
+
+          {/* View 5: Commuter ONDC Concourse & Booking */}
+          {activeView === 'commuter' && (
+            <div className="space-y-6 animate-fade-in">
+              <CommuterPreviewModal />
+              <CommandCenterMap />
+            </div>
+          )}
+
+        </main>
+
+        {/* Minimal Clean Footer */}
+        <footer className="border-t border-slate-800/80 bg-[#0B0F19] py-4 px-6 text-xs text-slate-500 font-mono flex flex-col sm:flex-row items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-400" />
             <span className="text-slate-300 font-semibold">LastMileIQ Mumbai Transit Dispatch OS</span>
             <span className="text-slate-600">|</span>
             <span>6 Metro Lines + 3 Suburban Local Lines</span>
           </div>
-          <div className="text-slate-400">
-            CartoDB Open Tiles • Zero Paid API Keys Required
+          <div>
+            CartoDB Open Tiles • 100% Self-Contained Local Execution
           </div>
-        </div>
-      </footer>
+        </footer>
+
+      </div>
+
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <SimulationProvider>
+      <DashboardLayout />
+    </SimulationProvider>
   );
 }
