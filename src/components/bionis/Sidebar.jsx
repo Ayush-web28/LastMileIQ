@@ -12,7 +12,8 @@ import {
   Moon,
   ShieldCheck,
   ChevronRight,
-  Sparkles
+  Sparkles,
+  Layers
 } from 'lucide-react';
 
 export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsCollapsed, corridors }) {
@@ -51,34 +52,50 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
   const metroLines = Object.entries(corridors).filter(([_, item]) => item.category === 'metro');
   const localLines = Object.entries(corridors).filter(([_, item]) => item.category === 'local');
 
-  // Navigation Items (Dedicated to Fleet Dispatch Director & Transit Planner)
-  const navigationItems = [
-    { 
-      id: 'dispatch', 
-      label: 'Live Dispatch', 
-      icon: Activity, 
-      badge: 'Live',
-      description: 'Predictive Concourse Surge & Fleet Rebalancing' 
-    },
-    { 
-      id: 'map', 
-      label: 'Geospatial Map', 
-      icon: Map, 
-      description: 'Google Maps GIS & Station Stress Halos' 
-    },
-    { 
-      id: 'analytics', 
-      label: 'Fleet Analytics', 
-      icon: BarChart3, 
-      description: 'Unit Economics & Dead Mileage Reduction' 
-    },
-    { 
-      id: 'planner', 
-      label: 'City Planning', 
-      icon: Building2, 
-      description: 'MMRDA Transit Equity & Feeder Lane ROI' 
-    },
-  ];
+  // Dynamic Navigation Items tailored per stakeholder role
+  const navigationItems = activeAccountRole === 'fleet'
+    ? [
+        { 
+          id: 'dispatch', 
+          label: 'Live Dispatch', 
+          icon: Activity, 
+          badge: 'Live',
+          description: 'Predictive Concourse Surge & Fleet Rebalancing' 
+        },
+        { 
+          id: 'map', 
+          label: 'Geospatial Fleet Map', 
+          icon: Map, 
+          description: 'Google Maps GIS & Station Stress Halos' 
+        },
+        { 
+          id: 'analytics', 
+          label: 'Fleet Analytics', 
+          icon: BarChart3, 
+          description: 'Unit Economics & Dead Mileage Reduction' 
+        },
+      ]
+    : [
+        { 
+          id: 'planner', 
+          label: 'Municipal Planning', 
+          icon: Building2, 
+          badge: 'MMRDA',
+          description: 'Transit Equity & Station Bottlenecks' 
+        },
+        { 
+          id: 'map', 
+          label: 'Catchment GIS Map', 
+          icon: Map, 
+          description: 'Suburban Coverage & 10-Min Isochrones' 
+        },
+        { 
+          id: 'policy', 
+          label: 'Feeder Curb Policy', 
+          icon: ShieldCheck, 
+          description: 'Dedicated Feeder Bays & Multi-Modal ROI' 
+        },
+      ];
 
   return (
     <aside
@@ -116,7 +133,7 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
           </div>
         </div>
 
-        {/* Selected Line Display (Here and here only - Image 2) */}
+        {/* Selected Line Display (Here and here only) */}
         {!isCollapsed && (
           <div className="relative" ref={corridorRef}>
             <div className={`text-[10px] font-mono uppercase tracking-wider mb-1 font-bold ${
@@ -246,13 +263,24 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
 
       </div>
 
-      {/* Middle Section: Navigation Items */}
-      <div className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-        <div className={`px-2 mb-2 text-[10px] font-mono uppercase tracking-wider font-bold ${
-          isCollapsed ? 'hidden' : 'block'
-        } ${theme === 'dark' ? 'text-slate-500' : 'text-slate-400'}`}>
-          Navigation Views
-        </div>
+      {/* Middle Section: Role-Specific Navigation Tabs */}
+      <div className="flex-1 overflow-y-auto px-3 py-4 space-y-1.5">
+        {!isCollapsed && (
+          <div className="px-2 mb-2 flex items-center justify-between">
+            <span className={`text-[10px] font-mono uppercase tracking-wider font-bold ${
+              theme === 'dark' ? 'text-slate-500' : 'text-slate-400'
+            }`}>
+              Navigation Views
+            </span>
+            <span className={`text-[9px] font-mono font-bold px-1.5 py-0.2 rounded border ${
+              activeAccountRole === 'fleet' 
+                ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30' 
+                : 'bg-cyan-500/15 text-cyan-400 border-cyan-500/30'
+            }`}>
+              {activeAccountRole === 'fleet' ? 'Fleet Ops' : 'MMRDA Policy'}
+            </span>
+          </div>
+        )}
 
         {navigationItems.map((item) => {
           const Icon = item.icon;
@@ -263,9 +291,9 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
               onClick={() => setActiveView(item.id)}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition text-xs font-semibold ${
                 isActive
-                  ? theme === 'dark'
-                    ? 'bg-slate-800 text-white border border-slate-700 shadow-md'
-                    : 'bg-slate-100 text-slate-900 border border-slate-300 shadow-sm'
+                  ? activeAccountRole === 'fleet'
+                    ? 'bg-emerald-500/15 border border-emerald-500/50 text-emerald-300 shadow-md shadow-emerald-500/10'
+                    : 'bg-cyan-500/15 border border-cyan-500/50 text-cyan-300 shadow-md shadow-cyan-500/10'
                   : theme === 'dark'
                     ? 'text-slate-400 hover:text-slate-100 hover:bg-slate-900/60'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
@@ -273,13 +301,19 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
               title={item.label}
             >
               <Icon className={`w-4 h-4 shrink-0 ${
-                isActive ? 'text-emerald-500' : theme === 'dark' ? 'text-slate-500' : 'text-slate-400'
+                isActive 
+                  ? activeAccountRole === 'fleet' ? 'text-emerald-400' : 'text-cyan-400' 
+                  : theme === 'dark' ? 'text-slate-500' : 'text-slate-400'
               }`} />
               {!isCollapsed && (
                 <div className="text-left flex-1 truncate flex items-center justify-between">
                   <span className="truncate">{item.label}</span>
                   {item.badge && (
-                    <span className="px-1.5 py-0.2 rounded text-[9px] font-mono font-bold bg-emerald-500/20 text-emerald-400">
+                    <span className={`px-1.5 py-0.2 rounded text-[9px] font-mono font-black ${
+                      activeAccountRole === 'fleet'
+                        ? 'bg-emerald-500/20 text-emerald-400'
+                        : 'bg-cyan-500/20 text-cyan-400'
+                    }`}>
                       {item.badge}
                     </span>
                   )}
@@ -322,7 +356,7 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
           )}
         </button>
 
-        {/* 2-Account System Role Switcher (Fleet Dispatch Director & Transit Planner only) */}
+        {/* 2-Account System Role Switcher (Fleet Dispatch Director & Transit Planner) */}
         <div className="relative" ref={accountRef}>
           <button
             onClick={() => setAccountMenuOpen(!accountMenuOpen)}
@@ -364,7 +398,7 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
             )}
           </button>
 
-          {/* Account Profile Switcher Dropdown (Only 2 Roles) */}
+          {/* Account Profile Switcher Dropdown (2 Roles) */}
           {accountMenuOpen && (
             <div className={`absolute bottom-full left-0 mb-2 w-72 rounded-2xl border shadow-2xl p-3 z-50 animate-in fade-in zoom-in-95 ${
               theme === 'dark' ? 'bg-[#0F172A] border-slate-700 text-white' : 'bg-white border-slate-200 text-slate-900'
@@ -373,7 +407,7 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
                 <span className={`text-[10px] font-mono uppercase tracking-wider block font-bold ${
                   theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
                 }`}>
-                  Signed-In Account
+                  Signed-In Persona
                 </span>
                 <div className="text-xs font-bold mt-0.5 truncate">
                   {currentAccount.organization}
@@ -383,7 +417,7 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
               <div className={`text-[10px] font-mono uppercase tracking-wider px-1 pb-1 font-semibold ${
                 theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
               }`}>
-                Switch Account Role:
+                Switch Stakeholder Role:
               </div>
 
               <div className="space-y-1.5">
@@ -394,7 +428,7 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
                       key={acc.id}
                       onClick={() => {
                         setActiveAccountRole(acc.roleKey);
-                        // Auto-switch view corresponding to selected persona
+                        // Auto-switch default tab corresponding to selected persona
                         if (acc.roleKey === 'fleet') setActiveView('dispatch');
                         if (acc.roleKey === 'planner') setActiveView('planner');
                         setAccountMenuOpen(false);

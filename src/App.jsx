@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ErrorBoundary from './components/ErrorBoundary';
 import Sidebar from './components/bionis/Sidebar';
 import DashboardMetrics from './components/bionis/DashboardMetrics';
@@ -7,6 +7,7 @@ import PredictiveDispatchPanel from './components/PredictiveDispatchPanel';
 import DriverDispatchQueue from './components/DriverDispatchQueue';
 import FleetEconomicsCalculator from './components/FleetEconomicsCalculator';
 import CityPlannerView from './components/CityPlannerView';
+import TransitPolicyView from './components/TransitPolicyView';
 import { SimulationProvider, useSimulation } from './context/SimulationContext';
 import { CORRIDORS } from './data/corridors';
 import { CheckCircle2 } from 'lucide-react';
@@ -19,8 +20,22 @@ function DashboardLayout() {
   } = useSimulation();
 
   // Tab View Switcher (Controlled exclusively via Sidebar Navigation)
-  const [activeView, setActiveView] = useState('dispatch'); // 'dispatch' | 'map' | 'analytics' | 'planner'
+  // Default based on account role: 'dispatch' for fleet, 'planner' for planner
+  const [activeView, setActiveView] = useState('dispatch');
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  // Auto-sync view when account role changes
+  useEffect(() => {
+    if (activeAccountRole === 'fleet') {
+      if (activeView === 'planner' || activeView === 'policy') {
+        setActiveView('dispatch');
+      }
+    } else if (activeAccountRole === 'planner') {
+      if (activeView === 'dispatch' || activeView === 'analytics') {
+        setActiveView('planner');
+      }
+    }
+  }, [activeAccountRole]);
 
   return (
     <div className={`h-screen flex font-sans overflow-hidden select-none transition-colors duration-200 ${
@@ -48,7 +63,7 @@ function DashboardLayout() {
         </div>
       )}
 
-      {/* Bionis-style Clean Sidebar (Primary Navigation, Active Line Selector, 2 Accounts) */}
+      {/* Bionis-style Clean Sidebar (Role-Tailored Navigation, Corridor Selector, Accounts) */}
       <Sidebar
         activeView={activeView}
         setActiveView={setActiveView}
@@ -63,39 +78,40 @@ function DashboardLayout() {
         {/* Main Tab Canvas */}
         <main className="flex-1 overflow-hidden flex flex-col min-h-0">
           
-          {/* Tab 1: Live Dispatch (Scrollable, full-width spacious layout) */}
+          {/* Tab: Live Dispatch (Fleet Operator - Scrollable, full-width spacious layout) */}
           {activeView === 'dispatch' && (
             <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 scrollbar-thin animate-fade-in">
-              {/* Actionable Predictive Dispatch Panel */}
               <PredictiveDispatchPanel />
-
-              {/* Active Driver Dispatch Queue (Full-width multi-column grid) */}
               <DriverDispatchQueue />
             </div>
           )}
 
-          {/* Tab 2: Geospatial Map (Full-height Google Maps Command Center) */}
+          {/* Tab: Geospatial Map (Full-height Google Maps Command Center) */}
           {activeView === 'map' && (
             <div className="flex-1 flex flex-col min-h-0 p-3 sm:p-4 animate-fade-in overflow-hidden">
               <CommandCenterMap className="flex-1 h-full min-h-0" />
             </div>
           )}
 
-          {/* Tab 3: Fleet Analytics (Includes Executive KPIs + ROI Calculator) */}
+          {/* Tab: Fleet Analytics (Fleet Operator - Includes Executive KPIs + ROI Calculator) */}
           {activeView === 'analytics' && (
             <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 scrollbar-thin animate-fade-in">
-              {/* Executive KPI Metric Cards (Moved here from dispatch per request) */}
               <DashboardMetrics />
-
-              {/* Fleet ROI & Unit Economics Calculator */}
               <FleetEconomicsCalculator />
             </div>
           )}
 
-          {/* Tab 4: City Planning (MMRDA / BMC Transit Equity & Chokepoints) */}
+          {/* Tab: Municipal Planning (Transit Planner - MMRDA / BMC Transit Equity & Bottlenecks) */}
           {activeView === 'planner' && (
             <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 scrollbar-thin animate-fade-in">
               <CityPlannerView />
+            </div>
+          )}
+
+          {/* Tab: Feeder Curb Policy (Transit Planner - MMRDA Feeder Bay Allocation & Briefs) */}
+          {activeView === 'policy' && (
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 scrollbar-thin animate-fade-in">
+              <TransitPolicyView />
             </div>
           )}
 
