@@ -1,44 +1,53 @@
 import React, { useState } from 'react';
 import Sidebar from './components/bionis/Sidebar';
-import Topbar from './components/bionis/Topbar';
 import DashboardMetrics from './components/bionis/DashboardMetrics';
 import CommandCenterMap from './components/CommandCenterMap';
 import PredictiveDispatchPanel from './components/PredictiveDispatchPanel';
 import DriverDispatchQueue from './components/DriverDispatchQueue';
 import FleetEconomicsCalculator from './components/FleetEconomicsCalculator';
 import CityPlannerView from './components/CityPlannerView';
-import CommuterPreviewModal from './components/CommuterPreviewModal';
 import { SimulationProvider, useSimulation } from './context/SimulationContext';
 import { CORRIDORS } from './data/corridors';
 import { CheckCircle2 } from 'lucide-react';
 
 function DashboardLayout() {
   const { 
+    theme,
     activeAccountRole, 
     activeToast 
   } = useSimulation();
 
   // Active navigation view (default synced with account role)
-  const [activeView, setActiveView] = useState('dispatch'); // 'dispatch' | 'map' | 'analytics' | 'planner' | 'commuter'
+  const [activeView, setActiveView] = useState('dispatch'); // 'dispatch' | 'map' | 'analytics' | 'planner'
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#080C14] text-slate-100 flex font-sans selection:bg-emerald-500/30 selection:text-emerald-300">
+    <div className={`min-h-screen flex font-sans transition-colors duration-200 ${
+      theme === 'dark' 
+        ? 'bg-[#080C14] text-slate-100 selection:bg-emerald-500/30 selection:text-emerald-300' 
+        : 'bg-slate-50 text-slate-900 selection:bg-emerald-500/20 selection:text-emerald-700'
+    }`}>
       
-      {/* Toast Alert */}
+      {/* Toast Alert Feedback */}
       {activeToast && (
-        <div className="fixed bottom-6 right-6 z-50 max-w-sm p-3.5 rounded-xl bg-slate-900 border border-emerald-500/50 shadow-2xl text-white animate-in slide-in-from-bottom-5">
-          <div className="flex items-start gap-2.5">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+        <div className={`fixed bottom-6 right-6 z-50 max-w-sm p-4 rounded-2xl border shadow-2xl animate-in slide-in-from-bottom-5 ${
+          theme === 'dark' 
+            ? 'bg-slate-900/95 border-emerald-500/60 text-white' 
+            : 'bg-white border-emerald-500/60 text-slate-900 shadow-emerald-500/10'
+        }`}>
+          <div className="flex items-start gap-3">
+            <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
             <div>
-              <div className="text-xs font-bold text-white">{activeToast.title}</div>
-              <div className="text-[11px] text-slate-300 mt-0.5">{activeToast.message}</div>
+              <div className="text-xs font-black">{activeToast.title}</div>
+              <div className={`text-[11px] mt-0.5 ${theme === 'dark' ? 'text-slate-300' : 'text-slate-600'}`}>
+                {activeToast.message}
+              </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* Bionis-style Sidebar */}
+      {/* Bionis-style Clean Sidebar (Contains Corridor Selector, Light/Dark Toggle & 2 Accounts) */}
       <Sidebar
         activeView={activeView}
         setActiveView={setActiveView}
@@ -47,28 +56,22 @@ function DashboardLayout() {
         corridors={CORRIDORS}
       />
 
-      {/* Main Viewport Container */}
+      {/* Main Viewport Container (No Topbar - direct immersive command canvas) */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         
-        {/* Bionis-style Topbar */}
-        <Topbar
-          isCollapsed={isCollapsed}
-          setIsCollapsed={setIsCollapsed}
-        />
-
         {/* Scrollable Dashboard Canvas */}
         <main className="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
           
           {/* Executive KPI Metric Cards (Bionis template pattern) */}
           <DashboardMetrics />
 
-          {/* View 1: Live Dispatch Command Center (Default Operator View) */}
+          {/* View 1: Live Dispatch Command Center (Fleet Dispatch Director Default) */}
           {activeView === 'dispatch' && (
             <div className="space-y-6 animate-fade-in">
-              {/* Interactive GIS Command Center Map */}
+              {/* Google Maps GIS Command Center with highlighted stations */}
               <CommandCenterMap />
 
-              {/* Actionable Predictive Dispatch Panel */}
+              {/* Actionable Predictive Dispatch Panel with surge stress buttons */}
               <PredictiveDispatchPanel />
 
               {/* Live Driver Telemetry Queue */}
@@ -84,7 +87,7 @@ function DashboardLayout() {
             </div>
           )}
 
-          {/* View 3: Fleet Analytics & Unit Economics */}
+          {/* View 3: Fleet ROI & Unit Economics */}
           {activeView === 'analytics' && (
             <div className="space-y-6 animate-fade-in">
               <FleetEconomicsCalculator />
@@ -92,7 +95,7 @@ function DashboardLayout() {
             </div>
           )}
 
-          {/* View 4: City Planning & Transit Equity (MMRDA/BMC) */}
+          {/* View 4: City Planning & Transit Equity (Transit Planner Default) */}
           {activeView === 'planner' && (
             <div className="space-y-6 animate-fade-in">
               <CityPlannerView />
@@ -100,26 +103,24 @@ function DashboardLayout() {
             </div>
           )}
 
-          {/* View 5: Commuter ONDC Concourse & Booking */}
-          {activeView === 'commuter' && (
-            <div className="space-y-6 animate-fade-in">
-              <CommuterPreviewModal />
-              <CommandCenterMap />
-            </div>
-          )}
-
         </main>
 
         {/* Minimal Clean Footer */}
-        <footer className="border-t border-slate-800/80 bg-[#0B0F19] py-4 px-6 text-xs text-slate-500 font-mono flex flex-col sm:flex-row items-center justify-between gap-2">
+        <footer className={`border-t py-3.5 px-6 text-xs font-mono flex flex-col sm:flex-row items-center justify-between gap-2 transition-colors ${
+          theme === 'dark' 
+            ? 'border-slate-800/80 bg-[#0B0F19] text-slate-500' 
+            : 'border-slate-200 bg-white text-slate-600'
+        }`}>
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400" />
-            <span className="text-slate-300 font-semibold">LastMileIQ Mumbai Transit Dispatch OS</span>
-            <span className="text-slate-600">|</span>
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className={`font-bold ${theme === 'dark' ? 'text-slate-300' : 'text-slate-800'}`}>
+              LastMileIQ Mumbai Transit Dispatch OS
+            </span>
+            <span className="text-slate-500">|</span>
             <span>6 Metro Lines + 3 Suburban Local Lines</span>
           </div>
-          <div>
-            CartoDB Open Tiles • 100% Self-Contained Local Execution
+          <div className="text-emerald-500 font-semibold">
+            Google Maps Engine • Zero External API Key Required
           </div>
         </footer>
 
