@@ -165,15 +165,15 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
             onClick={toggleTheme}
             className={`p-1.5 rounded-lg border transition ${
               theme === 'dark'
-                ? 'border-[#1E2F5B] text-slate-400 hover:text-amber-300 hover:border-slate-700 bg-[#111C38]/60'
-                : 'border-slate-200 text-slate-500 hover:text-slate-900 hover:border-slate-300 bg-slate-50'
+                ? 'border-[#1E2F5B] hover:border-slate-600 bg-[#111C38]/60 shadow-sm'
+                : 'border-slate-200 hover:border-slate-300 bg-slate-50 shadow-sm'
             }`}
             title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
           >
             {theme === 'dark' ? (
-              <Moon className="w-3.5 h-3.5" />
+              <Moon className="w-3.5 h-3.5 text-slate-300 hover:text-white transition-colors" />
             ) : (
-              <Sun className="w-3.5 h-3.5" />
+              <Sun className="w-3.5 h-3.5 text-amber-500 hover:text-amber-600 transition-colors" />
             )}
           </button>
         </div>
