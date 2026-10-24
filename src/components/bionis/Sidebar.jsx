@@ -101,27 +101,27 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
     <aside
       className={`fixed lg:sticky top-0 left-0 z-40 h-screen transition-all duration-300 ease-in-out border-r flex flex-col justify-between select-none ${
         theme === 'dark'
-          ? 'border-slate-800/80 bg-[#0B0F19]/95 text-slate-100'
+          ? 'border-[#1E2F5B]/80 bg-[#0B132B]/95 text-slate-100'
           : 'border-slate-200 bg-white/95 text-slate-900 shadow-lg'
       } ${isCollapsed ? 'w-20' : 'w-72'}`}
     >
       {/* Top Section: Brand Header & Selected Corridor Display */}
-      <div className={`p-4 space-y-3.5 border-b ${theme === 'dark' ? 'border-slate-800/80' : 'border-slate-200'}`}>
+      <div className={`p-4 space-y-3.5 border-b ${theme === 'dark' ? 'border-[#1E2F5B]/80' : 'border-slate-200'}`}>
         
         {/* Brand Header with Subtle Minimal Light/Dark Toggle */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5 overflow-hidden">
-            <div className="relative flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500/20 to-teal-500/10 border border-emerald-500/40 shrink-0 shadow-lg shadow-emerald-500/10">
-              <Zap className="w-4 h-4 text-emerald-400" />
-              <div className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <div className="relative flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500/25 to-sky-500/20 border border-amber-500/50 shrink-0 shadow-lg shadow-amber-500/10">
+              <Zap className="w-4 h-4 text-amber-400" />
+              <div className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
             </div>
             {!isCollapsed && (
               <div>
                 <div className="flex items-center gap-1.5">
                   <span className={`font-black text-base tracking-tight ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
-                    LastMile<span className="text-emerald-500">IQ</span>
+                    LastMile<span className="text-amber-400">IQ</span>
                   </span>
-                  <span className="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-emerald-500/15 text-emerald-500 border border-emerald-500/30">
+                  <span className="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-sky-500/15 text-sky-400 border border-sky-500/30">
                     Mumbai
                   </span>
                 </div>
@@ -137,7 +137,7 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
             onClick={toggleTheme}
             className={`p-1.5 rounded-lg border transition ${
               theme === 'dark'
-                ? 'border-slate-800 text-slate-400 hover:text-amber-300 hover:border-slate-700 bg-slate-900/60'
+                ? 'border-[#1E2F5B] text-slate-400 hover:text-amber-300 hover:border-slate-700 bg-[#111C38]/60'
                 : 'border-slate-200 text-slate-500 hover:text-slate-900 hover:border-slate-300 bg-slate-50'
             }`}
             title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
@@ -163,8 +163,8 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
               onClick={() => setCorridorMenuOpen(!corridorMenuOpen)}
               className={`w-full flex items-center justify-between p-3 rounded-xl border transition text-left text-xs shadow-md ${
                 theme === 'dark'
-                  ? 'bg-slate-900/90 border-slate-700/80 hover:border-emerald-500/60 hover:bg-slate-800/80'
-                  : 'bg-slate-50 border-slate-200 hover:border-emerald-500/60 hover:bg-slate-100'
+                  ? 'bg-[#111C38] border-[#1E2F5B] hover:border-sky-500/60 hover:bg-[#162347]'
+                  : 'bg-slate-50 border-slate-200 hover:border-sky-500/60 hover:bg-slate-100'
               }`}
               title="Click to switch Mumbai Transit Corridor"
             >
@@ -175,7 +175,7 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
                 />
                 <div className="truncate">
                   <span className={`text-[9px] font-mono font-bold block uppercase tracking-wide ${
-                    theme === 'dark' ? 'text-emerald-400' : 'text-emerald-600'
+                    theme === 'dark' ? 'text-sky-400' : 'text-sky-700'
                   }`}>
                     {activeCorridor.categoryLabel || (activeCorridor.category === 'metro' ? 'Metro Line' : 'Suburban Local')}
                   </span>
@@ -201,11 +201,11 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
             {corridorMenuOpen && (
               <div className={`absolute left-0 mt-2 w-80 rounded-2xl border shadow-2xl p-2.5 z-50 animate-in fade-in zoom-in-95 max-h-[440px] overflow-y-auto ${
                 theme === 'dark'
-                  ? 'bg-[#0F172A] border-slate-700 text-slate-200'
+                  ? 'bg-[#111C38] border-[#1E2F5B] text-slate-200 shadow-2xl shadow-black/80'
                   : 'bg-white border-slate-200 text-slate-800'
               }`}>
                 {/* 6 Metro Lines */}
-                <div className="text-[10px] font-mono text-cyan-500 px-2.5 py-1 uppercase tracking-wider font-bold">
+                <div className="text-[10px] font-mono text-sky-400 px-2.5 py-1 uppercase tracking-wider font-bold">
                   🚇 Mumbai Metro (6 Lines)
                 </div>
                 {metroLines.map(([key, item]) => {
@@ -220,10 +220,10 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
                       className={`w-full text-left p-2.5 rounded-xl flex items-start gap-2.5 transition text-xs mb-1 ${
                         isSelected
                           ? theme === 'dark'
-                            ? 'bg-emerald-500/20 border border-emerald-500/50 text-white font-bold'
-                            : 'bg-emerald-50 border border-emerald-500/50 text-emerald-950 font-bold'
+                            ? 'bg-sky-500/20 border border-sky-500/50 text-white font-bold'
+                            : 'bg-sky-50 border border-sky-500/50 text-sky-950 font-bold'
                           : theme === 'dark'
-                            ? 'hover:bg-slate-800/80 text-slate-300'
+                            ? 'hover:bg-[#162347] text-slate-300'
                             : 'hover:bg-slate-100 text-slate-700'
                       }`}
                     >
@@ -234,13 +234,13 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
                           {item.stationsCount} Stations • {item.lengthKm} km
                         </div>
                       </div>
-                      {isSelected && <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />}
+                      {isSelected && <Check className="w-3.5 h-3.5 text-sky-400 shrink-0 mt-0.5" />}
                     </button>
                   );
                 })}
 
                 {/* 3 Suburban Local Lines */}
-                <div className="text-[10px] font-mono text-amber-500 px-2.5 pt-3 py-1 uppercase tracking-wider font-bold border-t mt-2">
+                <div className="text-[10px] font-mono text-amber-400 px-2.5 pt-3 py-1 uppercase tracking-wider font-bold border-t border-[#1E2F5B] mt-2">
                   🚆 Mumbai Suburban Local (3 Lines)
                 </div>
                 {localLines.map(([key, item]) => {
@@ -255,10 +255,10 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
                       className={`w-full text-left p-2.5 rounded-xl flex items-start gap-2.5 transition text-xs mb-1 ${
                         isSelected
                           ? theme === 'dark'
-                            ? 'bg-emerald-500/20 border border-emerald-500/50 text-white font-bold'
-                            : 'bg-emerald-50 border border-emerald-500/50 text-emerald-950 font-bold'
+                            ? 'bg-amber-500/20 border border-amber-500/50 text-white font-bold'
+                            : 'bg-amber-50 border border-amber-500/50 text-amber-950 font-bold'
                           : theme === 'dark'
-                            ? 'hover:bg-slate-800/80 text-slate-300'
+                            ? 'hover:bg-[#162347] text-slate-300'
                             : 'hover:bg-slate-100 text-slate-700'
                       }`}
                     >
@@ -269,7 +269,7 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
                           {item.stationsCount} Stations • {item.lengthKm} km
                         </div>
                       </div>
-                      {isSelected && <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />}
+                      {isSelected && <Check className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />}
                     </button>
                   );
                 })}
@@ -291,8 +291,8 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
             </span>
             <span className={`text-[9px] font-mono font-bold px-1.5 py-0.2 rounded border ${
               activeAccountRole === 'fleet' 
-                ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30' 
-                : 'bg-cyan-500/15 text-cyan-400 border-cyan-500/30'
+                ? 'bg-sky-500/15 text-sky-400 border-sky-500/30' 
+                : 'bg-amber-500/15 text-amber-400 border-amber-500/30'
             }`}>
               {activeAccountRole === 'fleet' ? 'Fleet Ops' : 'MMRDA Policy'}
             </span>
@@ -309,17 +309,17 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition text-xs font-semibold ${
                 isActive
                   ? activeAccountRole === 'fleet'
-                    ? 'bg-emerald-500/15 border border-emerald-500/50 text-emerald-300 shadow-md shadow-emerald-500/10'
-                    : 'bg-cyan-500/15 border border-cyan-500/50 text-cyan-300 shadow-md shadow-cyan-500/10'
+                    ? 'bg-sky-500/20 border border-sky-500/50 text-sky-200 shadow-md shadow-sky-950/40'
+                    : 'bg-amber-500/20 border border-amber-500/50 text-amber-200 shadow-md shadow-amber-950/40'
                   : theme === 'dark'
-                    ? 'text-slate-400 hover:text-slate-100 hover:bg-slate-900/60'
+                    ? 'text-slate-400 hover:text-slate-100 hover:bg-[#111C38]/60'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               } ${isCollapsed ? 'justify-center' : ''}`}
               title={item.label}
             >
               <Icon className={`w-4 h-4 shrink-0 ${
                 isActive 
-                  ? activeAccountRole === 'fleet' ? 'text-emerald-400' : 'text-cyan-400' 
+                  ? activeAccountRole === 'fleet' ? 'text-sky-400' : 'text-amber-400' 
                   : theme === 'dark' ? 'text-slate-500' : 'text-slate-400'
               }`} />
               {!isCollapsed && (
@@ -328,8 +328,8 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
                   {item.badge && (
                     <span className={`px-1.5 py-0.2 rounded text-[9px] font-mono font-black ${
                       activeAccountRole === 'fleet'
-                        ? 'bg-emerald-500/20 text-emerald-400'
-                        : 'bg-cyan-500/20 text-cyan-400'
+                        ? 'bg-sky-500/20 text-sky-300'
+                        : 'bg-amber-500/20 text-amber-300'
                     }`}>
                       {item.badge}
                     </span>
@@ -342,7 +342,7 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
       </div>
 
       {/* Bottom Section: 2-Account Persona Switcher */}
-      <div className={`p-3 border-t space-y-2.5 ${theme === 'dark' ? 'border-slate-800/80' : 'border-slate-200'}`}>
+      <div className={`p-3 border-t space-y-2.5 ${theme === 'dark' ? 'border-[#1E2F5B]/80' : 'border-slate-200'}`}>
         
         {/* 2-Account System Role Switcher (Fleet Dispatch Director & Transit Planner) */}
         <div className="relative" ref={accountRef}>
@@ -350,7 +350,7 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
             onClick={() => setAccountMenuOpen(!accountMenuOpen)}
             className={`w-full flex items-center gap-2.5 p-2 rounded-xl border transition text-left text-xs ${
               theme === 'dark'
-                ? 'bg-slate-900 border-slate-800 hover:border-slate-700'
+                ? 'bg-[#111C38] border-[#1E2F5B] hover:border-sky-500/50'
                 : 'bg-slate-50 border-slate-200 hover:border-slate-300'
             } ${isCollapsed ? 'justify-center' : 'justify-between'}`}
             title="Switch Stakeholder Persona (Fleet Dispatch Director / Transit Planner)"
@@ -389,9 +389,9 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
           {/* Account Profile Switcher Dropdown (2 Roles) */}
           {accountMenuOpen && (
             <div className={`absolute bottom-full left-0 mb-2 w-72 rounded-2xl border shadow-2xl p-3 z-50 animate-in fade-in zoom-in-95 ${
-              theme === 'dark' ? 'bg-[#0F172A] border-slate-700 text-white' : 'bg-white border-slate-200 text-slate-900'
+              theme === 'dark' ? 'bg-[#111C38] border-[#1E2F5B] text-white shadow-black/80' : 'bg-white border-slate-200 text-slate-900'
             }`}>
-              <div className={`pb-2.5 mb-2.5 border-b ${theme === 'dark' ? 'border-slate-800' : 'border-slate-100'}`}>
+              <div className={`pb-2.5 mb-2.5 border-b ${theme === 'dark' ? 'border-[#1E2F5B]' : 'border-slate-100'}`}>
                 <span className={`text-[10px] font-mono uppercase tracking-wider block font-bold ${
                   theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
                 }`}>
@@ -424,10 +424,10 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
                       className={`w-full text-left p-2.5 rounded-xl border transition flex items-start gap-2.5 ${
                         isSelected
                           ? theme === 'dark'
-                            ? 'bg-slate-800 border-emerald-500/70 shadow-md ring-1 ring-emerald-500/30'
-                            : 'bg-emerald-50 border-emerald-500/70 shadow-sm ring-1 ring-emerald-500/30'
+                            ? 'bg-[#162347] border-sky-500/70 shadow-md ring-1 ring-sky-500/30'
+                            : 'bg-sky-50 border-sky-500/70 shadow-sm ring-1 ring-sky-500/30'
                           : theme === 'dark'
-                            ? 'bg-slate-950/60 border-slate-800/80 hover:border-slate-700'
+                            ? 'bg-[#0B132B]/80 border-[#1E2F5B] hover:border-slate-700'
                             : 'bg-slate-50 border-slate-200 hover:border-slate-300'
                       }`}
                     >
@@ -445,7 +445,7 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
                           <span className="text-xs font-bold truncate">{acc.name}</span>
-                          {isSelected && <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />}
+                          {isSelected && <Check className="w-3.5 h-3.5 text-sky-400 shrink-0" />}
                         </div>
                         <div className="text-[10px] font-semibold truncate" style={{ color: acc.badgeColor }}>
                           {acc.title}

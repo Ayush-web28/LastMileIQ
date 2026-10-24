@@ -36,8 +36,8 @@ export default function TimeSimulationControls() {
             onClick={() => setIsPlaying(!isPlaying)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold text-xs transition ${
               isPlaying
-                ? 'bg-amber-500 hover:bg-amber-400 text-slate-950'
-                : 'bg-emerald-500 hover:bg-emerald-400 text-slate-950'
+                ? 'bg-sky-600 hover:bg-sky-500 text-white'
+                : 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black'
             }`}
           >
             {isPlaying ? (
@@ -78,7 +78,7 @@ export default function TimeSimulationControls() {
             step="0.25"
             value={timeOfDay}
             onChange={(e) => setTimeOfDay(parseFloat(e.target.value))}
-            className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-400"
+            className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-400"
           />
           <span className="text-[10px] font-mono text-slate-500">11 PM</span>
         </div>

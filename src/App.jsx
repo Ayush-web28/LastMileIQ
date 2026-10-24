@@ -40,19 +40,19 @@ function DashboardLayout() {
   return (
     <div className={`h-screen flex font-sans overflow-hidden select-none transition-colors duration-200 ${
       theme === 'dark' 
-        ? 'bg-[#080C14] text-slate-100 selection:bg-emerald-500/30 selection:text-emerald-300' 
-        : 'bg-slate-100 text-slate-900 selection:bg-emerald-500/20 selection:text-emerald-700'
+        ? 'bg-[#0B132B] text-slate-100 selection:bg-amber-500/30 selection:text-amber-200' 
+        : 'bg-[#F0F4F8] text-slate-900 selection:bg-sky-500/20 selection:text-sky-800'
     }`}>
       
       {/* Toast Alert Feedback */}
       {activeToast && (
         <div className={`fixed bottom-6 right-6 z-50 max-w-sm p-3.5 rounded-2xl border shadow-2xl animate-in slide-in-from-bottom-5 ${
           theme === 'dark' 
-            ? 'bg-slate-900/95 border-emerald-500/60 text-white' 
-            : 'bg-white border-emerald-500/60 text-slate-900 shadow-emerald-500/10'
+            ? 'bg-[#111C38]/95 border-sky-500/60 text-white shadow-sky-950/40' 
+            : 'bg-white border-sky-500/60 text-slate-900 shadow-sky-500/10'
         }`}>
           <div className="flex items-start gap-3">
-            <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
+            <CheckCircle2 className="w-5 h-5 text-sky-400 shrink-0 mt-0.5" />
             <div>
               <div className="text-xs font-black">{activeToast.title}</div>
               <div className={`text-[11px] mt-0.5 ${theme === 'dark' ? 'text-slate-300' : 'text-slate-600'}`}>

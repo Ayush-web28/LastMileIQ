@@ -217,8 +217,8 @@ export default function HeroCanvas() {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
       <canvas ref={canvasRef} className="w-full h-full block opacity-60" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0B0F19] via-transparent to-[#0B0F19]/80" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#0B0F19] via-transparent to-[#0B0F19]/80" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0B132B] via-transparent to-[#0B132B]/80" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#0B132B] via-transparent to-[#0B132B]/80" />
     </div>
   );
 }

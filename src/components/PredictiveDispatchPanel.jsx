@@ -47,7 +47,7 @@ export default function PredictiveDispatchPanel() {
       {/* Top Strip: Scenario Injections & Quick Stress Test */}
       <div className={`p-2 sm:px-3 rounded-xl border flex flex-wrap items-center justify-between gap-2 text-xs transition ${
         theme === 'dark' 
-          ? 'bg-slate-900/80 border-slate-800 text-slate-300' 
+          ? 'bg-[#111C38]/90 border-[#1E2F5B] text-slate-300' 
           : 'bg-white border-slate-200 text-slate-700 shadow-sm'
       }`}>
         <div className="flex items-center gap-1.5">
@@ -64,7 +64,7 @@ export default function PredictiveDispatchPanel() {
               scenarios.monsoon
                 ? 'bg-blue-500/20 text-blue-400 border-blue-500/50 font-bold'
                 : theme === 'dark'
-                  ? 'bg-slate-950 border-slate-800 text-slate-400 hover:text-white'
+                  ? 'bg-[#0B132B] border-[#1E2F5B] text-slate-400 hover:text-white'
                   : 'bg-slate-100 border-slate-200 text-slate-600 hover:text-black'
             }`}
             title="Spikes commuter demand +50% due to rain"
@@ -79,7 +79,7 @@ export default function PredictiveDispatchPanel() {
               scenarios.doubleTrain
                 ? 'bg-rose-500/20 text-rose-400 border-rose-500/50 font-bold'
                 : theme === 'dark'
-                  ? 'bg-slate-950 border-slate-800 text-slate-400 hover:text-white'
+                  ? 'bg-[#0B132B] border-[#1E2F5B] text-slate-400 hover:text-white'
                   : 'bg-slate-100 border-slate-200 text-slate-600 hover:text-black'
             }`}
             title="Simulates dual trains discharging concurrently"
@@ -94,7 +94,7 @@ export default function PredictiveDispatchPanel() {
               scenarios.evChargingSurge
                 ? 'bg-amber-500/20 text-amber-400 border-amber-500/50 font-bold'
                 : theme === 'dark'
-                  ? 'bg-slate-950 border-slate-800 text-slate-400 hover:text-white'
+                  ? 'bg-[#0B132B] border-[#1E2F5B] text-slate-400 hover:text-white'
                   : 'bg-slate-100 border-slate-200 text-slate-600 hover:text-black'
             }`}
             title="Removes 25% fleet to charging depot"
@@ -120,9 +120,9 @@ export default function PredictiveDispatchPanel() {
               onClick={() => setSelectedStationId(stn.id)}
               className={`px-3 py-1 rounded-lg text-xs font-mono transition whitespace-nowrap border ${
                 isSelected
-                  ? 'bg-emerald-500 text-slate-950 font-bold border-emerald-400 shadow-md'
+                  ? 'bg-sky-600 text-white font-bold border-sky-400 shadow-md'
                   : theme === 'dark'
-                    ? 'bg-slate-900 border-slate-800 text-slate-300 hover:text-white hover:border-slate-700'
+                    ? 'bg-[#0B132B] border-[#1E2F5B] text-slate-300 hover:text-white hover:border-sky-500/50'
                     : 'bg-white border-slate-200 text-slate-700 hover:text-slate-900 shadow-sm'
               }`}
             >
@@ -135,13 +135,13 @@ export default function PredictiveDispatchPanel() {
       {/* Streamlined Predictive Dispatch Card */}
       <div className={`p-4 sm:p-5 rounded-2xl border backdrop-blur-xl shadow-xl space-y-4 transition ${
         theme === 'dark'
-          ? 'bg-slate-900/90 border-slate-800 text-slate-100'
+          ? 'bg-[#111C38]/95 border-[#1E2F5B] text-slate-100 shadow-2xl shadow-black/40'
           : 'bg-white border-slate-200 text-slate-900'
       }`}>
         
         {/* Header: Station & Status */}
         <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b ${
-          theme === 'dark' ? 'border-slate-800' : 'border-slate-200'
+          theme === 'dark' ? 'border-[#1E2F5B]' : 'border-slate-200'
         }`}>
           <div>
             <div className="flex items-center gap-2">
@@ -149,14 +149,14 @@ export default function PredictiveDispatchPanel() {
                 {name}
               </span>
               <span className={`text-xs font-mono font-bold px-1.5 py-0.5 rounded ${
-                theme === 'dark' ? 'bg-slate-800 text-slate-400' : 'bg-slate-100 text-slate-600'
+                theme === 'dark' ? 'bg-[#0B132B] text-slate-400 border border-[#1E2F5B]' : 'bg-slate-100 text-slate-600'
               }`}>
                 {code}
               </span>
             </div>
             <div className={`text-xs mt-0.5 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
               High-deficit concourse exit:{' '}
-              <strong className="text-emerald-500 font-bold">{highDeficitGate.gateName}</strong>
+              <strong className="text-amber-400 font-bold">{highDeficitGate.gateName}</strong>
             </div>
           </div>
 
@@ -177,7 +177,7 @@ export default function PredictiveDispatchPanel() {
         {/* 3 Vital Stats Row */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div className={`p-3 rounded-xl border text-left ${
-            theme === 'dark' ? 'bg-slate-950/70 border-slate-800' : 'bg-slate-50 border-slate-200'
+            theme === 'dark' ? 'bg-[#0B132B]/70 border-[#1E2F5B]' : 'bg-slate-50 border-slate-200'
           }`}>
             <div className={`text-[10px] font-mono uppercase font-bold ${
               theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
@@ -195,7 +195,7 @@ export default function PredictiveDispatchPanel() {
           </div>
 
           <div className={`p-3 rounded-xl border text-left ${
-            theme === 'dark' ? 'bg-slate-950/70 border-slate-800' : 'bg-slate-50 border-slate-200'
+            theme === 'dark' ? 'bg-[#0B132B]/70 border-[#1E2F5B]' : 'bg-slate-50 border-slate-200'
           }`}>
             <div className={`text-[10px] font-mono uppercase font-bold ${
               theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
@@ -211,7 +211,7 @@ export default function PredictiveDispatchPanel() {
           </div>
 
           <div className={`p-3 rounded-xl border text-left ${
-            theme === 'dark' ? 'bg-slate-950/70 border-slate-800' : 'bg-slate-50 border-slate-200'
+            theme === 'dark' ? 'bg-[#0B132B]/70 border-[#1E2F5B]' : 'bg-slate-50 border-slate-200'
           }`}>
             <div className={`text-[10px] font-mono uppercase font-bold ${
               theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
@@ -221,7 +221,7 @@ export default function PredictiveDispatchPanel() {
             <div className="text-xl sm:text-2xl font-black font-mono text-amber-500 mt-0.5">
               {highDeficitGate.waitTimeMinutes} min
             </div>
-            <div className="text-[10px] text-emerald-500 font-bold mt-0.5">
+            <div className="text-[10px] text-sky-400 font-bold mt-0.5">
               SLA Cap: &lt;5.0 mins
             </div>
           </div>
@@ -231,20 +231,20 @@ export default function PredictiveDispatchPanel() {
         {rebalancingPlan && (
           <div className={`p-3.5 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
             theme === 'dark' 
-              ? 'bg-slate-950 border-emerald-500/40 text-slate-300' 
-              : 'bg-emerald-50/60 border-emerald-500/40 text-slate-800'
+              ? 'bg-[#0B132B] border-sky-500/40 text-slate-300' 
+              : 'bg-sky-50/60 border-sky-500/40 text-slate-800'
           }`}>
             <div className="text-xs">
-              <span className="text-emerald-500 font-black font-mono mr-1.5 uppercase">DISPATCH ACTION:</span>
+              <span className="text-amber-400 font-black font-mono mr-1.5 uppercase">DISPATCH ACTION:</span>
               Rebalance <strong className={theme === 'dark' ? 'text-white' : 'text-slate-950'}>{rebalancingPlan.dispatchCount} EV feeder vehicles</strong> from{' '}
-              <strong className="text-cyan-500">{rebalancingPlan.sourceStand}</strong> to{' '}
+              <strong className="text-sky-400">{rebalancingPlan.sourceStand}</strong> to{' '}
               <strong className={theme === 'dark' ? 'text-white' : 'text-slate-950'}>{highDeficitGate.gateName}</strong>. Wait time drops to{' '}
-              <strong className="text-emerald-500 font-bold">{rebalancingPlan.projectedWaitTimeDrop.to} mins</strong>.
+              <strong className="text-sky-400 font-bold">{rebalancingPlan.projectedWaitTimeDrop.to} mins</strong>.
             </div>
 
             <button
               onClick={() => executeAutoDispatch(currentStation.id)}
-              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs transition active:scale-95 shrink-0 shadow-lg shadow-emerald-500/25"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs transition active:scale-95 shrink-0 shadow-lg shadow-amber-500/25"
             >
               <Zap className="w-3.5 h-3.5 fill-slate-950" />
               <span>Execute Dynamic Dispatch</span>

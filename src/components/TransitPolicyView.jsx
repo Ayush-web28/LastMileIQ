@@ -3,13 +3,8 @@ import { useSimulation } from '../context/SimulationContext';
 import { 
   Building2, 
   ShieldCheck, 
-  Lightbulb, 
   CheckCircle2, 
-  FileText, 
-  Download, 
-  TrendingUp, 
-  Sliders,
-  Award
+  Download
 } from 'lucide-react';
 
 export default function TransitPolicyView() {
@@ -51,19 +46,25 @@ export default function TransitPolicyView() {
     <div className="space-y-4 animate-fade-in">
       {/* Toast Confirmation */}
       {toastMessage && (
-        <div className="p-3 rounded-xl bg-cyan-950 border border-cyan-500/60 text-cyan-200 text-xs font-mono flex items-center gap-2 shadow-lg">
-          <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0" />
+        <div className={`p-3 rounded-xl border flex items-center gap-2 shadow-lg text-xs font-mono ${
+          theme === 'dark'
+            ? 'bg-[#111C38] border-sky-500/60 text-sky-200 shadow-sky-950/40'
+            : 'bg-white border-sky-500/60 text-sky-900 shadow-sky-500/10'
+        }`}>
+          <CheckCircle2 className="w-4 h-4 text-sky-400 shrink-0" />
           <span>{toastMessage}</span>
         </div>
       )}
 
       {/* Header Card */}
       <div className={`p-4 sm:p-5 rounded-2xl border backdrop-blur-xl shadow-xl space-y-3 transition ${
-        theme === 'dark' ? 'bg-slate-900/90 border-cyan-500/30 text-white' : 'bg-white border-cyan-500/40 text-slate-900'
+        theme === 'dark' ? 'bg-[#111C38] border-[#1E2F5B] text-white' : 'bg-white border-sky-500/30 text-slate-900 shadow-md'
       }`}>
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
+        <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b ${
+          theme === 'dark' ? 'border-[#1E2F5B]' : 'border-slate-200'
+        }`}>
           <div>
-            <div className="flex items-center gap-1.5 text-xs font-mono text-cyan-400 font-bold uppercase">
+            <div className="flex items-center gap-1.5 text-xs font-mono text-sky-400 font-bold uppercase">
               <Building2 className="w-4 h-4" />
               <span>MMRDA MUNICIPAL INFRASTRUCTURE DIRECTIVE</span>
             </div>
@@ -77,7 +78,7 @@ export default function TransitPolicyView() {
 
           <button
             onClick={handleExportBrief}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs font-mono transition shadow-md shadow-cyan-500/20 shrink-0"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs font-mono transition shadow-md shadow-amber-500/20 shrink-0"
           >
             <Download className="w-4 h-4" />
             <span>Export MMRDA Brief (CSV)</span>
@@ -86,11 +87,11 @@ export default function TransitPolicyView() {
 
         {/* 3 Strategic Municipal Levers */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <div className={`p-3.5 rounded-xl border ${theme === 'dark' ? 'bg-slate-950/70 border-slate-800' : 'bg-slate-50 border-slate-200'}`}>
-            <span className="text-[10px] font-mono text-cyan-400 uppercase font-bold block">
+          <div className={`p-3.5 rounded-xl border ${theme === 'dark' ? 'bg-[#0B132B] border-[#1E2F5B]' : 'bg-slate-50 border-slate-200'}`}>
+            <span className="text-[10px] font-mono text-sky-400 uppercase font-bold block">
               INFRASTRUCTURE CAPITAL BUDGET
             </span>
-            <div className="text-2xl font-black font-mono text-white mt-1">
+            <div className={`text-2xl font-black font-mono mt-1 ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
               ₹{curbInvestmentCr} Cr
             </div>
             <input
@@ -100,54 +101,58 @@ export default function TransitPolicyView() {
               step="5"
               value={curbInvestmentCr}
               onChange={(e) => setCurbInvestmentCr(Number(e.target.value))}
-              className="w-full h-1.5 mt-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-cyan-400"
+              className="w-full h-1.5 mt-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-sky-500"
             />
-            <div className="text-[10px] text-slate-400 mt-1">Allocated across {computedStations.length} station curb zones</div>
+            <div className={`text-[10px] mt-1 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
+              Allocated across {computedStations.length} station curb zones
+            </div>
           </div>
 
-          <div className={`p-3.5 rounded-xl border ${theme === 'dark' ? 'bg-slate-950/70 border-slate-800' : 'bg-slate-50 border-slate-200'}`}>
-            <span className="text-[10px] font-mono text-emerald-400 uppercase font-bold block">
+          <div className={`p-3.5 rounded-xl border ${theme === 'dark' ? 'bg-[#0B132B] border-[#1E2F5B]' : 'bg-slate-50 border-slate-200'}`}>
+            <span className="text-[10px] font-mono text-sky-400 uppercase font-bold block">
               CURB FRICTION REDUCTION
             </span>
-            <div className="text-2xl font-black font-mono text-emerald-400 mt-1">
+            <div className="text-2xl font-black font-mono text-sky-400 mt-1">
               -{Math.round(curbInvestmentCr * 1.8)}%
             </div>
-            <div className="text-[11px] text-slate-300 mt-1">
+            <div className={`text-[11px] mt-1 ${theme === 'dark' ? 'text-slate-300' : 'text-slate-600'}`}>
               Faster boarding via segregated passenger queues & auto bays
             </div>
-            <div className="text-[10px] text-emerald-400 mt-0.5">BMC Joint Coordination Active</div>
+            <div className="text-[10px] text-amber-400 mt-0.5 font-semibold">BMC Joint Coordination Active</div>
           </div>
 
-          <div className={`p-3.5 rounded-xl border ${theme === 'dark' ? 'bg-slate-950/70 border-slate-800' : 'bg-slate-50 border-slate-200'}`}>
+          <div className={`p-3.5 rounded-xl border ${theme === 'dark' ? 'bg-[#0B132B] border-[#1E2F5B]' : 'bg-slate-50 border-slate-200'}`}>
             <span className="text-[10px] font-mono text-amber-400 uppercase font-bold block">
               ANNUAL COMMUTER HOURS SAVED
             </span>
             <div className="text-2xl font-black font-mono text-amber-400 mt-1">
               {(curbInvestmentCr * 142).toLocaleString()} hrs
             </div>
-            <div className="text-[11px] text-slate-300 mt-1">
+            <div className={`text-[11px] mt-1 ${theme === 'dark' ? 'text-slate-300' : 'text-slate-600'}`}>
               Commuter time reclaimed from unorganized street queues
             </div>
-            <div className="text-[10px] text-amber-400 mt-0.5">Value of Time: ₹18.4 Cr/yr</div>
+            <div className="text-[10px] text-amber-400 mt-0.5 font-semibold">Value of Time: ₹18.4 Cr/yr</div>
           </div>
         </div>
       </div>
 
       {/* Station Curb Allocation Authorizations Table */}
       <div className={`p-4 sm:p-5 rounded-2xl border backdrop-blur-xl shadow-xl space-y-3 transition ${
-        theme === 'dark' ? 'bg-slate-900/90 border-slate-800 text-white' : 'bg-white border-slate-200 text-slate-900'
+        theme === 'dark' ? 'bg-[#111C38] border-[#1E2F5B] text-white' : 'bg-white border-slate-200 text-slate-900 shadow-md'
       }`}>
-        <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+        <div className={`flex items-center justify-between pb-2 border-b ${
+          theme === 'dark' ? 'border-[#1E2F5B]' : 'border-slate-200'
+        }`}>
           <div>
             <h3 className="text-sm font-bold flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-cyan-400" />
+              <ShieldCheck className="w-4 h-4 text-amber-400" />
               <span>Municipal Curb Space & Feeder Bay Authorization Register</span>
             </h3>
             <p className={`text-xs mt-0.5 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
               Approve dedicated curb space for shared electric feeder autos to prevent traffic spillover onto arterial roads
             </p>
           </div>
-          <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+          <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-sky-500/15 text-sky-400 border border-sky-500/30">
             MMRDA Reg #2026/04
           </span>
         </div>
@@ -159,7 +164,7 @@ export default function TransitPolicyView() {
               <div
                 key={stn.id}
                 className={`p-3 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition ${
-                  theme === 'dark' ? 'bg-slate-950/60 border-slate-800' : 'bg-slate-50 border-slate-200'
+                  theme === 'dark' ? 'bg-[#0B132B] border-[#1E2F5B]' : 'bg-slate-50 border-slate-200'
                 }`}
               >
                 <div>
@@ -167,13 +172,15 @@ export default function TransitPolicyView() {
                     <span className="text-xs font-bold">{stn.name}</span>
                     <span className="text-[10px] font-mono text-slate-400 font-semibold">({stn.code})</span>
                     <span className={`px-1.5 py-0.2 rounded text-[9px] font-mono font-bold ${
-                      isApproved ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-slate-800 text-slate-400'
+                      isApproved 
+                        ? 'bg-sky-500/20 text-sky-400 border border-sky-500/30' 
+                        : 'bg-[#162347] text-slate-400 border border-[#1E2F5B]'
                     }`}>
                       {isApproved ? 'Curb Bay Authorized' : 'Pending Review'}
                     </span>
                   </div>
                   <div className="text-[11px] text-slate-400 mt-0.5">
-                    Target Gate: <strong className="text-slate-200">{stn.highDeficitGate.gateName}</strong> • Est. Egress: <strong className="text-cyan-400">{stn.forecast.baseTrainEgress} pax/batch</strong>
+                    Target Gate: <strong className={theme === 'dark' ? 'text-slate-200' : 'text-slate-700'}>{stn.highDeficitGate.gateName}</strong> • Est. Egress: <strong className="text-amber-400">{stn.forecast.baseTrainEgress} pax/batch</strong>
                   </div>
                 </div>
 
@@ -182,7 +189,7 @@ export default function TransitPolicyView() {
                   className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition flex items-center gap-1.5 shrink-0 ${
                     isApproved
                       ? 'bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40'
-                      : 'bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-sm'
+                      : 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black shadow-sm'
                   }`}
                 >
                   {isApproved ? (
