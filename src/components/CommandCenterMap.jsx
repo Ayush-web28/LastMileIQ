@@ -3,6 +3,10 @@ import L from 'leaflet';
 import { useSimulation } from '../context/SimulationContext';
 import { 
   RefreshCw,
+  Map,
+  Satellite,
+  ChevronUp,
+  Check,
   Eye,
   EyeOff,
   Navigation
@@ -15,6 +19,8 @@ export default function CommandCenterMap({ className = '' }) {
   const markersLayerRef = useRef(null);
   const routesLayerRef = useRef(null);
   const dispatchVectorsLayerRef = useRef(null);
+  const markersMapRef = useRef({});
+  const stationMenuRef = useRef(null);
 
   const {
     theme,
@@ -22,6 +28,7 @@ export default function CommandCenterMap({ className = '' }) {
     activeCorridor,
     computedStations,
     currentStation,
+    selectedStationId,
     setSelectedStationId,
     dispatchEvents,
     executeAutoDispatch,
@@ -33,6 +40,18 @@ export default function CommandCenterMap({ className = '' }) {
   const [showVehicles, setShowVehicles] = useState(true);
   const [showTransitTrack, setShowTransitTrack] = useState(true);
   const [mapType, setMapType] = useState('roadmap'); // 'roadmap' | 'satellite'
+  const [stationMenuOpen, setStationMenuOpen] = useState(false);
+
+  // Close station dropup on outside click
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (stationMenuRef.current && !stationMenuRef.current.contains(e.target)) {
+        setStationMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
 
   // Initialize Leaflet Map with Google Maps Tiles
   useEffect(() => {
@@ -142,14 +161,26 @@ export default function CommandCenterMap({ className = '' }) {
     });
   }, [currentCorridorKey, activeCorridor]);
 
-  // Pan smoothly when currentStation changes
+  // Synchronize Map with selectedStationId: flyTo station and open its telemetry popup
   useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map || !currentStation) return;
-    map.panTo([currentStation.lat, currentStation.lng], {
+
+    map.flyTo([currentStation.lat, currentStation.lng], Math.max(map.getZoom(), 14), {
       animate: true,
-      duration: 0.6,
+      duration: 0.7,
     });
+
+    const marker = markersMapRef.current[currentStation.id];
+    if (marker) {
+      setTimeout(() => {
+        try {
+          marker.openPopup();
+        } catch {
+          // popup safe fallback
+        }
+      }, 350);
+    }
   }, [currentStation?.id]);
 
   // Render Map Features (Station Highlights, Transit Tracks, Feeder Stands, LMSI Heat Rings)
@@ -164,6 +195,7 @@ export default function CommandCenterMap({ className = '' }) {
     markersLayer.clearLayers();
     routesLayer.clearLayers();
     if (vectorsLayer) vectorsLayer.clearLayers();
+    markersMapRef.current = {};
 
     const isMetro = activeCorridor.category === 'metro';
     const corridorColor = activeCorridor.color || (isMetro ? '#0284C7' : '#EF4444');
@@ -256,6 +288,7 @@ export default function CommandCenterMap({ className = '' }) {
       });
 
       const stnMarker = L.marker([stn.lat, stn.lng], { icon: stationIcon }).addTo(markersLayer);
+      markersMapRef.current[stn.id] = stnMarker;
       
       // Popup with Station Telemetry & Quick Dispatch Trigger
       const popupContent = `
@@ -273,7 +306,7 @@ export default function CommandCenterMap({ className = '' }) {
             <div><strong>Wait Time:</strong> ${stn.lmsi.expectedWaitMinutes} min (${stn.lmsi.level})</div>
           </div>
           <div style="font-size: 10px; color: #64748B;">
-            Click to inspect concourse gates & dispatch rerouting
+            Station synchronized with bottom control dropdown
           </div>
         </div>
       `;
@@ -392,50 +425,130 @@ export default function CommandCenterMap({ className = '' }) {
         </div>
       </div>
 
-      {/* Control Bar Below the Map Border (Replacing the former bottom line) */}
+      {/* Control Bar Below the Map Border */}
       <div className={`mt-2.5 px-3.5 py-2 rounded-xl border flex flex-wrap items-center justify-between gap-3 text-xs font-mono transition ${
         theme === 'dark'
           ? 'bg-slate-900/90 border-slate-800 text-slate-300'
           : 'bg-white border-slate-200 text-slate-700 shadow-sm'
       }`}>
-        {/* Left: Map Mode Toggle, Station Count & Legend */}
-        <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
-          {/* Roadmap vs Satellite Toggle */}
+        {/* Left: Map Mode Toggle (Icons Only), Station Dropdown (Expands Upwards) & Legend */}
+        <div className="flex items-center gap-2.5 sm:gap-3.5 flex-wrap">
+          {/* Roadmap vs Satellite Toggle (Icon Buttons) */}
           <div className={`flex items-center p-0.5 rounded-lg border ${
             theme === 'dark' ? 'bg-slate-950 border-slate-800' : 'bg-slate-100 border-slate-200'
           }`}>
             <button
               onClick={() => setMapType('roadmap')}
-              className={`px-2.5 py-1 rounded-md text-[10px] font-bold transition ${
+              className={`p-1.5 rounded-md transition ${
                 mapType === 'roadmap'
                   ? 'bg-emerald-500 text-slate-950 shadow-sm'
                   : theme === 'dark' ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-black'
               }`}
+              title="Roadmap Layer"
             >
-              🗺️ Roadmap
+              <Map className="w-4 h-4" />
             </button>
             <button
               onClick={() => setMapType('satellite')}
-              className={`px-2.5 py-1 rounded-md text-[10px] font-bold transition ${
+              className={`p-1.5 rounded-md transition ${
                 mapType === 'satellite'
                   ? 'bg-cyan-500 text-slate-950 shadow-sm'
                   : theme === 'dark' ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-black'
               }`}
+              title="Satellite Hybrid Layer"
             >
-              🛰️ Satellite
+              <Satellite className="w-4 h-4" />
             </button>
           </div>
 
-          {/* Station Count Pill */}
-          <div className="flex items-center gap-1.5 text-[11px] font-semibold">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className={theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}>
-              {computedStations.length} Stations Highlighted
-            </span>
+          {/* Interactive Station Dropdown Menu (Expands Upwards, Synchronized with Map) */}
+          <div className="relative" ref={stationMenuRef}>
+            <button
+              onClick={() => setStationMenuOpen(!stationMenuOpen)}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-mono font-bold transition ${
+                theme === 'dark'
+                  ? 'bg-slate-950 border-slate-800 text-slate-200 hover:border-slate-700 hover:bg-slate-900'
+                  : 'bg-slate-100 border-slate-200 text-slate-800 hover:border-slate-300 hover:bg-slate-200'
+              }`}
+              title="Click to select station on map"
+            >
+              <span
+                className="w-2.5 h-2.5 rounded-full shrink-0"
+                style={{ backgroundColor: currentStation?.lmsi?.color || '#10B981' }}
+              />
+              <span className="truncate max-w-[140px] sm:max-w-[190px]">
+                {currentStation ? currentStation.name.split(' (')[0] : 'Select Station'}
+              </span>
+              {currentStation && (
+                <span className={`text-[10px] shrink-0 font-bold ${
+                  theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
+                }`}>
+                  ({currentStation.code})
+                </span>
+              )}
+              <ChevronUp className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                stationMenuOpen ? 'rotate-180 text-emerald-400' : 'text-slate-400'
+              }`} />
+            </button>
+
+            {/* Dropup List (Expands Upwards) */}
+            {stationMenuOpen && (
+              <div className={`absolute bottom-full left-0 mb-2 w-72 max-h-64 overflow-y-auto rounded-xl border shadow-2xl p-1.5 z-50 animate-in fade-in zoom-in-95 scrollbar-thin ${
+                theme === 'dark'
+                  ? 'bg-[#0F172A] border-slate-700 text-slate-200'
+                  : 'bg-white border-slate-200 text-slate-800'
+              }`}>
+                <div className={`text-[9px] font-mono uppercase tracking-wider px-2 py-1 font-bold ${
+                  theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
+                }`}>
+                  {activeCorridor.shortName} Stations ({computedStations.length})
+                </div>
+
+                <div className="space-y-0.5 mt-1">
+                  {computedStations.map((stn) => {
+                    const isSelected = currentStation?.id === stn.id;
+                    return (
+                      <button
+                        key={stn.id}
+                        onClick={() => {
+                          setSelectedStationId(stn.id);
+                          setStationMenuOpen(false);
+                        }}
+                        className={`w-full text-left px-2.5 py-1.5 rounded-lg flex items-center justify-between text-xs font-mono transition ${
+                          isSelected
+                            ? theme === 'dark'
+                              ? 'bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40'
+                              : 'bg-emerald-50 text-emerald-950 font-bold border border-emerald-500/40'
+                            : theme === 'dark'
+                              ? 'hover:bg-slate-800/80 text-slate-300'
+                              : 'hover:bg-slate-100 text-slate-700'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2 min-w-0">
+                          <span
+                            className="w-2.5 h-2.5 rounded-full shrink-0 shadow-sm"
+                            style={{ backgroundColor: stn.lmsi?.color || '#10B981' }}
+                          />
+                          <span className="truncate">{stn.name.split(' (')[0]}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5 shrink-0 ml-2">
+                          <span className={`text-[10px] font-bold ${
+                            isSelected ? 'text-emerald-400' : 'text-slate-400'
+                          }`}>
+                            {stn.code}
+                          </span>
+                          {isSelected && <Check className="w-3.5 h-3.5 text-emerald-400" />}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Stress Halos Legend */}
-          <div className={`flex items-center gap-2.5 text-[10px] pl-2 border-l ${
+          <div className={`hidden sm:flex items-center gap-2.5 text-[10px] pl-2 border-l ${
             theme === 'dark' ? 'border-slate-800' : 'border-slate-200'
           }`}>
             <div className="flex items-center gap-1">
