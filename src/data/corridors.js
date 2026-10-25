@@ -1,4 +1,4 @@
-// Mumbai Public Transit Corridors — 6 Metro Lines & 3 Suburban Local Lines
+// Mumbai Public Transit Corridors - 6 Metro Lines & 3 Suburban Local Lines
 
 export const CORRIDORS = {
   // --- 6 MUMBAI METRO LINES ---
@@ -6,7 +6,7 @@ export const CORRIDORS = {
     id: 'mumbai-metro-1',
     category: 'metro',
     categoryLabel: 'Metro Line',
-    name: 'Metro Line 1: Versova – Andheri – Ghatkopar (Blue Line)',
+    name: 'Metro Line 1: Versova - Andheri - Ghatkopar (Blue Line)',
     shortName: 'Metro 1: Versova - Ghatkopar',
     lineCode: 'Line 1',
     color: '#0284C7', // Sky Blue
@@ -192,10 +192,10 @@ export const CORRIDORS = {
     id: 'mumbai-local-harbour',
     category: 'local',
     categoryLabel: 'Suburban Local Line',
-    name: 'Harbour Railway Local: CSMT – Vadala – Kurla – Vashi – Panvel',
+    name: 'Harbour Railway Local: CSMT - Vadala - Kurla - Vashi - Panvel',
     shortName: 'Harbour Local: CSMT - Vashi - Panvel',
     lineCode: 'HR Local',
-    color: '#8B5CF6', // Distinct Vibrant Royal Purple / Violet
+    color: '#843A5D', // Signature Ease Mulberry
     city: 'Mumbai',
     stationsCount: 14,
     lengthKm: 48.5,

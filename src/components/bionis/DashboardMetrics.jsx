@@ -1,13 +1,5 @@
 import React from 'react';
 import { useSimulation } from '../../context/SimulationContext';
-import { 
-  TrendingUp, 
-  Clock, 
-  Sparkles, 
-  Car, 
-  ArrowUpRight, 
-  ArrowDownRight 
-} from 'lucide-react';
 
 export default function DashboardMetrics({ compact = false, className = '' }) {
   const { theme, corridorTelemetry } = useSimulation();
@@ -16,12 +8,12 @@ export default function DashboardMetrics({ compact = false, className = '' }) {
     <div className={`grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 ${className}`}>
       
       {/* Metric 1: Fleet Utilization */}
-      <div className={`rounded-xl border backdrop-blur-md transition flex flex-col justify-between ${
-        compact ? 'p-2.5 sm:p-3 space-y-1' : 'p-4 sm:p-5 space-y-2'
+      <div className={`rounded-lg border transition-colors flex flex-col justify-between ${
+        compact ? 'p-2.5 sm:p-3 space-y-1' : 'p-3.5 sm:p-4 space-y-2'
       } ${
         theme === 'dark'
-          ? 'bg-[#11231B]/90 border-[#1E3A2C]/80 hover:border-[#3DB87E]/40'
-          : 'bg-white border-[#D1E0D6] hover:border-[#3DB87E]/40 shadow-sm'
+          ? 'bg-[#11231B] border-[#1E3A2C]'
+          : 'bg-[#F3F7F4] border-[#D1E0D6]'
       }`}>
         <div className="flex items-center justify-between">
           <span className={`text-[10px] font-mono uppercase tracking-wider font-bold ${
@@ -29,8 +21,8 @@ export default function DashboardMetrics({ compact = false, className = '' }) {
           }`}>
             Fleet Utilization
           </span>
-          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-full bg-[#3DB87E]/10 text-[#3DB87E] border border-[#3DB87E]/30 text-[9px] font-mono font-bold">
-            <ArrowUpRight className="w-2.5 h-2.5" /> +14.2%
+          <span className="px-1.5 py-0.2 rounded bg-[#3DB87E]/10 text-[#3DB87E] border border-[#3DB87E]/30 text-[9px] font-mono font-bold">
+            +14.2%
           </span>
         </div>
         <div>
@@ -48,12 +40,12 @@ export default function DashboardMetrics({ compact = false, className = '' }) {
       </div>
 
       {/* Metric 2: Avg Wait Time */}
-      <div className={`rounded-xl border backdrop-blur-md transition flex flex-col justify-between ${
-        compact ? 'p-2.5 sm:p-3 space-y-1' : 'p-4 sm:p-5 space-y-2'
+      <div className={`rounded-lg border transition-colors flex flex-col justify-between ${
+        compact ? 'p-2.5 sm:p-3 space-y-1' : 'p-3.5 sm:p-4 space-y-2'
       } ${
         theme === 'dark'
-          ? 'bg-[#11231B]/90 border-[#1E3A2C]/80 hover:border-[#C4829E]/40'
-          : 'bg-white border-[#D1E0D6] hover:border-[#C4829E]/40 shadow-sm'
+          ? 'bg-[#11231B] border-[#1E3A2C]'
+          : 'bg-[#F3F7F4] border-[#D1E0D6]'
       }`}>
         <div className="flex items-center justify-between">
           <span className={`text-[10px] font-mono uppercase tracking-wider font-bold ${
@@ -61,8 +53,8 @@ export default function DashboardMetrics({ compact = false, className = '' }) {
           }`}>
             Avg Commuter Wait
           </span>
-          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-full bg-[#C4829E]/15 text-[#C4829E] border border-[#C4829E]/30 text-[9px] font-mono font-bold">
-            <ArrowDownRight className="w-2.5 h-2.5" /> -74% Drop
+          <span className="px-1.5 py-0.2 rounded bg-[#C4829E]/15 text-[#C4829E] border border-[#C4829E]/30 text-[9px] font-mono font-bold">
+            -74% Drop
           </span>
         </div>
         <div>
@@ -78,12 +70,12 @@ export default function DashboardMetrics({ compact = false, className = '' }) {
       </div>
 
       {/* Metric 3: Dead Mileage Eliminated */}
-      <div className={`rounded-xl border backdrop-blur-md transition flex flex-col justify-between ${
-        compact ? 'p-2.5 sm:p-3 space-y-1' : 'p-4 sm:p-5 space-y-2'
+      <div className={`rounded-lg border transition-colors flex flex-col justify-between ${
+        compact ? 'p-2.5 sm:p-3 space-y-1' : 'p-3.5 sm:p-4 space-y-2'
       } ${
         theme === 'dark'
-          ? 'bg-[#11231B]/90 border-[#1E3A2C]/80 hover:border-[#3DB87E]/40'
-          : 'bg-white border-[#D1E0D6] hover:border-[#3DB87E]/40 shadow-sm'
+          ? 'bg-[#11231B] border-[#1E3A2C]'
+          : 'bg-[#F3F7F4] border-[#D1E0D6]'
       }`}>
         <div className="flex items-center justify-between">
           <span className={`text-[10px] font-mono uppercase tracking-wider font-bold ${
@@ -91,8 +83,8 @@ export default function DashboardMetrics({ compact = false, className = '' }) {
           }`}>
             Dead-Mileage Cut
           </span>
-          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-full bg-[#3DB87E]/10 text-[#3DB87E] border border-[#3DB87E]/30 text-[9px] font-mono font-bold">
-            <ArrowDownRight className="w-2.5 h-2.5" /> -34%
+          <span className="px-1.5 py-0.2 rounded bg-[#3DB87E]/10 text-[#3DB87E] border border-[#3DB87E]/30 text-[9px] font-mono font-bold">
+            -34%
           </span>
         </div>
         <div>
@@ -108,12 +100,12 @@ export default function DashboardMetrics({ compact = false, className = '' }) {
       </div>
 
       {/* Metric 4: Daily Revenue Uplift */}
-      <div className={`rounded-xl border backdrop-blur-md transition flex flex-col justify-between ${
-        compact ? 'p-2.5 sm:p-3 space-y-1' : 'p-4 sm:p-5 space-y-2'
+      <div className={`rounded-lg border transition-colors flex flex-col justify-between ${
+        compact ? 'p-2.5 sm:p-3 space-y-1' : 'p-3.5 sm:p-4 space-y-2'
       } ${
         theme === 'dark'
-          ? 'bg-[#11231B]/90 border-[#1E3A2C]/80 hover:border-[#3DB87E]/40'
-          : 'bg-white border-[#D1E0D6] hover:border-[#3DB87E]/40 shadow-sm'
+          ? 'bg-[#11231B] border-[#1E3A2C]'
+          : 'bg-[#F3F7F4] border-[#D1E0D6]'
       }`}>
         <div className="flex items-center justify-between">
           <span className={`text-[10px] font-mono uppercase tracking-wider font-bold ${
@@ -121,8 +113,8 @@ export default function DashboardMetrics({ compact = false, className = '' }) {
           }`}>
             Revenue Uplift / Veh
           </span>
-          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-full bg-[#3DB87E]/10 text-[#3DB87E] border border-[#3DB87E]/30 text-[9px] font-mono font-bold">
-            <ArrowUpRight className="w-2.5 h-2.5" /> +2.4 Trips
+          <span className="px-1.5 py-0.2 rounded bg-[#3DB87E]/10 text-[#3DB87E] border border-[#3DB87E]/30 text-[9px] font-mono font-bold">
+            +2.4 Trips
           </span>
         </div>
         <div>

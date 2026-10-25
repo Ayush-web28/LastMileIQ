@@ -10,7 +10,6 @@ import CityPlannerView from './components/CityPlannerView';
 import TransitPolicyView from './components/TransitPolicyView';
 import { SimulationProvider, useSimulation } from './context/SimulationContext';
 import { CORRIDORS } from './data/corridors';
-import { CheckCircle2 } from 'lucide-react';
 
 function DashboardLayout() {
   const { 
@@ -46,13 +45,15 @@ function DashboardLayout() {
       
       {/* Toast Alert Feedback */}
       {activeToast && (
-        <div className={`fixed bottom-6 right-6 z-50 max-w-sm p-3.5 rounded-2xl border shadow-2xl animate-in slide-in-from-bottom-5 ${
+        <div className={`fixed bottom-6 right-6 z-50 max-w-sm p-3.5 rounded-md border animate-in slide-in-from-bottom-5 ${
           theme === 'dark' 
-            ? 'bg-[#11231B]/95 border-[#3DB87E]/50 text-white shadow-[#0B1612]/60' 
-            : 'bg-white border-[#3DB87E]/50 text-slate-900 shadow-slate-300/40'
+            ? 'bg-[#11231B] border-[#3DB87E]/50 text-white' 
+            : 'bg-[#F3F7F4] border-[#3DB87E]/50 text-slate-900'
         }`}>
-          <div className="flex items-start gap-3">
-            <CheckCircle2 className="w-5 h-5 text-[#3DB87E] shrink-0 mt-0.5" />
+          <div className="flex items-start gap-2.5">
+            <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-[#3DB87E]/20 text-[#3DB87E] border border-[#3DB87E]/40 shrink-0 mt-0.5">
+              OK
+            </span>
             <div>
               <div className="text-xs font-black">{activeToast.title}</div>
               <div className={`text-[11px] mt-0.5 ${theme === 'dark' ? 'text-slate-300' : 'text-slate-600'}`}>

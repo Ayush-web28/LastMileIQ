@@ -24,20 +24,9 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
         mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
       },
-      animation: {
-        'pulse-subtle': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'ping-slow': 'ping 2.5s cubic-bezier(0, 0, 0.2, 1) infinite',
-        'glow-emerald': 'glowEmerald 2s ease-in-out infinite alternate',
-      },
-      keyframes: {
-        glowEmerald: {
-          '0%': { boxShadow: '0 0 5px rgba(16, 185, 129, 0.2), 0 0 15px rgba(16, 185, 129, 0.1)' },
-          '100%': { boxShadow: '0 0 15px rgba(16, 185, 129, 0.5), 0 0 30px rgba(16, 185, 129, 0.25)' },
-        }
-      }
     },
   },
   plugins: [],

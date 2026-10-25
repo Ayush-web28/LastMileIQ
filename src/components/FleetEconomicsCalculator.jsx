@@ -1,13 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useSimulation } from '../context/SimulationContext';
 import { calculateFleetEconomics } from '../services/mathModels';
-import { 
-  TrendingUp, 
-  Fuel, 
-  Sliders, 
-  Download, 
-  Sparkles
-} from 'lucide-react';
 
 export default function FleetEconomicsCalculator() {
   const { theme } = useSimulation();
@@ -46,36 +39,34 @@ export default function FleetEconomicsCalculator() {
   };
 
   return (
-    <div className={`p-5 rounded-2xl border backdrop-blur-xl shadow-xl space-y-4 transition ${
+    <div className={`p-5 rounded-lg border space-y-4 transition ${
       theme === 'dark'
-        ? 'bg-[#11231B]/95 border-[#1E3A2C] text-[#F2F7F4] shadow-xl shadow-black/40'
-        : 'bg-white border-[#D1E0D6] text-[#132A1C] shadow-md'
+        ? 'bg-[#11231B] border-[#1E3A2C] text-[#F3F7F4]'
+        : 'bg-[#F3F7F4] border-[#D1DDD6] text-[#0B1612]'
     }`}>
       
       {/* Header */}
       <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b ${
-        theme === 'dark' ? 'border-[#1E3A2C]' : 'border-[#D1E0D6]'
+        theme === 'dark' ? 'border-[#1E3A2C]' : 'border-[#D1DDD6]'
       }`}>
         <div>
-          <div className="flex items-center gap-1.5 text-xs font-mono text-[#3DB87E] font-bold uppercase">
-            <Sparkles className="w-4 h-4" />
-            <span>MUMBAI FLEET UNIT ECONOMICS</span>
+          <div className="text-xs font-mono text-[#3DB87E] font-bold uppercase">
+            MUMBAI FLEET UNIT ECONOMICS
           </div>
-          <h3 className={`text-base sm:text-lg font-black mt-0.5 ${theme === 'dark' ? 'text-white' : 'text-[#132A1C]'}`}>
+          <h3 className={`text-base sm:text-lg font-bold mt-0.5 ${theme === 'dark' ? 'text-[#F3F7F4]' : 'text-[#0B1612]'}`}>
             Dead-Mileage Reduction & Fleet ROI Calculator
           </h3>
         </div>
 
         <button
           onClick={handleExportCSV}
-          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-mono font-semibold transition self-start sm:self-center ${
+          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border text-xs font-mono font-bold transition self-start sm:self-center ${
             theme === 'dark'
-              ? 'bg-[#183327] hover:bg-[#1E3A2C] text-slate-200 border-[#1E3A2C]'
-              : 'bg-[#EBF2EE] hover:bg-slate-200 text-[#132A1C] border-[#D1E0D6]'
+              ? 'bg-[#183327] hover:bg-[#1E3A2C] text-[#F3F7F4] border-[#1E3A2C]'
+              : 'bg-[#E5EDE8] hover:bg-[#D1DDD6] text-[#0B1612] border-[#D1DDD6]'
           }`}
         >
-          <Download className="w-3.5 h-3.5" />
-          <span>Export Summary (CSV)</span>
+          Export CSV
         </button>
       </div>
 
@@ -83,20 +74,19 @@ export default function FleetEconomicsCalculator() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         
         {/* Sliders (5 cols) */}
-        <div className={`lg:col-span-5 space-y-3.5 p-4 rounded-xl border ${
-          theme === 'dark' ? 'bg-[#0B1612]/80 border-[#1E3A2C]' : 'bg-[#F3F7F4] border-[#D1E0D6]'
+        <div className={`lg:col-span-5 space-y-3.5 p-4 rounded-md border ${
+          theme === 'dark' ? 'bg-[#0B1612] border-[#1E3A2C]' : 'bg-[#E5EDE8] border-[#D1DDD6]'
         }`}>
-          <div className={`text-xs font-mono uppercase font-bold flex items-center gap-1.5 ${
-            theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
+          <div className={`text-xs font-mono uppercase font-bold ${
+            theme === 'dark' ? 'text-[#6E8277]' : 'text-[#6E8277]'
           }`}>
-            <Sliders className="w-3.5 h-3.5 text-[#3DB87E]" />
-            <span>Operational Levers</span>
+            Operational Levers
           </div>
 
           <div className="space-y-1">
             <div className="flex justify-between text-xs font-mono">
-              <span className={theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}>Active Fleet Size:</span>
-              <strong className={theme === 'dark' ? 'text-white' : 'text-slate-900'}>{fleetSize} Vehicles</strong>
+              <span className={theme === 'dark' ? 'text-[#A0B0A6]' : 'text-[#2D483A]'}>Active Fleet Size:</span>
+              <strong className={theme === 'dark' ? 'text-[#F3F7F4]' : 'text-[#0B1612]'}>{fleetSize} Vehicles</strong>
             </div>
             <input
               type="range"
@@ -105,14 +95,14 @@ export default function FleetEconomicsCalculator() {
               step="10"
               value={fleetSize}
               onChange={(e) => setFleetSize(parseInt(e.target.value))}
-              className="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-[#3DB87E]"
+              className="w-full h-1.5 bg-[#183327] rounded-md appearance-none cursor-pointer accent-[#3DB87E]"
             />
           </div>
 
           <div className="space-y-1">
             <div className="flex justify-between text-xs font-mono">
-              <span className={theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}>Daily Trips / Vehicle:</span>
-              <strong className={theme === 'dark' ? 'text-white' : 'text-slate-900'}>{dailyTrips} Trips</strong>
+              <span className={theme === 'dark' ? 'text-[#A0B0A6]' : 'text-[#2D483A]'}>Daily Trips / Vehicle:</span>
+              <strong className={theme === 'dark' ? 'text-[#F3F7F4]' : 'text-[#0B1612]'}>{dailyTrips} Trips</strong>
             </div>
             <input
               type="range"
@@ -121,13 +111,13 @@ export default function FleetEconomicsCalculator() {
               step="1"
               value={dailyTrips}
               onChange={(e) => setDailyTrips(parseInt(e.target.value))}
-              className="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-[#3DB87E]"
+              className="w-full h-1.5 bg-[#183327] rounded-md appearance-none cursor-pointer accent-[#3DB87E]"
             />
           </div>
 
           <div className="space-y-1">
             <div className="flex justify-between text-xs font-mono">
-              <span className={theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}>Avg Fare (Pooling/Direct):</span>
+              <span className={theme === 'dark' ? 'text-[#A0B0A6]' : 'text-[#2D483A]'}>Avg Fare (Pooling/Direct):</span>
               <strong className="text-[#C4829E] font-bold">₹{avgFare}</strong>
             </div>
             <input
@@ -137,13 +127,13 @@ export default function FleetEconomicsCalculator() {
               step="5"
               value={avgFare}
               onChange={(e) => setAvgFare(parseInt(e.target.value))}
-              className="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-[#C4829E]"
+              className="w-full h-1.5 bg-[#183327] rounded-md appearance-none cursor-pointer accent-[#C4829E]"
             />
           </div>
 
           <div className="space-y-1">
             <div className="flex justify-between text-xs font-mono">
-              <span className={theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}>Dead Mileage Cut:</span>
+              <span className={theme === 'dark' ? 'text-[#A0B0A6]' : 'text-[#2D483A]'}>Dead Mileage Cut:</span>
               <strong className="text-[#3DB87E]">{deadKmPercent}%</strong>
             </div>
             <input
@@ -153,7 +143,7 @@ export default function FleetEconomicsCalculator() {
               step="1"
               value={deadKmPercent}
               onChange={(e) => setDeadKmPercent(parseInt(e.target.value))}
-              className="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-[#3DB87E]"
+              className="w-full h-1.5 bg-[#183327] rounded-md appearance-none cursor-pointer accent-[#3DB87E]"
             />
           </div>
         </div>
@@ -162,46 +152,46 @@ export default function FleetEconomicsCalculator() {
         <div className="lg:col-span-7 flex flex-col justify-between space-y-3">
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className={`p-4 rounded-xl border ${
+            <div className={`p-4 rounded-md border ${
               theme === 'dark'
-                ? 'bg-gradient-to-br from-[#183327] to-[#0B1612] border-[#3DB87E]/40 shadow-lg'
-                : 'bg-[#3DB87E]/10 border-[#3DB87E]/40 shadow-sm'
+                ? 'bg-[#183327] border-[#3DB87E]/30'
+                : 'bg-[#E5EDE8] border-[#3DB87E]/40'
             }`}>
               <div className="text-[10px] font-mono text-[#3DB87E] font-bold uppercase">ANNUAL REVENUE UPLIFT</div>
-              <div className={`text-2xl sm:text-3xl font-black font-mono mt-1 ${
-                theme === 'dark' ? 'text-white' : 'text-[#132A1C]'
+              <div className={`text-2xl sm:text-3xl font-bold font-mono mt-1 ${
+                theme === 'dark' ? 'text-[#F3F7F4]' : 'text-[#0B1612]'
               }`}>
                 {formatLakhsCrores(economics.annualFleetRevenueUplift)}
               </div>
-              <div className={`text-xs mt-1 ${theme === 'dark' ? 'text-slate-300' : 'text-slate-600'}`}>
+              <div className={`text-xs mt-1 ${theme === 'dark' ? 'text-[#A0B0A6]' : 'text-[#6E8277]'}`}>
                 Monthly: <strong className="text-[#3DB87E]">{formatLakhsCrores(economics.monthlyFleetRevenueUplift)}</strong>
               </div>
             </div>
 
-            <div className={`p-4 rounded-xl border ${
+            <div className={`p-4 rounded-md border ${
               theme === 'dark'
-                ? 'bg-gradient-to-br from-[#1E2922] to-[#0B1612] border-[#C4829E]/40'
-                : 'bg-[#C4829E]/10 border-[#C4829E]/40 shadow-sm'
+                ? 'bg-[#183327] border-[#C4829E]/30'
+                : 'bg-[#E5EDE8] border-[#C4829E]/40'
             }`}>
               <div className="text-[10px] font-mono text-[#C4829E] font-bold uppercase">DAILY FUEL & POWER SAVINGS</div>
-              <div className={`text-2xl sm:text-3xl font-black font-mono mt-1 ${
-                theme === 'dark' ? 'text-white' : 'text-[#132A1C]'
+              <div className={`text-2xl sm:text-3xl font-bold font-mono mt-1 ${
+                theme === 'dark' ? 'text-[#F3F7F4]' : 'text-[#0B1612]'
               }`}>
                 ₹{economics.dailyFuelSavings.toLocaleString('en-IN')}
               </div>
-              <div className={`text-xs mt-1 ${theme === 'dark' ? 'text-slate-300' : 'text-slate-600'}`}>
+              <div className={`text-xs mt-1 ${theme === 'dark' ? 'text-[#A0B0A6]' : 'text-[#6E8277]'}`}>
                 From <strong className="text-[#C4829E]">{economics.deadKmSavedDaily} km</strong> cruising cut daily
               </div>
             </div>
           </div>
 
-          <div className={`p-3.5 rounded-xl border text-xs flex justify-between items-center ${
-            theme === 'dark' ? 'bg-[#0B1612]/90 border-[#1E3A2C]' : 'bg-[#F3F7F4] border-[#D1E0D6]'
+          <div className={`p-3.5 rounded-md border text-xs flex justify-between items-center ${
+            theme === 'dark' ? 'bg-[#0B1612] border-[#1E3A2C]' : 'bg-[#E5EDE8] border-[#D1DDD6]'
           }`}>
-            <span className={`font-mono ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
+            <span className={`font-mono ${theme === 'dark' ? 'text-[#A0B0A6]' : 'text-[#6E8277]'}`}>
               Per-Vehicle Daily Yield:
             </span>
-            <span className="font-mono text-[#3DB87E] font-black text-sm">
+            <span className="font-mono text-[#3DB87E] font-bold text-sm">
               +₹{economics.dailyRevenueUpliftPerVehicle} / day (+2.4 extra trips)
             </span>
           </div>

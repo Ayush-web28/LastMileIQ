@@ -25,8 +25,8 @@ export default function HeroCanvas() {
       { name: 'D.N. Nagar (Line 2A)', x: 0.25, y: 0.47, color: '#EAB308' },
       { name: 'Andheri (WR Local)', x: 0.42, y: 0.43, color: '#10B981' },
       { name: 'Marol Naka (Line 3)', x: 0.60, y: 0.45, color: '#06B6D4' },
-      { name: 'Saki Naka', x: 0.76, y: 0.42, color: '#F59E0B' },
-      { name: 'Ghatkopar (CR Local)', x: 0.92, y: 0.44, color: '#8B5CF6' },
+      { name: 'Saki Naka', x: 0.76, y: 0.42, color: '#3DB87E' },
+      { name: 'Ghatkopar (CR Local)', x: 0.92, y: 0.44, color: '#C4829E' },
     ];
 
     // Mumbai Feeder corridors to employment clusters
@@ -59,43 +59,13 @@ export default function HeroCanvas() {
       });
     }
 
-    // Floating ambient background particles
-    const ambientNodes = [];
-    for (let i = 0; i < 30; i++) {
-      ambientNodes.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.25,
-        vy: (Math.random() - 0.5) * 0.25,
-        radius: Math.random() * 2 + 1,
-        alpha: Math.random() * 0.4 + 0.1,
-      });
-    }
-
     let time = 0;
 
     const render = () => {
       time += 0.02;
       ctx.clearRect(0, 0, width, height);
 
-      // 1. Draw subtle ambient hex/grid glow
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.025)';
-      ctx.lineWidth = 1;
-      const gridSize = 65;
-      for (let x = 0; x < width; x += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, height);
-        ctx.stroke();
-      }
-      for (let y = 0; y < height; y += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(width, y);
-        ctx.stroke();
-      }
-
-      // 2. Draw Branch Lines (Feeder corridors)
+      // 1. Draw Branch Lines (Feeder corridors)
       branches.forEach((b) => {
         const fromStn = stations[b.from];
         const sx = fromStn.x * width;
@@ -187,22 +157,6 @@ export default function HeroCanvas() {
         ctx.fill();
       });
 
-      // 6. Draw ambient nodes
-      ambientNodes.forEach((node) => {
-        node.x += node.vx;
-        node.y += node.vy;
-
-        if (node.x < 0) node.x = width;
-        if (node.x > width) node.x = 0;
-        if (node.y < 0) node.y = height;
-        if (node.y > height) node.y = 0;
-
-        ctx.beginPath();
-        ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(148, 163, 184, ${node.alpha * 0.4})`;
-        ctx.fill();
-      });
-
       animationFrameId = requestAnimationFrame(render);
     };
 
@@ -216,9 +170,7 @@ export default function HeroCanvas() {
 
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
-      <canvas ref={canvasRef} className="w-full h-full block opacity-60" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0B1612] via-transparent to-[#0B1612]/80" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#0B1612] via-transparent to-[#0B1612]/80" />
+      <canvas ref={canvasRef} className="w-full h-full block opacity-40" />
     </div>
   );
 }
