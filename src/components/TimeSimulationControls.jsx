@@ -74,7 +74,7 @@ export default function TimeSimulationControls() {
             onClick={() => toggleScenario('monsoon')}
             className={`px-2.5 py-1 rounded-md text-xs font-bold border transition cursor-pointer ${
               scenarios.monsoon
-                ? 'bg-[#2563EB]/10 border-[#2563EB] text-[#2563EB]'
+                ? 'bg-[#D97706]/15 border-[#D97706] text-[#D97706]'
                 : 'bg-[#DFE2E7] border-[#CED2DA] text-[#475060] hover:text-[#0E1015]'
             }`}
           >
@@ -96,7 +96,7 @@ export default function TimeSimulationControls() {
             onClick={() => toggleScenario('evChargingSurge')}
             className={`px-2.5 py-1 rounded-md text-xs font-bold border transition cursor-pointer ${
               scenarios.evChargingSurge
-                ? 'bg-[#059669]/15 border-[#059669] text-[#059669]'
+                ? 'bg-[#D97706]/15 border-[#D97706] text-[#D97706]'
                 : 'bg-[#DFE2E7] border-[#CED2DA] text-[#475060] hover:text-[#0E1015]'
             }`}
           >

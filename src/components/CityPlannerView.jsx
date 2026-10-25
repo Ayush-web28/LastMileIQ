@@ -29,7 +29,7 @@ export default function CityPlannerView() {
             onClick={() => setActiveTab('equity')}
             className={`px-3 py-1 rounded transition cursor-pointer ${
               activeTab === 'equity'
-                ? 'bg-[#2563EB] text-white font-bold'
+                ? 'bg-[#0E1015] text-[#F4F5F7] font-bold'
                 : 'text-[#475060] hover:text-[#0E1015]'
             }`}
           >
@@ -39,7 +39,7 @@ export default function CityPlannerView() {
             onClick={() => setActiveTab('bottlenecks')}
             className={`px-3 py-1 rounded transition cursor-pointer ${
               activeTab === 'bottlenecks'
-                ? 'bg-[#2563EB] text-white font-bold'
+                ? 'bg-[#0E1015] text-[#F4F5F7] font-bold'
                 : 'text-[#475060] hover:text-[#0E1015]'
             }`}
           >
@@ -49,7 +49,7 @@ export default function CityPlannerView() {
             onClick={() => setActiveTab('policy')}
             className={`px-3 py-1 rounded transition cursor-pointer ${
               activeTab === 'policy'
-                ? 'bg-[#2563EB] text-white font-bold'
+                ? 'bg-[#0E1015] text-[#F4F5F7] font-bold'
                 : 'text-[#475060] hover:text-[#0E1015]'
             }`}
           >
@@ -64,10 +64,10 @@ export default function CityPlannerView() {
           <div className="text-[10px] font-mono uppercase font-bold text-[#6B7280]">
             EQUITY ACCESS SCORE
           </div>
-          <div className="text-xl sm:text-2xl font-bold text-[#2563EB] font-mono mt-0.5">
+          <div className="text-xl sm:text-2xl font-bold font-mono mt-0.5 text-[#0E1015]">
             86.4<span className="text-xs font-normal text-[#6B7280]">/100</span>
           </div>
-          <div className="text-[10px] text-[#2563EB] font-bold mt-0.5">High Suburban Access</div>
+          <div className="text-[10px] text-[#475060] font-mono mt-0.5">High Suburban Access</div>
         </div>
 
         <div className="p-3.5 flex-1">
@@ -77,17 +77,17 @@ export default function CityPlannerView() {
           <div className="text-xl sm:text-2xl font-bold font-mono mt-0.5 text-[#0E1015]">
             93.8%
           </div>
-          <div className="text-[10px] text-[#D97706] font-bold mt-0.5">Station Area Coverage</div>
+          <div className="text-[10px] text-[#475060] font-mono mt-0.5">Station Area Coverage</div>
         </div>
 
         <div className="p-3.5 flex-1">
           <div className="text-[10px] font-mono uppercase font-bold text-[#6B7280]">
             CLEAN ELECTRIC FEEDER SHARE
           </div>
-          <div className="text-xl sm:text-2xl font-bold text-[#059669] font-mono mt-0.5">
+          <div className="text-xl sm:text-2xl font-bold font-mono mt-0.5 text-[#0E1015]">
             68%
           </div>
-          <div className="text-[10px] mt-0.5 text-[#475060]">
+          <div className="text-[10px] text-[#475060] font-mono mt-0.5">
             EV Auto + BEST Electric
           </div>
         </div>
@@ -106,10 +106,10 @@ export default function CityPlannerView() {
                 <span className="text-[#475060]">
                   Shared Auto Rickshaws (EV / Retrofit)
                 </span>
-                <strong className="text-[#D97706] font-bold">46%</strong>
+                <strong className="text-[#0E1015] font-bold">46%</strong>
               </div>
               <div className="w-full rounded h-2 bg-[#CED2DA]">
-                <div className="bg-[#D97706] h-full rounded" style={{ width: '46%' }} />
+                <div className="bg-[#0E1015] h-full rounded" style={{ width: '46%' }} />
               </div>
             </div>
 
@@ -118,10 +118,10 @@ export default function CityPlannerView() {
                 <span className="text-[#475060]">
                   BEST Metro Feeder Electric Minibuses
                 </span>
-                <strong className="text-[#2563EB] font-bold">26%</strong>
+                <strong className="text-[#DC2626] font-bold">26%</strong>
               </div>
               <div className="w-full rounded h-2 bg-[#CED2DA]">
-                <div className="bg-[#2563EB] h-full rounded" style={{ width: '26%' }} />
+                <div className="bg-[#DC2626] h-full rounded" style={{ width: '26%' }} />
               </div>
             </div>
 
@@ -130,10 +130,10 @@ export default function CityPlannerView() {
                 <span className="text-[#475060]">
                   Walking / Skywalks (Under 600m)
                 </span>
-                <strong className="text-[#6B7280] font-bold">18%</strong>
+                <strong className="text-[#059669] font-bold">18%</strong>
               </div>
               <div className="w-full rounded h-2 bg-[#CED2DA]">
-                <div className="bg-[#6B7280] h-full rounded" style={{ width: '18%' }} />
+                <div className="bg-[#059669] h-full rounded" style={{ width: '18%' }} />
               </div>
             </div>
           </div>

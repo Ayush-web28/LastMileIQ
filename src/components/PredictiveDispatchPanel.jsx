@@ -43,9 +43,9 @@ export default function PredictiveDispatchPanel() {
         <div className="flex items-center gap-1.5 flex-wrap">
           <button
             onClick={() => toggleScenario('monsoon')}
-            className={`px-2.5 py-1 rounded text-[10px] font-mono transition border ${
+            className={`px-2.5 py-1 rounded text-[10px] font-mono transition border cursor-pointer ${
               scenarios.monsoon
-                ? 'bg-[#2563EB]/10 text-[#2563EB] border-[#2563EB] font-bold'
+                ? 'bg-[#D97706]/15 text-[#D97706] border-[#D97706] font-bold'
                 : 'bg-[#DFE2E7] border-[#CED2DA] text-[#475060] hover:text-[#0E1015]'
             }`}
             title="Spikes commuter demand +50% due to rain"
@@ -55,7 +55,7 @@ export default function PredictiveDispatchPanel() {
 
           <button
             onClick={() => toggleScenario('doubleTrain')}
-            className={`px-2.5 py-1 rounded text-[10px] font-mono transition border ${
+            className={`px-2.5 py-1 rounded text-[10px] font-mono transition border cursor-pointer ${
               scenarios.doubleTrain
                 ? 'bg-[#D97706]/15 text-[#D97706] border-[#D97706] font-bold'
                 : 'bg-[#DFE2E7] border-[#CED2DA] text-[#475060] hover:text-[#0E1015]'
@@ -67,9 +67,9 @@ export default function PredictiveDispatchPanel() {
 
           <button
             onClick={() => toggleScenario('evChargingSurge')}
-            className={`px-2.5 py-1 rounded text-[10px] font-mono transition border ${
+            className={`px-2.5 py-1 rounded text-[10px] font-mono transition border cursor-pointer ${
               scenarios.evChargingSurge
-                ? 'bg-[#059669]/15 text-[#059669] border-[#059669] font-bold'
+                ? 'bg-[#D97706]/15 text-[#D97706] border-[#D97706] font-bold'
                 : 'bg-[#DFE2E7] border-[#CED2DA] text-[#475060] hover:text-[#0E1015]'
             }`}
             title="Removes 25% fleet to charging depot"

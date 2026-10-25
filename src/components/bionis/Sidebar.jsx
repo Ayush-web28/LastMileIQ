@@ -155,7 +155,7 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
                 }}
                 className={`flex-1 py-1.5 px-2 rounded text-[11px] font-mono font-bold transition-colors text-center cursor-pointer ${
                   corridorCategory === 'local'
-                    ? 'bg-[#2563EB] text-white border border-[#2563EB]'
+                    ? 'bg-[#DC2626] text-white border border-[#DC2626]'
                     : 'text-[#475060] hover:text-[#0E1015] border border-transparent'
                 }`}
                 title="Switch to Mumbai Suburban Local Lines"
@@ -177,9 +177,7 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
                   style={{ backgroundColor: activeCorridor.color }} 
                 />
                 <div className="min-w-0 flex-1">
-                  <span className={`text-[9px] font-mono font-bold block uppercase tracking-wide leading-none mb-1 ${
-                    corridorCategory === 'metro' ? 'text-[#DC2626]' : 'text-[#2563EB]'
-                  }`}>
+                  <span className="text-[9px] font-mono font-bold block uppercase tracking-wide leading-none mb-1 text-[#DC2626]">
                     {corridorCategory === 'metro' ? 'Metro Line' : 'Suburban Local'}
                   </span>
                   <span className="font-bold text-xs leading-tight block break-words text-[#0E1015]">

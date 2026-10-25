@@ -53,7 +53,7 @@ export default function DriverDispatchQueue() {
             onClick={() => setFilterType('EV')}
             className={`px-3 py-1 rounded font-bold transition cursor-pointer ${
               filterType === 'EV'
-                ? 'bg-[#059669] text-white'
+                ? 'bg-[#0E1015] text-[#F4F5F7]'
                 : 'text-[#475060] hover:text-[#0E1015]'
             }`}
           >
@@ -63,7 +63,7 @@ export default function DriverDispatchQueue() {
             onClick={() => setFilterType('BUS')}
             className={`px-3 py-1 rounded font-bold transition cursor-pointer ${
               filterType === 'BUS'
-                ? 'bg-[#2563EB] text-white'
+                ? 'bg-[#0E1015] text-[#F4F5F7]'
                 : 'text-[#475060] hover:text-[#0E1015]'
             }`}
           >
@@ -110,11 +110,11 @@ export default function DriverDispatchQueue() {
               <div className="text-[11px] font-mono flex items-center justify-between pt-2 border-t border-[#CED2DA] text-[#475060] gap-2">
                 <span className="truncate" title={driver.stationName}>{driver.stationName}</span>
                 <span className={`px-2 py-0.5 rounded text-[10px] font-bold shrink-0 border ${
-                  driver.status === 'Dispatched'
-                    ? 'bg-[#059669]/10 text-[#059669] border-[#059669]/30'
-                    : driver.status === 'En Route'
-                      ? 'bg-[#2563EB]/10 text-[#2563EB] border-[#2563EB]/30'
-                      : 'bg-[#059669]/10 text-[#059669] border-[#059669]/30'
+                  driver.status === 'En Route'
+                    ? 'bg-[#D97706]/15 text-[#D97706] border-[#D97706]/30'
+                    : driver.status === 'Arrived'
+                      ? 'bg-[#059669]/10 text-[#059669] border-[#059669]/30'
+                      : 'bg-[#2563EB]/10 text-[#2563EB] border-[#2563EB]/30'
                 }`}>
                   {driver.status || 'Dispatched'}
                 </span>
@@ -129,7 +129,7 @@ export default function DriverDispatchQueue() {
                     : 'bg-[#F4F5F7] border-[#CED2DA] text-[#0E1015] hover:bg-[#DFE2E7]'
                 }`}
               >
-                {isPinged ? 'Telemetry Ping Acked' : 'Ping Concourse Gate'}
+                {isPinged ? 'Pinged' : 'Ping Gate'}
               </button>
             </div>
           );
