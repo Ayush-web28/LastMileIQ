@@ -278,11 +278,7 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
             <span className="text-[10px] font-mono uppercase tracking-wider font-bold text-[#6B7280]">
               Navigation Views
             </span>
-            <span className={`text-[9px] font-mono font-bold px-1.5 py-0.2 rounded border ${
-              activeAccountRole === 'fleet' 
-                ? 'bg-[#D97706]/10 text-[#D97706] border-[#D97706]/30' 
-                : 'bg-[#2563EB]/10 text-[#2563EB] border-[#2563EB]/30'
-            }`}>
+            <span className="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded border bg-[#7C3AED]/10 text-[#7C3AED] border-[#7C3AED]/30">
               {activeAccountRole === 'fleet' ? 'Fleet Ops' : 'MMRDA Policy'}
             </span>
           </div>
@@ -296,20 +292,14 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
               onClick={() => setActiveView(item.id)}
               className={`w-full flex items-center justify-between px-3 py-2 rounded-md transition-colors text-xs font-semibold ${
                 isActive
-                  ? activeAccountRole === 'fleet'
-                    ? 'bg-[#DFE2E7] border border-[#DC2626]/50 text-[#0E1015] font-bold'
-                    : 'bg-[#DFE2E7] border border-[#2563EB]/50 text-[#0E1015] font-bold'
+                  ? 'bg-[#DFE2E7] border border-[#7C3AED]/50 text-[#0E1015] font-bold'
                   : 'text-[#475060] hover:text-[#0E1015] hover:bg-[#DFE2E7]'
               } ${isCollapsed ? 'justify-center' : ''}`}
               title={item.label}
             >
               <span className="truncate">{item.label}</span>
               {!isCollapsed && item.badge && (
-                <span className={`px-1.5 py-0.2 rounded text-[9px] font-mono font-bold ${
-                  activeAccountRole === 'fleet'
-                    ? 'bg-[#D97706]/15 text-[#D97706]'
-                    : 'bg-[#2563EB]/15 text-[#2563EB]'
-                }`}>
+                <span className="px-1.5 py-0.2 rounded text-[9px] font-mono font-bold bg-[#7C3AED]/15 text-[#7C3AED]">
                   {item.badge}
                 </span>
               )}
