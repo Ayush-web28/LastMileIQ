@@ -10,22 +10,22 @@
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 > **"The Operating System for Mumbai's Last-Mile Mobility"**  
-> AI-powered spatio-temporal transit intelligence platform tackling the 1–5 km last-mile transit crisis across Mumbai Metro and Suburban Railway networks. Built on a decluttered, high-polish Bionis dashboard layout architecture with authentic Google Maps geospatial visualization.
+> AI-powered spatio-temporal transit intelligence platform tackling the 1–5 km first/last-mile transit crisis across Mumbai Metro and Suburban Railway networks. Built on a high-density Swiss International Command Center architecture with authentic Google Maps geospatial telemetry.
 
 ---
 
-## 🌐 Live Production Deployment (Render)
+## Live Production Deployment (Render)
 
 LastMileIQ is deployed as a high-performance **Static Site** on **Render** with global Edge CDN distribution:
 
 - **Live URL**: [https://lastmileiq.onrender.com](https://lastmileiq.onrender.com)
-- **Hosting Tier**: Render Static Site (Edge CDN, zero cold start latency)
-- **Continuous Deployment**: Automated git-triggered builds on every push to `main`
+- **Hosting Tier**: Render Static Site (Edge CDN, 0ms cold start latency, 100% uptime)
+- **Continuous Deployment**: Automated git-triggered pipeline on every push to `main`
 - **Build Specs**:
   - **Runtime**: Node.js / Vite 5
   - **Build Command**: `npm run build`
   - **Publish Directory**: `dist`
-  - **SPA Rewrite**: `/*` ➔ `/index.html` (Rewrite)
+  - **SPA Rewrite Rule**: `/*` -> `/index.html` (Rewrite)
 
 ---
 
@@ -38,31 +38,58 @@ Station exit concourses (such as Andheri, Dadar, Kurla, Ghatkopar, and BKC) expe
 - **Operator Dead Mileage**: Mumbai auto-rickshaws, EV syndicates, and BEST feeder minibuses waste 35–45% of daily shift time cruising empty or stuck in uncoordinated queues.
 - **Municipal Equity Gaps**: Transit bodies (MMRDA, BMC, BEST, Central & Western Railway) require real-time gate-level demand telemetry to evaluate curb lane segregation and feeder electrification ROI.
 
-**LastMileIQ** synchronizes incoming train arrival streams with vehicle supply, dynamic rebalancing, and Last-Mile Stress Index (LMSI) scoring.
+**LastMileIQ** bridges this gap by synchronizing incoming train arrival streams with vehicle supply, dynamic 4-vehicle rebalancing batches, and Last-Mile Stress Index (LMSI) scoring.
 
 ---
 
-## 2. Authentic Google Maps Engine with Station Highlighting
+## 2. Core Functional Modules
 
-LastMileIQ features direct **Google Maps Engine integration** with zero external API key requirements:
+### A. Active Driver Dispatch Queue (Lazy Column & Ledger Modal)
+- **Dedicated Lazy Column View**: Constrained within a dedicated scroll area (`max-h-[380px] overflow-y-auto`) so dispatchers can scroll exclusively through live feeder vehicles without shifting map viewports or page metrics.
+- **Category Filters**: Real-time category filtering (`All`, `EV Rickshaws`, `Feeder Buses`) with high-contrast active state indicators.
+- **Telematics "Ping Gate" Action**: Dispatches an instant concourse bay assignment to approaching drivers, accelerates vehicle progression from *Dispatched* to *En Route*, chirps an audio telematics confirmation tone via the Web Audio API, and displays a temporary acknowledgment state.
+- **"View All Dispatches" Ledger Modal**: Clicking opens an exhaustive 2-column card grid displaying all rerouted units, complete with battery percentages, vehicle registration plates, driver names, and color-coded status badges:
+  - **Dispatched**: Blue (`#2563EB`)
+  - **En Route**: Amber (`#D97706`)
+  - **Arrived**: Emerald (`#059669`)
 
-- **Dual Google Tile Modes**:
-  - 🗺️ **Google Roadmap**: Full road network, coastal terrain (Arabian Sea, Thane Creek), highways, and neighborhood street grids.
-  - 🛰️ **Google Satellite Hybrid**: High-resolution aerial satellite imagery layered with street names and landmarks.
-- **Prominently Highlighted Stations**:
-  - High-visibility glowing station nodes with transit glyphs (🚇 for Metro, 🚆 for Suburban Local).
-  - Bold station codes (`AND`, `CSMT`, `CCG`, `DDR`, `VSV`, `GHT`, `TNA`, `BOR`, etc.) and prominent station name pills.
-  - Interactive click popups displaying concourse exit gates, alighting commuter volumes, and immediate vehicle shortages.
-  - Glowing transit line polylines in official line brand colors with dual core and glow tracks.
-  - Dynamic **Last-Mile Stress Index (LMSI)** radial heat halos around each station (Green <5m, Yellow 5-12m, Red >15m wait).
+### B. Dynamic 4-Vehicle Auto-Dispatch Engine
+- **Synchronized Fleet Rebalancing**: Triggers an automated reroute batch staging 4 distinct EV feeder vehicles (rickshaws and electric minibuses) across critical concourse exit gates (e.g., Gate 2 East, Skywalk Concourse, West Bus Bay).
+- **Under-5-Minute Wait Cap**: Dynamically compresses passenger egress queue times under 5 minutes during train discharge spikes.
+
+### C. Predictive Dispatch & Scenario Stress Testing
+- **Poisson Arrival Modeling**: Real-time calculation of commuter volume based on train headways and scheduled alighting rates.
+- **Unified Amber Stress Injection Pills**: Instant scenario toggles calibrated for Mumbai operating conditions:
+  - **Monsoon (+50%)**: Simulated deluge conditions causing auto-rickshaw shortages and flooded road speeds.
+  - **Local Rush (2x)**: Simultaneous arrival of fast suburban local rakes discharging mega crowds.
+  - **EV Shift (-25%)**: Fleet reduction due to mid-day battery charging rotations at EV depot hubs.
+
+### D. MMRDA City Planner Analytics
+- **Suburban Transit Equity Scores**: Live 0–100 equity ratings across western, central, and underground transit corridors.
+- **Catchment Modal Splits**: Distinct analytical tracking of Shared Autos, BEST Electric Minibuses, and Walking/Skywalks.
+- **Dedicated Feeder Curb ROI**: Cost-benefit analysis for municipal bus lane segregation and charging bay installation.
 
 ---
 
-## 3. Active Corridors — Mumbai Public Transports (9 Lines)
+## 3. Authentic Google Maps Engine
 
-Corridor selection is placed **exclusively in the sidebar under the logo**:
+LastMileIQ integrates directly with the **Google Maps Engine** without requiring external paid API keys:
+- **Dual Tile Modes**:
+  - **Google Roadmap**: Full arterial road network, coastal terrain (Arabian Sea, Thane Creek), and street grids.
+  - **Google Satellite Hybrid**: High-resolution aerial satellite imagery layered with street names and landmarks.
+- **Highlighted Station Nodes & Visual Tracks**:
+  - High-visibility glowing station nodes with distinct codes (`AND`, `CSMT`, `CCG`, `DDR`, `VSV`, `GHT`, `TNA`, `BOR`, etc.).
+  - Polylines tracing authentic alignment paths for all 9 transit corridors in official line colors.
+  - Interactive click popups displaying concourse exit gates, passenger volumes, and immediate vehicle shortages.
+  - Dynamic **Last-Mile Stress Index (LMSI)** radial halos (Green <5m, Yellow 5–12m, Red >15m wait).
 
-### 🚇 The 6 Mumbai Metro Lines
+---
+
+## 4. Active Corridors — Mumbai Public Transports (9 Lines)
+
+Corridor selection is managed via the **Sidebar Network Mode Slider** (Swiss Signal Red `#DC2626` active state):
+
+### The 6 Mumbai Metro Lines
 1. **Metro Line 1 (Blue Line)**: Versova – D.N. Nagar – Andheri – Saki Naka – Ghatkopar *(Interchange with WR & CR)*
 2. **Metro Line 2A (Yellow Line)**: Dahisar East – Borivali West – Kandivali West – Malad West – D.N. Nagar
 3. **Metro Line 7 (Red Line)**: Dahisar East – National Park – Dindoshi – Gundavali *(Western Express Highway)*
@@ -70,42 +97,31 @@ Corridor selection is placed **exclusively in the sidebar under the logo**:
 5. **Metro Line 2B (Yellow Line Ext)**: D.N. Nagar – Bandra National College – BKC MMRDA – Chembur – Mandale
 6. **Metro Line 6 (Pink Line)**: Swami Samarth Nagar (Lokhandwala) – JVLR – IIT Bombay Powai – Vikhroli EEH
 
-### 🚆 The 3 Mumbai Suburban Local Lines (Distinct High-Contrast Dot Colors)
+### The 3 Mumbai Suburban Local Lines
 7. **Western Railway Local (WR)**: Churchgate – Dadar WR – Bandra – Andheri – Borivali *(Vibrant Crimson Red `#EF4444`)*
 8. **Central Railway Local (CR)**: CSMT – Byculla – Dadar CR – Kurla – Ghatkopar – Thane *(Electric Golden Amber `#F59E0B`)*
 9. **Harbour Railway Local (HR)**: CSMT – Vadala Road – Kurla Harbour – Vashi – Panvel *(Royal Purple `#8B5CF6`)*
 
 ---
 
-## 4. Decluttered, Modern Layout Architecture
+## 5. Swiss International Design System
 
-In response to user feedback, LastMileIQ features a radically decluttered interface:
-- **No Topbar**: The top bar has been completely removed to provide an uninterrupted, full-height command center canvas.
-- **Sidebar-Only Line Display**: The active corridor is displayed solely in the sidebar under the brand header, eliminating all duplicate top-of-page displays.
-- **Light / Dark Mode Toggle**: A dedicated toggle in the sidebar footer allows seamless switching between **Dark Command Center** and **Light Precision View**.
-- **Integrated Surge Stress Injection**: Scenario buttons (🌧️ Monsoon, 🚆 Local Rush, ⚡ Charging Shift) are placed directly inside the Predictive Dispatch Panel where dispatchers need them.
-
----
-
-## 5. Dual Stakeholder Account System
-
-Instead of artificial mode filters, the platform uses two executive account profiles:
-
-1. **Rohan Mehta — Fleet Dispatch Director**  
-   *Mumbai Feeder Syndicate & EV Fleet Alliance*  
-   - Real-time station vehicle deficit telemetry, one-click dynamic auto-dispatch, live driver queue (`MH-02-EV-XXXX`), and fleet unit economics.
-2. **Dr. Anjali Deshmukh — Transit Planner**  
-   *MMRDA Infrastructure & Transit Equity Wing*  
-   - Suburban transit equity scores, bottleneck chokepoints (Dadar, Kurla, Andheri), 10-minute feeder isochrones, and dedicated feeder lane ROI.
+The application strictly follows a clean, functional **Light Mode Swiss Command Center** design language:
+- **Primary Canvas**: Warm neutral slate paper background (`#F4F5F7` / `#EBECEF`) with crisp delineation borders (`#CED2DA`).
+- **Primary Accent**: Swiss Signal Red (`#DC2626`) on active network toggles, key actions, and line indicators.
+- **Controls & Tabs**: High-contrast Solid Carbon Black (`#0E1015`) for active filter states and primary headers.
+- **Navigation Badges**: Royal Purple (`#7C3AED`) on view tabs (`Fleet Operations`, `MMRDA Policy`) and live telemetry status pills.
+- **Scenario Stress Pills**: Unified Amber/Yellow (`#D97706`).
+- **Zero Decorative Noise**: No harsh gradients, no emojis, no dropshadows, no radial glow orbs, and no distracting decorative cards.
 
 ---
 
 ## 6. Self-Contained Architecture (Zero API Keys)
 
-> **Important**: LastMileIQ runs **100% locally with zero external paid API keys**.
-- **Maps**: Uses Google Maps tile servers directly (`https://mt{s}.google.com/vt/lyrs=m...` & `lyrs=y...`).
-- **Audio Synthesizer**: Pure HTML5 Web Audio API synthesizer for dispatch pings and alerts.
-- **Simulation**: Mathematical Poisson egress forecasting, LMSI calculation, and dispatch rebalancing run completely in-browser.
+> **Important**: LastMileIQ runs **100% in-browser with zero paid external API dependencies**.
+- **Maps**: Direct Google tile layer rendering (`https://mt{s}.google.com/vt/lyrs=m...` & `lyrs=y...`).
+- **Audio Synthesizer**: Native HTML5 Web Audio API frequency oscillator (`587 Hz → 880 Hz`) for driver telematics pings and alerts.
+- **Simulation**: Mathematical Poisson egress forecasting, LMSI scoring, and vehicle dispatching execute client-side.
 
 ---
 
@@ -119,14 +135,14 @@ cd LastMileIQ
 # 2. Install dependencies
 npm install
 
-# 3. Launch local development server
+# 3. Launch local development server (Port 3000)
 npm run dev
 
 # 4. Production build
 npm run build
 ```
 
-Open `http://localhost:5173` in your browser to launch the Mumbai Last-Mile Command Center.
+Open `http://localhost:3000` in your browser to launch the Mumbai Last-Mile Command Center.
 
 ---
 
