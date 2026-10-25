@@ -20,13 +20,13 @@ export default function TimeSimulationControls() {
   } = useSimulation();
 
   return (
-    <div className="p-3.5 sm:p-4 rounded-2xl bg-slate-900/90 border border-slate-800 backdrop-blur-xl shadow-lg">
+    <div className="p-3.5 sm:p-4 rounded-2xl bg-[#11231B]/95 border border-[#1E3A2C] backdrop-blur-xl shadow-lg">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
         
         {/* Left: Clock & Play/Pause */}
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
-            <Clock className="w-4 h-4 text-cyan-400" />
+            <Clock className="w-4 h-4 text-[#3DB87E]" />
             <span className="text-lg font-black font-mono text-white tracking-tight">
               {formattedTime}
             </span>
@@ -36,8 +36,8 @@ export default function TimeSimulationControls() {
             onClick={() => setIsPlaying(!isPlaying)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold text-xs transition ${
               isPlaying
-                ? 'bg-sky-600 hover:bg-sky-500 text-white'
-                : 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black'
+                ? 'bg-[#2D6A4F] hover:bg-[#3DB87E] text-white'
+                : 'bg-gradient-to-r from-[#3DB87E] to-[#34A074] hover:from-[#4EBA86] hover:to-[#3DB87E] text-[#0B1612] font-black'
             }`}
           >
             {isPlaying ? (
@@ -53,13 +53,13 @@ export default function TimeSimulationControls() {
             )}
           </button>
 
-          <div className="flex items-center p-0.5 rounded-lg bg-slate-950 border border-slate-800">
+          <div className="flex items-center p-0.5 rounded-lg bg-[#0B1612] border border-[#1E3A2C]">
             {[1, 2, 5].map((spd) => (
               <button
                 key={spd}
                 onClick={() => setPlaySpeed(spd)}
                 className={`px-2 py-0.5 rounded text-[11px] font-mono font-semibold transition ${
-                  playSpeed === spd ? 'bg-slate-800 text-cyan-400' : 'text-slate-500 hover:text-slate-300'
+                  playSpeed === spd ? 'bg-[#183327] text-[#3DB87E]' : 'text-slate-500 hover:text-slate-300'
                 }`}
               >
                 {spd}x
@@ -78,7 +78,7 @@ export default function TimeSimulationControls() {
             step="0.25"
             value={timeOfDay}
             onChange={(e) => setTimeOfDay(parseFloat(e.target.value))}
-            className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-400"
+            className="w-full h-1.5 bg-[#1E3A2C] rounded-lg appearance-none cursor-pointer accent-[#3DB87E]"
           />
           <span className="text-[10px] font-mono text-slate-500">11 PM</span>
         </div>
@@ -90,7 +90,7 @@ export default function TimeSimulationControls() {
             className={`px-2.5 py-1 rounded-lg text-xs font-medium border transition ${
               scenarios.monsoon
                 ? 'bg-blue-500/20 border-blue-500 text-blue-300'
-                : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-slate-200'
+                : 'bg-[#0B1612] border-[#1E3A2C] text-slate-400 hover:text-slate-200'
             }`}
           >
             🌧️ Monsoon Surge
@@ -101,7 +101,7 @@ export default function TimeSimulationControls() {
             className={`px-2.5 py-1 rounded-lg text-xs font-medium border transition ${
               scenarios.doubleTrain
                 ? 'bg-rose-500/20 border-rose-500 text-rose-300'
-                : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-slate-200'
+                : 'bg-[#0B1612] border-[#1E3A2C] text-slate-400 hover:text-slate-200'
             }`}
           >
             🚆 Peak Local Rush
@@ -111,8 +111,8 @@ export default function TimeSimulationControls() {
             onClick={() => toggleScenario('evChargingSurge')}
             className={`px-2.5 py-1 rounded-lg text-xs font-medium border transition ${
               scenarios.evChargingSurge
-                ? 'bg-amber-500/20 border-amber-500 text-amber-300'
-                : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-slate-200'
+                ? 'bg-[#3DB87E]/20 border-[#3DB87E] text-[#3DB87E]'
+                : 'bg-[#0B1612] border-[#1E3A2C] text-slate-400 hover:text-slate-200'
             }`}
           >
             ⚡ Charging Shift

@@ -34,18 +34,18 @@ export default function DriverDispatchQueue() {
   return (
     <div className={`p-4 sm:p-5 rounded-2xl border backdrop-blur-xl shadow-xl space-y-3.5 transition ${
       theme === 'dark'
-        ? 'bg-[#111C38]/95 border-[#1E2F5B] text-slate-100 shadow-2xl shadow-black/40'
-        : 'bg-white border-slate-200 text-slate-900 shadow-md'
+        ? 'bg-[#11231B]/95 border-[#1E3A2C] text-[#F2F7F4] shadow-2xl shadow-black/40'
+        : 'bg-white border-[#D1E0D6] text-[#132A1C] shadow-md'
     }`}>
       {/* Header & Category Filters */}
       <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b ${
-        theme === 'dark' ? 'border-[#1E2F5B]' : 'border-slate-200'
+        theme === 'dark' ? 'border-[#1E3A2C]' : 'border-[#D1E0D6]'
       }`}>
         <div>
-          <h3 className={`text-sm sm:text-base font-black flex items-center gap-2 ${
-            theme === 'dark' ? 'text-white' : 'text-slate-900'
+          <h3 className={`text-sm sm:base font-black flex items-center gap-2 ${
+            theme === 'dark' ? 'text-white' : 'text-[#132A1C]'
           }`}>
-            <Radio className="w-4 h-4 text-amber-400 animate-pulse" />
+            <Radio className="w-4 h-4 text-[#3DB87E] animate-pulse" />
             <span>Active Driver Dispatch Queue (Mumbai Feeders)</span>
           </h3>
           <p className={`text-xs mt-0.5 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
@@ -55,13 +55,13 @@ export default function DriverDispatchQueue() {
 
         {/* Filter Tabs */}
         <div className={`flex items-center p-1 rounded-xl border text-xs ${
-          theme === 'dark' ? 'bg-[#0B132B] border-[#1E2F5B]' : 'bg-slate-100 border-slate-200'
+          theme === 'dark' ? 'bg-[#0B1612] border-[#1E3A2C]' : 'bg-[#EBF2EE] border-[#D1E0D6]'
         }`}>
           <button
             onClick={() => setFilterType('ALL')}
             className={`px-3 py-1 rounded-lg font-bold transition ${
               filterType === 'ALL'
-                ? 'bg-sky-600 text-white shadow-sm'
+                ? 'bg-[#3DB87E] text-white shadow-sm'
                 : theme === 'dark' ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-black'
             }`}
           >
@@ -71,7 +71,7 @@ export default function DriverDispatchQueue() {
             onClick={() => setFilterType('EV')}
             className={`px-3 py-1 rounded-lg font-bold transition ${
               filterType === 'EV'
-                ? 'bg-amber-500 text-slate-950 shadow-sm'
+                ? 'bg-[#C4829E] text-white shadow-sm'
                 : theme === 'dark' ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-black'
             }`}
           >
@@ -81,7 +81,7 @@ export default function DriverDispatchQueue() {
             onClick={() => setFilterType('BUS')}
             className={`px-3 py-1 rounded-lg font-bold transition ${
               filterType === 'BUS'
-                ? 'bg-blue-600 text-white shadow-sm'
+                ? 'bg-[#2D6A4F] text-white shadow-sm'
                 : theme === 'dark' ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-black'
             }`}
           >
@@ -96,7 +96,7 @@ export default function DriverDispatchQueue() {
           const isPinged = pingedDriverId === driver.id;
           const battery = driver.batteryPct || driver.battery || 82;
           const batteryColor =
-            battery >= 75 ? 'text-sky-400' : battery >= 40 ? 'text-amber-400' : 'text-rose-500';
+            battery >= 75 ? 'text-[#3DB87E]' : battery >= 40 ? 'text-[#C4829E]' : 'text-rose-500';
           const driverName = driver.driverName || driver.driver || 'Mumbai Driver';
           const vehicleType = driver.vehicleType || driver.type || 'EV Feeder Auto';
           const fare = driver.surgeFare || driver.fareEstimate || '₹30 flat ONDC';
@@ -106,13 +106,13 @@ export default function DriverDispatchQueue() {
               key={driver.id}
               className={`p-3.5 rounded-xl border transition flex flex-col justify-between space-y-2.5 ${
                 theme === 'dark'
-                  ? 'bg-[#0B132B]/85 border-[#1E2F5B] hover:border-sky-500/50'
-                  : 'bg-slate-50 border-slate-200 hover:border-slate-300 shadow-sm'
+                  ? 'bg-[#0B1612]/85 border-[#1E3A2C] hover:border-[#3DB87E]/50'
+                  : 'bg-slate-50 border-[#D1E0D6] hover:border-slate-300 shadow-sm'
               }`}
             >
               <div className="flex items-center justify-between">
                 <span className={`px-2 py-0.5 rounded font-mono text-xs font-bold border ${
-                  theme === 'dark' ? 'bg-[#111C38] border-[#1E2F5B] text-amber-300' : 'bg-white border-slate-300 text-slate-900'
+                  theme === 'dark' ? 'bg-[#11231B] border-[#1E3A2C] text-[#3DB87E]' : 'bg-white border-[#D1E0D6] text-slate-900'
                 }`}>
                   {driver.plate}
                 </span>
@@ -124,8 +124,8 @@ export default function DriverDispatchQueue() {
 
               <div>
                 <div className="text-xs font-bold flex items-center justify-between">
-                  <span className={theme === 'dark' ? 'text-white' : 'text-slate-900'}>{driverName}</span>
-                  <span className="text-[11px] font-mono text-amber-400 font-bold">{fare}</span>
+                  <span className={theme === 'dark' ? 'text-white' : 'text-[#132A1C]'}>{driverName}</span>
+                  <span className="text-[11px] font-mono text-[#C4829E] font-bold">{fare}</span>
                 </div>
                 <div className={`text-[11px] ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
                   {vehicleType}
@@ -133,15 +133,15 @@ export default function DriverDispatchQueue() {
               </div>
 
               <div className={`text-[11px] font-mono flex items-center justify-between pt-2 border-t gap-2 ${
-                theme === 'dark' ? 'border-[#1E2F5B] text-slate-300' : 'border-slate-200 text-slate-600'
+                theme === 'dark' ? 'border-[#1E3A2C] text-slate-300' : 'border-[#D1E0D6] text-slate-600'
               }`}>
                 <span className="truncate" title={driver.stationName}>{driver.stationName}</span>
                 <span className={`px-2 py-0.5 rounded text-[10px] font-bold shrink-0 border ${
                   driver.status === 'Dispatched'
-                    ? 'bg-sky-500/15 text-sky-400 border-sky-500/30'
+                    ? 'bg-[#3DB87E]/15 text-[#3DB87E] border-[#3DB87E]/30'
                     : driver.status === 'En Route'
-                      ? 'bg-amber-500/15 text-amber-400 border-amber-500/30'
-                      : 'bg-cyan-500/15 text-cyan-400 border-cyan-500/30'
+                      ? 'bg-[#C4829E]/15 text-[#C4829E] border-[#C4829E]/30'
+                      : 'bg-[#3DB87E]/15 text-[#3DB87E] border-[#3DB87E]/30'
                 }`}>
                   {driver.status || 'Dispatched'}
                 </span>
@@ -152,10 +152,10 @@ export default function DriverDispatchQueue() {
                 title="Broadcasts telematics dispatch ping to driver terminal and concourse gate beacon"
                 className={`w-full py-1.5 rounded-lg border text-xs font-mono font-semibold transition flex items-center justify-center gap-1.5 ${
                   isPinged
-                    ? 'bg-amber-500 text-slate-950 border-amber-400 font-bold shadow-md shadow-amber-500/30'
+                    ? 'bg-[#C4829E] text-white border-[#C4829E] font-bold shadow-md shadow-[#C4829E]/30'
                     : theme === 'dark'
-                      ? 'bg-[#162347] border-[#1E2F5B] text-sky-300 hover:text-white hover:bg-[#1E2F5B]'
-                      : 'bg-white border-slate-300 text-slate-700 hover:text-slate-900 hover:bg-slate-100'
+                      ? 'bg-[#183327] border-[#1E3A2C] text-[#3DB87E] hover:text-white hover:bg-[#1E3A2C]'
+                      : 'bg-white border-[#D1E0D6] text-slate-700 hover:text-slate-900 hover:bg-slate-100'
                 }`}
               >
                 {isPinged ? (
@@ -165,7 +165,7 @@ export default function DriverDispatchQueue() {
                   </>
                 ) : (
                   <>
-                    <Send className="w-3 h-3 text-sky-400" />
+                    <Send className="w-3 h-3 text-[#3DB87E]" />
                     <span>Ping Concourse Gate</span>
                   </>
                 )}

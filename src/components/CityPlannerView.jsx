@@ -17,33 +17,33 @@ export default function CityPlannerView() {
   return (
     <div className={`p-5 rounded-2xl border backdrop-blur-xl shadow-xl space-y-4 transition ${
       theme === 'dark'
-        ? 'bg-[#111C38] border-[#1E2F5B] text-slate-100'
-        : 'bg-white border-sky-500/30 text-slate-900 shadow-md'
+        ? 'bg-[#11231B] border-[#1E3A2C] text-[#F2F7F4]'
+        : 'bg-white border-[#D1E0D6] text-[#132A1C] shadow-md'
     }`}>
       
       {/* Header */}
       <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b ${
-        theme === 'dark' ? 'border-[#1E2F5B]' : 'border-slate-200'
+        theme === 'dark' ? 'border-[#1E3A2C]' : 'border-[#D1E0D6]'
       }`}>
         <div>
-          <div className="flex items-center gap-1.5 text-xs font-mono text-sky-400 font-bold uppercase">
+          <div className="flex items-center gap-1.5 text-xs font-mono text-[#3DB87E] font-bold uppercase">
             <Building2 className="w-4 h-4" />
             <span>MUMBAI MUNICIPAL TRANSIT PLANNING (MMRDA & BMC)</span>
           </div>
-          <h3 className={`text-base sm:text-lg font-black mt-0.5 ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
+          <h3 className={`text-base sm:text-lg font-black mt-0.5 ${theme === 'dark' ? 'text-white' : 'text-[#132A1C]'}`}>
             First/Last-Mile Transit Equity & Station Bottlenecks
           </h3>
         </div>
 
         {/* Sub-tab Navigation */}
         <div className={`flex p-1 rounded-xl border text-xs font-semibold self-start sm:self-center ${
-          theme === 'dark' ? 'bg-[#0B132B] border-[#1E2F5B]' : 'bg-slate-100 border-slate-200'
+          theme === 'dark' ? 'bg-[#0B1612] border-[#1E3A2C]' : 'bg-[#EBF2EE] border-[#D1E0D6]'
         }`}>
           <button
             onClick={() => setActiveTab('equity')}
             className={`px-3 py-1 rounded-lg transition ${
               activeTab === 'equity'
-                ? 'bg-amber-500 text-slate-950 font-black shadow-sm'
+                ? 'bg-[#3DB87E] text-white font-black shadow-sm'
                 : theme === 'dark' ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-black'
             }`}
           >
@@ -53,7 +53,7 @@ export default function CityPlannerView() {
             onClick={() => setActiveTab('bottlenecks')}
             className={`px-3 py-1 rounded-lg transition ${
               activeTab === 'bottlenecks'
-                ? 'bg-amber-500 text-slate-950 font-black shadow-sm'
+                ? 'bg-[#3DB87E] text-white font-black shadow-sm'
                 : theme === 'dark' ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-black'
             }`}
           >
@@ -63,7 +63,7 @@ export default function CityPlannerView() {
             onClick={() => setActiveTab('policy')}
             className={`px-3 py-1 rounded-lg transition ${
               activeTab === 'policy'
-                ? 'bg-amber-500 text-slate-950 font-black shadow-sm'
+                ? 'bg-[#3DB87E] text-white font-black shadow-sm'
                 : theme === 'dark' ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-black'
             }`}
           >
@@ -75,21 +75,21 @@ export default function CityPlannerView() {
       {/* 3 Quick KPIs */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <div className={`p-3 rounded-xl border ${
-          theme === 'dark' ? 'bg-[#0B132B] border-[#1E2F5B]' : 'bg-slate-50 border-slate-200'
+          theme === 'dark' ? 'bg-[#0B1612] border-[#1E3A2C]' : 'bg-[#F3F7F4] border-[#D1E0D6]'
         }`}>
           <div className={`text-[10px] font-mono uppercase font-bold ${
             theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
           }`}>
             EQUITY ACCESS SCORE
           </div>
-          <div className="text-xl sm:text-2xl font-black text-sky-400 font-mono mt-0.5">
+          <div className="text-xl sm:text-2xl font-black text-[#3DB87E] font-mono mt-0.5">
             86.4<span className={`text-xs font-normal ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>/100</span>
           </div>
-          <div className="text-[10px] text-sky-400 font-semibold mt-0.5">High Suburban Access</div>
+          <div className="text-[10px] text-[#3DB87E] font-semibold mt-0.5">High Suburban Access</div>
         </div>
 
         <div className={`p-3 rounded-xl border ${
-          theme === 'dark' ? 'bg-[#0B132B] border-[#1E2F5B]' : 'bg-slate-50 border-slate-200'
+          theme === 'dark' ? 'bg-[#0B1612] border-[#1E3A2C]' : 'bg-[#F3F7F4] border-[#D1E0D6]'
         }`}>
           <div className={`text-[10px] font-mono uppercase font-bold ${
             theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
@@ -97,22 +97,22 @@ export default function CityPlannerView() {
             10-MIN FEEDER ISOCHRONE
           </div>
           <div className={`text-xl sm:text-2xl font-black font-mono mt-0.5 ${
-            theme === 'dark' ? 'text-white' : 'text-slate-900'
+            theme === 'dark' ? 'text-white' : 'text-[#132A1C]'
           }`}>
             93.8%
           </div>
-          <div className="text-[10px] text-amber-400 font-semibold mt-0.5">Station Area Coverage</div>
+          <div className="text-[10px] text-[#C4829E] font-semibold mt-0.5">Station Area Coverage</div>
         </div>
 
         <div className={`p-3 rounded-xl border ${
-          theme === 'dark' ? 'bg-[#0B132B] border-[#1E2F5B]' : 'bg-slate-50 border-slate-200'
+          theme === 'dark' ? 'bg-[#0B1612] border-[#1E3A2C]' : 'bg-[#F3F7F4] border-[#D1E0D6]'
         }`}>
           <div className={`text-[10px] font-mono uppercase font-bold ${
             theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
           }`}>
             CLEAN ELECTRIC FEEDER SHARE
           </div>
-          <div className="text-xl sm:text-2xl font-black text-amber-400 font-mono mt-0.5">
+          <div className="text-xl sm:text-2xl font-black text-[#3DB87E] font-mono mt-0.5">
             68%
           </div>
           <div className={`text-[10px] mt-0.5 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
@@ -124,7 +124,7 @@ export default function CityPlannerView() {
       {/* Tab 1: Equity & Modal Split */}
       {activeTab === 'equity' && (
         <div className={`p-4 rounded-xl border space-y-3 ${
-          theme === 'dark' ? 'bg-[#0B132B] border-[#1E2F5B]' : 'bg-slate-50 border-slate-200'
+          theme === 'dark' ? 'bg-[#0B1612] border-[#1E3A2C]' : 'bg-[#F3F7F4] border-[#D1E0D6]'
         }`}>
           <div className={`text-xs font-mono uppercase font-bold ${
             theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
@@ -138,10 +138,10 @@ export default function CityPlannerView() {
                 <span className={theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}>
                   Shared Auto Rickshaws (EV / Retrofit)
                 </span>
-                <strong className="text-amber-400 font-black">46%</strong>
+                <strong className="text-[#3DB87E] font-black">46%</strong>
               </div>
-              <div className={`w-full rounded-full h-2.5 ${theme === 'dark' ? 'bg-[#162347]' : 'bg-slate-200'}`}>
-                <div className="bg-amber-400 h-full rounded-full" style={{ width: '46%' }} />
+              <div className={`w-full rounded-full h-2.5 ${theme === 'dark' ? 'bg-[#183327]' : 'bg-slate-200'}`}>
+                <div className="bg-[#3DB87E] h-full rounded-full" style={{ width: '46%' }} />
               </div>
             </div>
 
@@ -150,10 +150,10 @@ export default function CityPlannerView() {
                 <span className={theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}>
                   BEST Metro Feeder Electric Minibuses
                 </span>
-                <strong className="text-sky-400 font-black">26%</strong>
+                <strong className="text-[#C4829E] font-black">26%</strong>
               </div>
-              <div className={`w-full rounded-full h-2.5 ${theme === 'dark' ? 'bg-[#162347]' : 'bg-slate-200'}`}>
-                <div className="bg-sky-500 h-full rounded-full" style={{ width: '26%' }} />
+              <div className={`w-full rounded-full h-2.5 ${theme === 'dark' ? 'bg-[#183327]' : 'bg-slate-200'}`}>
+                <div className="bg-[#C4829E] h-full rounded-full" style={{ width: '26%' }} />
               </div>
             </div>
 
@@ -162,10 +162,10 @@ export default function CityPlannerView() {
                 <span className={theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}>
                   Walking / Skywalks (Under 600m)
                 </span>
-                <strong className="text-cyan-400 font-black">18%</strong>
+                <strong className="text-[#2D6A4F] font-black">18%</strong>
               </div>
-              <div className={`w-full rounded-full h-2.5 ${theme === 'dark' ? 'bg-[#162347]' : 'bg-slate-200'}`}>
-                <div className="bg-cyan-500 h-full rounded-full" style={{ width: '18%' }} />
+              <div className={`w-full rounded-full h-2.5 ${theme === 'dark' ? 'bg-[#183327]' : 'bg-slate-200'}`}>
+                <div className="bg-[#2D6A4F] h-full rounded-full" style={{ width: '18%' }} />
               </div>
             </div>
           </div>
@@ -177,14 +177,14 @@ export default function CityPlannerView() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {bottleneckStations.map((stn, index) => (
             <div key={stn.id} className={`p-3.5 rounded-xl border space-y-2 ${
-              theme === 'dark' ? 'bg-[#0B132B] border-[#1E2F5B]' : 'bg-slate-50 border-slate-200'
+              theme === 'dark' ? 'bg-[#0B1612] border-[#1E3A2C]' : 'bg-[#F3F7F4] border-[#D1E0D6]'
             }`}>
               <div className="flex items-center justify-between">
                 <div className={`text-xs font-bold flex items-center gap-1.5 ${
-                  theme === 'dark' ? 'text-white' : 'text-slate-900'
+                  theme === 'dark' ? 'text-white' : 'text-[#132A1C]'
                 }`}>
                   <span className={`w-5 h-5 rounded border flex items-center justify-center font-mono text-[10px] font-bold ${
-                    theme === 'dark' ? 'bg-[#162347] border-[#1E2F5B] text-sky-400' : 'bg-white border-slate-300 text-slate-700'
+                    theme === 'dark' ? 'bg-[#183327] border-[#1E3A2C] text-[#3DB87E]' : 'bg-white border-[#D1E0D6] text-slate-700'
                   }`}>
                     #{index + 1}
                   </span>
@@ -208,9 +208,9 @@ export default function CityPlannerView() {
       {activeTab === 'policy' && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div className={`p-3.5 rounded-xl border space-y-1.5 ${
-            theme === 'dark' ? 'bg-[#0B132B] border-[#1E2F5B]' : 'bg-slate-50 border-slate-200'
+            theme === 'dark' ? 'bg-[#0B1612] border-[#1E3A2C]' : 'bg-[#F3F7F4] border-[#D1E0D6]'
           }`}>
-            <div className="text-xs font-mono text-amber-400 font-bold flex items-center gap-1">
+            <div className="text-xs font-mono text-[#3DB87E] font-bold flex items-center gap-1">
               <Lightbulb className="w-3.5 h-3.5" />
               <span>Dedicated Auto & Feeder Bays</span>
             </div>
@@ -219,9 +219,9 @@ export default function CityPlannerView() {
             </p>
           </div>
           <div className={`p-3.5 rounded-xl border space-y-1.5 ${
-            theme === 'dark' ? 'bg-[#0B132B] border-[#1E2F5B]' : 'bg-slate-50 border-slate-200'
+            theme === 'dark' ? 'bg-[#0B1612] border-[#1E3A2C]' : 'bg-[#F3F7F4] border-[#D1E0D6]'
           }`}>
-            <div className="text-xs font-mono text-sky-400 font-bold flex items-center gap-1">
+            <div className="text-xs font-mono text-[#C4829E] font-bold flex items-center gap-1">
               <Lightbulb className="w-3.5 h-3.5" />
               <span>Integrated BEST + Metro QR Fare</span>
             </div>

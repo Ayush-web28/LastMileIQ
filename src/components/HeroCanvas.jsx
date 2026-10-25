@@ -51,9 +51,9 @@ export default function HeroCanvas() {
         size: isVehicle ? 3.5 : 2,
         color: isVehicle
           ? Math.random() > 0.3
-            ? '#10B981'
-            : '#06B6D4'
-          : 'rgba(245, 158, 11, 0.8)',
+            ? '#3DB87E'
+            : '#4EBA86'
+          : 'rgba(196, 130, 158, 0.8)',
         isVehicle,
         trail: [],
       });
@@ -103,7 +103,7 @@ export default function HeroCanvas() {
         const tx = b.to.x * width;
         const ty = b.to.y * height;
 
-        ctx.strokeStyle = 'rgba(6, 182, 212, 0.25)';
+        ctx.strokeStyle = 'rgba(61, 184, 126, 0.25)';
         ctx.lineWidth = 1.5;
         ctx.setLineDash([4, 6]);
         ctx.beginPath();
@@ -114,7 +114,7 @@ export default function HeroCanvas() {
 
         ctx.beginPath();
         ctx.arc(tx, ty, 4, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(6, 182, 212, 0.7)';
+        ctx.fillStyle = 'rgba(61, 184, 126, 0.7)';
         ctx.fill();
 
         ctx.font = '10px "JetBrains Mono", monospace';
@@ -130,11 +130,11 @@ export default function HeroCanvas() {
         if (i === 0) ctx.moveTo(sx, sy);
         else ctx.lineTo(sx, sy);
       });
-      ctx.strokeStyle = 'rgba(2, 132, 199, 0.3)';
+      ctx.strokeStyle = 'rgba(61, 184, 126, 0.3)';
       ctx.lineWidth = 8;
       ctx.stroke();
 
-      ctx.strokeStyle = '#0284C7';
+      ctx.strokeStyle = '#3DB87E';
       ctx.lineWidth = 3;
       ctx.stroke();
 
@@ -217,8 +217,8 @@ export default function HeroCanvas() {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
       <canvas ref={canvasRef} className="w-full h-full block opacity-60" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0B132B] via-transparent to-[#0B132B]/80" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#0B132B] via-transparent to-[#0B132B]/80" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0B1612] via-transparent to-[#0B1612]/80" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#0B1612] via-transparent to-[#0B1612]/80" />
     </div>
   );
 }

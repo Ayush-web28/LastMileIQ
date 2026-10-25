@@ -46,21 +46,21 @@ export default function Navbar({
   const localLines = Object.entries(corridors).filter(([_, item]) => item.category === 'local');
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-[#0B132B]/90 backdrop-blur-xl border-b border-[#1E2F5B] transition-all">
+    <header className="sticky top-0 z-50 w-full bg-[#0B1612]/90 backdrop-blur-xl border-b border-[#1E3A2C] transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
         
         {/* Left: Brand Logo */}
         <div className="flex items-center gap-3">
-          <div className="relative flex items-center justify-center w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/30">
-            <Zap className="w-5 h-5 text-amber-400" />
-            <div className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+          <div className="relative flex items-center justify-center w-9 h-9 rounded-xl bg-[#3DB87E]/10 border border-[#3DB87E]/30">
+            <Zap className="w-5 h-5 text-[#3DB87E]" />
+            <div className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-[#3DB87E] animate-pulse" />
           </div>
           <div>
             <div className="flex items-center gap-2">
               <span className="font-extrabold text-lg tracking-tight text-white">
-                LastMile<span className="text-amber-400">IQ</span>
+                LastMile<span className="text-[#3DB87E]">IQ</span>
               </span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-sky-500/15 text-sky-400 border border-sky-500/30 font-semibold">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#3DB87E]/15 text-[#3DB87E] border border-[#3DB87E]/30 font-semibold">
                 Mumbai
               </span>
             </div>
@@ -74,9 +74,9 @@ export default function Navbar({
         <div className="relative" ref={corridorRef}>
           <button
             onClick={() => setCorridorMenuOpen(!corridorMenuOpen)}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#111C38] border border-[#1E2F5B] hover:border-sky-500/50 transition text-xs font-medium text-slate-200 shadow-sm"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#11231B] border border-[#1E3A2C] hover:border-[#3DB87E]/50 transition text-xs font-medium text-slate-200 shadow-sm"
           >
-            <MapPin className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+            <MapPin className="w-3.5 h-3.5 text-[#3DB87E] shrink-0" />
             <div className="text-left">
               <span className="text-slate-400 block text-[9px] uppercase tracking-wider font-mono">
                 {activeCorridorData.categoryLabel}
@@ -90,10 +90,10 @@ export default function Navbar({
           </button>
 
           {corridorMenuOpen && (
-            <div className="absolute left-0 mt-2 w-80 rounded-xl bg-[#111C38] border border-[#1E2F5B] shadow-2xl p-2 z-50 animate-in fade-in zoom-in-95 max-h-[440px] overflow-y-auto">
+            <div className="absolute left-0 mt-2 w-80 rounded-xl bg-[#11231B] border border-[#1E3A2C] shadow-2xl p-2 z-50 animate-in fade-in zoom-in-95 max-h-[440px] overflow-y-auto">
               
               {/* Group 1: 6 Metro Lines */}
-              <div className="text-[10px] font-mono text-cyan-400 px-2 py-1 uppercase tracking-wider font-bold">
+              <div className="text-[10px] font-mono text-[#3DB87E] px-2 py-1 uppercase tracking-wider font-bold">
                 🚇 Mumbai Metro (6 Lines)
               </div>
               {metroLines.map(([key, item]) => (
@@ -105,8 +105,8 @@ export default function Navbar({
                   }}
                   className={`w-full text-left p-2 rounded-lg flex items-start gap-2.5 transition text-xs mb-0.5 ${
                     currentCorridor === key
-                      ? 'bg-sky-500/15 border border-sky-500/40 text-sky-300'
-                      : 'hover:bg-[#162347] text-slate-300'
+                      ? 'bg-[#3DB87E]/15 border border-[#3DB87E]/40 text-[#3DB87E]'
+                      : 'hover:bg-[#183327] text-slate-300'
                   }`}
                 >
                   <span className="w-2.5 h-2.5 rounded-full mt-1 shrink-0 shadow-sm" style={{ backgroundColor: item.color }} />
@@ -120,7 +120,7 @@ export default function Navbar({
               ))}
 
               {/* Group 2: 3 Suburban Local Lines (Distinct dot colors) */}
-              <div className="text-[10px] font-mono text-amber-400 px-2 pt-3 py-1 uppercase tracking-wider font-bold border-t border-[#1E2F5B] mt-2">
+              <div className="text-[10px] font-mono text-[#C4829E] px-2 pt-3 py-1 uppercase tracking-wider font-bold border-t border-[#1E3A2C] mt-2">
                 🚆 Mumbai Suburban Local (3 Lines)
               </div>
               {localLines.map(([key, item]) => (
@@ -132,8 +132,8 @@ export default function Navbar({
                   }}
                   className={`w-full text-left p-2 rounded-lg flex items-start gap-2.5 transition text-xs mb-0.5 ${
                     currentCorridor === key
-                      ? 'bg-amber-500/15 border border-amber-500/40 text-amber-300'
-                      : 'hover:bg-[#162347] text-slate-300'
+                      ? 'bg-[#C4829E]/15 border border-[#C4829E]/40 text-[#C4829E]'
+                      : 'hover:bg-[#183327] text-slate-300'
                   }`}
                 >
                   <span className="w-2.5 h-2.5 rounded-full mt-1 shrink-0 shadow-sm" style={{ backgroundColor: item.color }} />
@@ -154,7 +154,7 @@ export default function Navbar({
         <div className="relative" ref={accountRef}>
           <button
             onClick={() => setAccountMenuOpen(!accountMenuOpen)}
-            className="flex items-center gap-2.5 p-1.5 pr-3 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition shadow-sm text-xs"
+            className="flex items-center gap-2.5 p-1.5 pr-3 rounded-xl bg-[#11231B] border border-[#1E3A2C] hover:border-[#3DB87E]/50 transition shadow-sm text-xs"
           >
             {/* User Avatar Circle */}
             <div 
@@ -183,9 +183,9 @@ export default function Navbar({
 
           {/* Account Profile Switcher Dropdown */}
           {accountMenuOpen && (
-            <div className="absolute right-0 mt-2 w-72 rounded-2xl bg-[#0F172A] border border-slate-700/90 shadow-2xl p-3 z-50 animate-in fade-in zoom-in-95">
+            <div className="absolute right-0 mt-2 w-72 rounded-2xl bg-[#11231B] border border-[#1E3A2C] shadow-2xl p-3 z-50 animate-in fade-in zoom-in-95">
               
-              <div className="pb-2.5 mb-2.5 border-b border-slate-800">
+              <div className="pb-2.5 mb-2.5 border-b border-[#1E3A2C]">
                 <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 block font-bold">
                   Logged In Account Profile
                 </span>
@@ -210,8 +210,8 @@ export default function Navbar({
                       }}
                       className={`w-full text-left p-2.5 rounded-xl border transition flex items-start gap-2.5 ${
                         isSelected
-                          ? 'bg-[#162347] border-sky-500/60 shadow-md ring-1 ring-sky-500/30'
-                          : 'bg-[#0B132B]/60 border-[#1E2F5B] hover:border-slate-700'
+                          ? 'bg-[#183327] border-[#3DB87E]/60 shadow-md ring-1 ring-[#3DB87E]/30'
+                          : 'bg-[#0B1612]/60 border-[#1E3A2C] hover:border-[#2C523F]'
                       }`}
                     >
                       <div 
@@ -228,7 +228,7 @@ export default function Navbar({
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
                           <span className="text-xs font-bold text-white truncate">{acc.name}</span>
-                          {isSelected && <Check className="w-3.5 h-3.5 text-sky-400 shrink-0" />}
+                          {isSelected && <Check className="w-3.5 h-3.5 text-[#3DB87E] shrink-0" />}
                         </div>
                         <div className="text-[10px] font-medium" style={{ color: acc.badgeColor }}>
                           {acc.title}
@@ -242,7 +242,7 @@ export default function Navbar({
                 })}
               </div>
 
-              <div className="mt-2.5 pt-2 border-t border-slate-800/80 text-[10px] font-mono text-slate-500 text-center">
+              <div className="mt-2.5 pt-2 border-t border-[#1E3A2C]/80 text-[10px] font-mono text-slate-500 text-center">
                 Signed in via Mumbai SSO • Session Active
               </div>
 

@@ -151,9 +151,9 @@ export function calculateLMSI(demandRateOrOptions = 25, maybeSupplyRate = 10, ma
     return {
       score: rawScore,
       level: 'OPTIMAL',
-      color: '#0284C7', // Signal Transit Sky Blue (Metro Navy Palette)
-      tailwindColor: 'text-sky-400',
-      tailwindBg: 'bg-sky-500/20',
+      color: '#3DB87E', // Ease Health Mint / Sage
+      tailwindColor: 'text-[#3DB87E]',
+      tailwindBg: 'bg-[#3DB87E]/20',
       badge: 'BALANCED SUPPLY',
       waitCategory: '< 5 min wait',
       expectedWaitMinutes: Math.min(expectedWaitMinutes, 4.8),
@@ -162,9 +162,9 @@ export function calculateLMSI(demandRateOrOptions = 25, maybeSupplyRate = 10, ma
     return {
       score: rawScore,
       level: 'WARNING',
-      color: '#F59E0B', // Mumbai Taxi & Municipal Gold
-      tailwindColor: 'text-amber-400',
-      tailwindBg: 'bg-amber-500/20',
+      color: '#C4829E', // Ease Health Signature Mauve
+      tailwindColor: 'text-[#C4829E]',
+      tailwindBg: 'bg-[#C4829E]/20',
       badge: 'MODERATE SURGE',
       waitCategory: '5–12 min wait',
       expectedWaitMinutes: Math.max(5.2, Math.min(expectedWaitMinutes, 12.0)),
@@ -173,7 +173,7 @@ export function calculateLMSI(demandRateOrOptions = 25, maybeSupplyRate = 10, ma
     return {
       score: rawScore,
       level: 'CRITICAL',
-      color: '#EF4444', // Coral Red
+      color: '#F43F5E', // Clinical Crimson Rose
       tailwindColor: 'text-rose-400',
       tailwindBg: 'bg-rose-500/20',
       badge: 'ACUTE TRANSIT DEFICIT',

@@ -20,8 +20,8 @@ export default function DashboardMetrics({ compact = false, className = '' }) {
         compact ? 'p-2.5 sm:p-3 space-y-1' : 'p-4 sm:p-5 space-y-2'
       } ${
         theme === 'dark'
-          ? 'bg-[#111C38]/90 border-[#1E2F5B]/80 hover:border-sky-500/40'
-          : 'bg-white border-slate-200 hover:border-slate-300 shadow-sm'
+          ? 'bg-[#11231B]/90 border-[#1E3A2C]/80 hover:border-[#3DB87E]/40'
+          : 'bg-white border-[#D1E0D6] hover:border-[#3DB87E]/40 shadow-sm'
       }`}>
         <div className="flex items-center justify-between">
           <span className={`text-[10px] font-mono uppercase tracking-wider font-bold ${
@@ -29,7 +29,7 @@ export default function DashboardMetrics({ compact = false, className = '' }) {
           }`}>
             Fleet Utilization
           </span>
-          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/30 text-[9px] font-mono font-bold">
+          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-full bg-[#3DB87E]/10 text-[#3DB87E] border border-[#3DB87E]/30 text-[9px] font-mono font-bold">
             <ArrowUpRight className="w-2.5 h-2.5" /> +14.2%
           </span>
         </div>
@@ -52,8 +52,8 @@ export default function DashboardMetrics({ compact = false, className = '' }) {
         compact ? 'p-2.5 sm:p-3 space-y-1' : 'p-4 sm:p-5 space-y-2'
       } ${
         theme === 'dark'
-          ? 'bg-[#111C38]/90 border-[#1E2F5B]/80 hover:border-amber-500/40'
-          : 'bg-white border-slate-200 hover:border-slate-300 shadow-sm'
+          ? 'bg-[#11231B]/90 border-[#1E3A2C]/80 hover:border-[#C4829E]/40'
+          : 'bg-white border-[#D1E0D6] hover:border-[#C4829E]/40 shadow-sm'
       }`}>
         <div className="flex items-center justify-between">
           <span className={`text-[10px] font-mono uppercase tracking-wider font-bold ${
@@ -61,12 +61,12 @@ export default function DashboardMetrics({ compact = false, className = '' }) {
           }`}>
             Avg Commuter Wait
           </span>
-          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 text-[9px] font-mono font-bold">
+          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-full bg-[#C4829E]/15 text-[#C4829E] border border-[#C4829E]/30 text-[9px] font-mono font-bold">
             <ArrowDownRight className="w-2.5 h-2.5" /> -74% Drop
           </span>
         </div>
         <div>
-          <div className={`${compact ? 'text-xl sm:text-2xl' : 'text-2xl sm:text-3xl'} font-black font-mono text-amber-400 tracking-tight`}>
+          <div className={`${compact ? 'text-xl sm:text-2xl' : 'text-2xl sm:text-3xl'} font-black font-mono text-[#C4829E] tracking-tight`}>
             {corridorTelemetry.avgWaitTime} min
           </div>
           {!compact && (
@@ -82,8 +82,8 @@ export default function DashboardMetrics({ compact = false, className = '' }) {
         compact ? 'p-2.5 sm:p-3 space-y-1' : 'p-4 sm:p-5 space-y-2'
       } ${
         theme === 'dark'
-          ? 'bg-[#111C38]/90 border-[#1E2F5B]/80 hover:border-cyan-500/40'
-          : 'bg-white border-slate-200 hover:border-slate-300 shadow-sm'
+          ? 'bg-[#11231B]/90 border-[#1E3A2C]/80 hover:border-[#3DB87E]/40'
+          : 'bg-white border-[#D1E0D6] hover:border-[#3DB87E]/40 shadow-sm'
       }`}>
         <div className="flex items-center justify-between">
           <span className={`text-[10px] font-mono uppercase tracking-wider font-bold ${
@@ -91,12 +91,12 @@ export default function DashboardMetrics({ compact = false, className = '' }) {
           }`}>
             Dead-Mileage Cut
           </span>
-          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-full bg-cyan-500/10 text-cyan-500 border border-cyan-500/30 text-[9px] font-mono font-bold">
+          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-full bg-[#3DB87E]/10 text-[#3DB87E] border border-[#3DB87E]/30 text-[9px] font-mono font-bold">
             <ArrowDownRight className="w-2.5 h-2.5" /> -34%
           </span>
         </div>
         <div>
-          <div className={`${compact ? 'text-xl sm:text-2xl' : 'text-2xl sm:text-3xl'} font-black font-mono text-cyan-400 tracking-tight`}>
+          <div className={`${compact ? 'text-xl sm:text-2xl' : 'text-2xl sm:text-3xl'} font-black font-mono text-[#3DB87E] tracking-tight`}>
             {corridorTelemetry.economics.deadKmSavedDaily} km
           </div>
           {!compact && (
@@ -112,8 +112,8 @@ export default function DashboardMetrics({ compact = false, className = '' }) {
         compact ? 'p-2.5 sm:p-3 space-y-1' : 'p-4 sm:p-5 space-y-2'
       } ${
         theme === 'dark'
-          ? 'bg-[#111C38]/90 border-[#1E2F5B]/80 hover:border-amber-500/40'
-          : 'bg-white border-slate-200 hover:border-slate-300 shadow-sm'
+          ? 'bg-[#11231B]/90 border-[#1E3A2C]/80 hover:border-[#3DB87E]/40'
+          : 'bg-white border-[#D1E0D6] hover:border-[#3DB87E]/40 shadow-sm'
       }`}>
         <div className="flex items-center justify-between">
           <span className={`text-[10px] font-mono uppercase tracking-wider font-bold ${
@@ -121,12 +121,12 @@ export default function DashboardMetrics({ compact = false, className = '' }) {
           }`}>
             Revenue Uplift / Veh
           </span>
-          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 text-[9px] font-mono font-bold">
+          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded-full bg-[#3DB87E]/10 text-[#3DB87E] border border-[#3DB87E]/30 text-[9px] font-mono font-bold">
             <ArrowUpRight className="w-2.5 h-2.5" /> +2.4 Trips
           </span>
         </div>
         <div>
-          <div className={`${compact ? 'text-xl sm:text-2xl' : 'text-2xl sm:text-3xl'} font-black font-mono text-amber-400 tracking-tight`}>
+          <div className={`${compact ? 'text-xl sm:text-2xl' : 'text-2xl sm:text-3xl'} font-black font-mono text-[#3DB87E] tracking-tight`}>
             +₹{corridorTelemetry.economics.dailyRevenueUpliftPerVehicle}
           </div>
           {!compact && (
