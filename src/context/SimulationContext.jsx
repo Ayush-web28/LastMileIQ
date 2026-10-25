@@ -515,30 +515,39 @@ export function SimulationProvider({ children }) {
 
     soundFx.dispatchPing();
 
-    const dispatchCount = Math.min(stn.highDeficitGate.deficit || 8, 12);
-    const randomPlateNum = Math.floor(1000 + Math.random() * 9000);
+    const dispatchCount = 4;
+    const donorStand = stn.rebalancingPlan?.donorStand?.name || stn.rebalancingPlan?.sourceStand || 'Station East Hub';
+    const targetGate = stn.highDeficitGate.gateName;
+    const now = Date.now();
 
-    const newDispatch = {
-      id: `disp-${Date.now()}`,
-      plate: `MH-02-EV-${randomPlateNum}`,
-      driverName: ['Sachin Kadam', 'Vinod Ghorpade', 'Arun Jadhav', 'Deepak Salvi'][Math.floor(Math.random() * 4)],
-      rating: Number((4.75 + Math.random() * 0.24).toFixed(2)),
-      batteryPct: Math.floor(65 + Math.random() * 32),
-      vehicleType: 'EV Feeder Auto',
-      fromStand: stn.rebalancingPlan?.donorStand?.name || 'Nearest Stand',
-      toGate: stn.highDeficitGate.gateName,
+    const driverProfiles = [
+      { name: 'Sachin Kadam', plateNum: Math.floor(1000 + Math.random() * 9000), type: 'EV Feeder Auto', fare: '₹30 flat ONDC', batt: 84 },
+      { name: 'Vinod Ghorpade', plateNum: Math.floor(1000 + Math.random() * 9000), type: 'EV Feeder Auto', fare: '₹30 flat ONDC', batt: 76 },
+      { name: 'Arun Jadhav', plateNum: Math.floor(1000 + Math.random() * 9000), type: 'EV Feeder Auto', fare: '₹35 flat fixed ONDC', batt: 92 },
+      { name: 'Ganesh Shinde', plateNum: Math.floor(1000 + Math.random() * 9000), type: 'Smart E-Bus Feeder', fare: '₹20 feeder hop', batt: 88 },
+    ];
+
+    const newDispatches = driverProfiles.map((driver, idx) => ({
+      id: `disp-${now}-${idx}`,
+      plate: `MH-02-EV-${driver.plateNum}`,
+      driverName: driver.name,
+      rating: Number((4.78 + Math.random() * 0.18).toFixed(2)),
+      batteryPct: driver.batt,
+      vehicleType: driver.type,
+      fromStand: donorStand,
+      toGate: targetGate,
       stationName: stn.name,
       timeAgo: 'Just now',
       status: 'Dispatched',
-      createdAt: Date.now(),
-      surgeFare: '₹30 flat ONDC',
-    };
+      createdAt: now - idx * 800,
+      surgeFare: driver.fare,
+    }));
 
-    setDispatchEvents((prev) => [newDispatch, ...prev.slice(0, 15)]);
+    setDispatchEvents((prev) => [...newDispatches, ...prev.slice(0, 30)]);
 
     setActiveToast({
       title: 'Dynamic Rebalance Dispatched',
-      message: `Rerouted ${dispatchCount} EV feeder vehicles to ${stn.highDeficitGate.gateName} at ${stn.name}. Expected wait capped under 5 min.`,
+      message: `Rerouted ${dispatchCount} EV feeder vehicles to ${targetGate} at ${stn.name}. Expected wait capped under 5 min.`,
       type: 'success',
     });
 

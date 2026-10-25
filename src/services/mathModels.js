@@ -201,7 +201,7 @@ export function generateRebalancingPlan(station, highDeficitGate, allStands = []
     return {
       sourceStand: 'Regional Mobile Reserve',
       targetGate: highDeficitGate.gateName || 'Gate 1',
-      dispatchCount: Math.min(10, highDeficitGate.deficit || 6),
+      dispatchCount: 4,
       estimatedArrivalMin: 4.5,
       projectedWaitTimeDrop: {
         from: highDeficitGate.waitTimeMinutes || 12,
@@ -213,17 +213,14 @@ export function generateRebalancingPlan(station, highDeficitGate, allStands = []
   }
 
   const primaryStand = viableStands[0];
-  const dispatchCount = Math.min(
-    Math.floor((primaryStand.currentVehicles || 10) * 0.7),
-    highDeficitGate.deficit || 8
-  );
+  const dispatchCount = 4;
 
   return {
     sourceStand: primaryStand.name,
     sourceStandId: primaryStand.id,
     targetGate: highDeficitGate.gateName || 'Gate 1',
     targetGateId: highDeficitGate.gateId || 'G1',
-    dispatchCount: Math.max(dispatchCount, 4),
+    dispatchCount: 4,
     estimatedArrivalMin: 2.8,
     projectedWaitTimeDrop: {
       from: highDeficitGate.waitTimeMinutes || 14,
