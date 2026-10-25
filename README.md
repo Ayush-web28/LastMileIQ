@@ -5,11 +5,27 @@
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-38B2AC?style=flat&logo=tailwind-css)](https://tailwindcss.com/)
 [![Leaflet](https://img.shields.io/badge/Leaflet-1.9.4-199900?style=flat&logo=leaflet)](https://leafletjs.com/)
 [![Google Maps Engine](https://img.shields.io/badge/Google%20Maps-Roadmap%20%26%20Satellite-4285F4?style=flat&logo=googlemaps)](https://maps.google.com/)
+[![Deployed on Render](https://img.shields.io/badge/Render-Static%20Site-46E3B7?style=flat&logo=render)](https://lastmileiq.onrender.com)
 [![ONDC Enabled](https://img.shields.io/badge/ONDC-Open%20Mobility-10B981?style=flat)](https://ondc.org/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 > **"The Operating System for Mumbai's Last-Mile Mobility"**  
 > AI-powered spatio-temporal transit intelligence platform tackling the 1–5 km last-mile transit crisis across Mumbai Metro and Suburban Railway networks. Built on a decluttered, high-polish Bionis dashboard layout architecture with authentic Google Maps geospatial visualization.
+
+---
+
+## 🌐 Live Production Deployment (Render)
+
+LastMileIQ is deployed as a high-performance **Static Site** on **Render** with global Edge CDN distribution:
+
+- **Live URL**: [https://lastmileiq.onrender.com](https://lastmileiq.onrender.com)
+- **Hosting Tier**: Render Static Site (Edge CDN, zero cold start latency)
+- **Continuous Deployment**: Automated git-triggered builds on every push to `main`
+- **Build Specs**:
+  - **Runtime**: Node.js / Vite 5
+  - **Build Command**: `npm run build`
+  - **Publish Directory**: `dist`
+  - **SPA Rewrite**: `/*` ➔ `/index.html` (Rewrite)
 
 ---
 
