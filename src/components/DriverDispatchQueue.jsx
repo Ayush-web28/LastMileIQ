@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSimulation } from '../context/SimulationContext';
 
 export default function DriverDispatchQueue() {
-  const { theme, dispatchEvents, pingConcourseGate } = useSimulation();
+  const { dispatchEvents, pingConcourseGate } = useSimulation();
   const [filterType, setFilterType] = useState('ALL');
   const [pingedDriverId, setPingedDriverId] = useState(null);
 
@@ -25,56 +25,46 @@ export default function DriverDispatchQueue() {
   };
 
   return (
-    <div className={`p-4 sm:p-5 rounded-md border space-y-3.5 transition ${
-      theme === 'dark'
-        ? 'bg-[#151820] border-[#2A2F3D] text-[#F4F5F7]'
-        : 'bg-[#F4F5F7] border-[#CED2DA] text-[#0E1015]'
-    }`}>
+    <div className="p-4 sm:p-5 rounded-md border border-[#CED2DA] bg-[#F4F5F7] text-[#0E1015] space-y-3.5 transition">
       {/* Header & Category Filters */}
-      <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b ${
-        theme === 'dark' ? 'border-[#2A2F3D]' : 'border-[#CED2DA]'
-      }`}>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#CED2DA]">
         <div>
-          <h3 className={`text-sm sm:base font-bold flex items-center gap-2 ${
-            theme === 'dark' ? 'text-[#F4F5F7]' : 'text-[#0E1015]'
-          }`}>
+          <h3 className="text-sm sm:text-base font-bold flex items-center gap-2 text-[#0E1015]">
             <span>Active Driver Dispatch Queue (Mumbai Feeders)</span>
           </h3>
-          <p className={`text-xs mt-0.5 ${theme === 'dark' ? 'text-[#949AA8]' : 'text-[#475060]'}`}>
+          <p className="text-xs mt-0.5 text-[#475060]">
             Live telemetry of rerouted EV autos, syndicates, and station gate assignments
           </p>
         </div>
 
         {/* Filter Tabs */}
-        <div className={`flex items-center p-0.5 rounded-md border text-xs ${
-          theme === 'dark' ? 'bg-[#0E1015] border-[#2A2F3D]' : 'bg-[#DFE2E7] border-[#CED2DA]'
-        }`}>
+        <div className="flex items-center p-0.5 rounded-md border border-[#CED2DA] bg-[#DFE2E7] text-xs">
           <button
             onClick={() => setFilterType('ALL')}
-            className={`px-3 py-1 rounded font-bold transition ${
+            className={`px-3 py-1 rounded font-bold transition cursor-pointer ${
               filterType === 'ALL'
-                ? 'bg-[#DC2626] text-white'
-                : theme === 'dark' ? 'text-[#949AA8] hover:text-[#F4F5F7]' : 'text-[#475060] hover:text-[#0E1015]'
+                ? 'bg-[#0E1015] text-[#F4F5F7]'
+                : 'text-[#475060] hover:text-[#0E1015]'
             }`}
           >
             All ({dispatchEvents.length})
           </button>
           <button
             onClick={() => setFilterType('EV')}
-            className={`px-3 py-1 rounded font-bold transition ${
+            className={`px-3 py-1 rounded font-bold transition cursor-pointer ${
               filterType === 'EV'
-                ? 'bg-[#DC2626] text-white'
-                : theme === 'dark' ? 'text-[#949AA8] hover:text-[#F4F5F7]' : 'text-[#475060] hover:text-[#0E1015]'
+                ? 'bg-[#059669] text-white'
+                : 'text-[#475060] hover:text-[#0E1015]'
             }`}
           >
             EV Rickshaws
           </button>
           <button
             onClick={() => setFilterType('BUS')}
-            className={`px-3 py-1 rounded font-bold transition ${
+            className={`px-3 py-1 rounded font-bold transition cursor-pointer ${
               filterType === 'BUS'
-                ? 'bg-[#DC2626] text-white'
-                : theme === 'dark' ? 'text-[#949AA8] hover:text-[#F4F5F7]' : 'text-[#475060] hover:text-[#0E1015]'
+                ? 'bg-[#2563EB] text-white'
+                : 'text-[#475060] hover:text-[#0E1015]'
             }`}
           >
             Feeder Buses
@@ -88,7 +78,7 @@ export default function DriverDispatchQueue() {
           const isPinged = pingedDriverId === driver.id;
           const battery = driver.batteryPct || driver.battery || 82;
           const batteryColor =
-            battery >= 75 ? 'text-[#10B981]' : battery >= 40 ? 'text-[#F59E0B]' : 'text-[#DC2626]';
+            battery >= 75 ? 'text-[#059669]' : battery >= 40 ? 'text-[#D97706]' : 'text-[#DC2626]';
           const driverName = driver.driverName || driver.driver || 'Mumbai Driver';
           const vehicleType = driver.vehicleType || driver.type || 'EV Feeder Auto';
           const fare = driver.surgeFare || driver.fareEstimate || '₹30 flat ONDC';
@@ -96,16 +86,10 @@ export default function DriverDispatchQueue() {
           return (
             <div
               key={driver.id}
-              className={`p-3.5 rounded-md border transition flex flex-col justify-between space-y-2.5 ${
-                theme === 'dark'
-                  ? 'bg-[#0E1015] border-[#2A2F3D]'
-                  : 'bg-[#EBECEF] border-[#CED2DA]'
-              }`}
+              className="p-3.5 rounded-md border border-[#CED2DA] bg-[#EBECEF] transition flex flex-col justify-between space-y-2.5"
             >
               <div className="flex items-center justify-between">
-                <span className={`px-2 py-0.5 rounded font-mono text-xs font-bold border ${
-                  theme === 'dark' ? 'bg-[#151820] border-[#2A2F3D] text-[#F4F5F7]' : 'bg-[#F4F5F7] border-[#CED2DA] text-[#0E1015]'
-                }`}>
+                <span className="px-2 py-0.5 rounded font-mono text-xs font-bold border border-[#CED2DA] bg-[#F4F5F7] text-[#0E1015]">
                   {driver.plate}
                 </span>
                 <div className="flex items-center gap-1 text-xs font-mono">
@@ -115,24 +99,22 @@ export default function DriverDispatchQueue() {
 
               <div>
                 <div className="text-xs font-bold flex items-center justify-between">
-                  <span className={theme === 'dark' ? 'text-[#F4F5F7]' : 'text-[#0E1015]'}>{driverName}</span>
-                  <span className="text-[11px] font-mono text-[#DC2626] font-bold">{fare}</span>
+                  <span className="text-[#0E1015]">{driverName}</span>
+                  <span className="text-[11px] font-mono text-[#475060] font-bold">{fare}</span>
                 </div>
-                <div className={`text-[11px] ${theme === 'dark' ? 'text-[#949AA8]' : 'text-[#475060]'}`}>
+                <div className="text-[11px] text-[#475060]">
                   {vehicleType}
                 </div>
               </div>
 
-              <div className={`text-[11px] font-mono flex items-center justify-between pt-2 border-t gap-2 ${
-                theme === 'dark' ? 'border-[#2A2F3D] text-[#949AA8]' : 'border-[#CED2DA] text-[#475060]'
-              }`}>
+              <div className="text-[11px] font-mono flex items-center justify-between pt-2 border-t border-[#CED2DA] text-[#475060] gap-2">
                 <span className="truncate" title={driver.stationName}>{driver.stationName}</span>
                 <span className={`px-2 py-0.5 rounded text-[10px] font-bold shrink-0 border ${
                   driver.status === 'Dispatched'
-                    ? 'bg-[#10B981]/15 text-[#10B981] border-[#10B981]/30'
+                    ? 'bg-[#059669]/10 text-[#059669] border-[#059669]/30'
                     : driver.status === 'En Route'
-                      ? theme === 'dark' ? 'bg-[#2563EB]/15 text-[#60A5FA] border-[#2563EB]/30' : 'bg-[#2563EB]/10 text-[#2563EB] border-[#2563EB]/30'
-                      : 'bg-[#10B981]/15 text-[#10B981] border-[#10B981]/30'
+                      ? 'bg-[#2563EB]/10 text-[#2563EB] border-[#2563EB]/30'
+                      : 'bg-[#059669]/10 text-[#059669] border-[#059669]/30'
                 }`}>
                   {driver.status || 'Dispatched'}
                 </span>
@@ -141,12 +123,10 @@ export default function DriverDispatchQueue() {
               <button
                 onClick={() => handlePingDriver(driver.id)}
                 title="Broadcasts telematics dispatch ping to driver terminal and concourse gate beacon"
-                className={`w-full py-1.5 rounded-md border text-xs font-mono font-bold transition flex items-center justify-center gap-1.5 ${
+                className={`w-full py-1.5 rounded-md border text-xs font-mono font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
                   isPinged
-                    ? 'bg-[#DC2626] text-white border-[#DC2626]'
-                    : theme === 'dark'
-                      ? 'bg-[#1D212C] border-[#2A2F3D] text-[#F4F5F7] hover:bg-[#2A2F3D]'
-                      : 'bg-[#F4F5F7] border-[#CED2DA] text-[#0E1015] hover:bg-[#DFE2E7]'
+                    ? 'bg-[#059669] text-white border-[#059669]'
+                    : 'bg-[#F4F5F7] border-[#CED2DA] text-[#0E1015] hover:bg-[#DFE2E7]'
                 }`}
               >
                 {isPinged ? 'Telemetry Ping Acked' : 'Ping Concourse Gate'}

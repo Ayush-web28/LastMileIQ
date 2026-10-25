@@ -13,7 +13,6 @@ import { CORRIDORS } from './data/corridors';
 
 function DashboardLayout() {
   const { 
-    theme, 
     activeToast,
     activeAccountRole,
   } = useSimulation();
@@ -39,30 +38,18 @@ function DashboardLayout() {
   }, [activeAccountRole]);
 
   return (
-    <div className={`h-screen flex font-sans overflow-hidden select-none transition-colors duration-200 ${
-      theme === 'dark' 
-        ? 'bg-[#0E1015] text-[#F4F5F7] selection:bg-[#E11D48]/30 selection:text-white' 
-        : 'bg-[#F4F5F7] text-[#0E1015] selection:bg-[#DC2626]/20 selection:text-[#0E1015]'
-    }`}>
+    <div className="h-screen flex font-sans overflow-hidden select-none bg-[#F4F5F7] text-[#0E1015] selection:bg-[#DC2626]/20 selection:text-[#0E1015]">
       
       {/* Toast Alert Feedback */}
       {activeToast && (
-        <div className={`fixed bottom-6 right-6 z-50 max-w-sm p-3.5 rounded-md border animate-in slide-in-from-bottom-5 ${
-          theme === 'dark' 
-            ? 'bg-[#151820] border-[#E11D48]/50 text-[#F4F5F7]' 
-            : 'bg-[#EBECEF] border-[#DC2626]/50 text-[#0E1015]'
-        }`}>
+        <div className="fixed bottom-6 right-6 z-50 max-w-sm p-3.5 rounded-md border border-[#CED2DA] bg-[#EBECEF] text-[#0E1015] animate-in slide-in-from-bottom-5">
           <div className="flex items-start gap-2.5">
-            <span className={`px-1.5 py-0.5 rounded text-[10px] font-mono font-bold shrink-0 mt-0.5 ${
-              theme === 'dark' 
-                ? 'bg-[#E11D48]/20 text-[#E11D48] border border-[#E11D48]/40' 
-                : 'bg-[#DC2626]/10 text-[#DC2626] border border-[#DC2626]/40'
-            }`}>
+            <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold shrink-0 mt-0.5 bg-[#059669]/10 text-[#059669] border border-[#059669]/30">
               OK
             </span>
             <div>
               <div className="text-xs font-bold">{activeToast.title}</div>
-              <div className={`text-[11px] mt-0.5 ${theme === 'dark' ? 'text-[#949AA8]' : 'text-[#475060]'}`}>
+              <div className="text-[11px] mt-0.5 text-[#475060]">
                 {activeToast.message}
               </div>
             </div>
@@ -70,7 +57,7 @@ function DashboardLayout() {
         </div>
       )}
 
-      {/* Swiss Rail Industrial Sidebar */}
+      {/* Swiss Rail Light Sidebar */}
       <Sidebar
         activeView={activeView}
         setActiveView={setActiveView}

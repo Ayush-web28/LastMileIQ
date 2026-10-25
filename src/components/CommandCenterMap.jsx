@@ -315,7 +315,7 @@ export default function CommandCenterMap({ className = '' }) {
             <div class="mt-1 px-1.5 py-0.5 rounded text-[10px] font-sans font-bold whitespace-nowrap border pointer-events-none ${
               isSelected 
                 ? 'bg-[#0E1015] text-[#F4F5F7] border-[#DC2626]' 
-                : 'bg-[#151820] text-[#949AA8] border-[#2A2F3D]'
+                : 'bg-[#F4F5F7] text-[#475060] border-[#CED2DA]'
             }">
               ${cleanStationName}
             </div>
@@ -363,7 +363,7 @@ export default function CommandCenterMap({ className = '' }) {
             className: 'custom-stand-pin',
             html: `
               <div class="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-mono font-bold cursor-pointer border border-[#0E1015]"
-                   style="background-color: ${isEv ? '#DC2626' : '#D97706'}; color: #FFFFFF;"
+                   style="background-color: ${isEv ? '#059669' : '#D97706'}; color: #FFFFFF;"
                    title="${stand.name}: ${stand.currentVehicles} available vehicles">
                 ${stand.currentVehicles}
               </div>
@@ -376,7 +376,7 @@ export default function CommandCenterMap({ className = '' }) {
 
           // Connector line between station and stand
           L.polyline([[stn.lat, stn.lng], [stand.lat, stand.lng]], {
-            color: isEv ? '#DC2626' : '#D97706',
+            color: isEv ? '#059669' : '#D97706',
             weight: 1.5,
             opacity: 0.5,
             dashArray: '3, 4',
@@ -401,7 +401,7 @@ export default function CommandCenterMap({ className = '' }) {
         const vehicleIcon = L.divIcon({
           className: 'custom-vehicle-pin',
           html: `
-            <div class="px-1.5 py-0.5 rounded bg-[#DC2626] text-white font-mono text-[9px] font-bold flex items-center gap-1 border border-[#0E1015]">
+            <div class="px-1.5 py-0.5 rounded bg-[#2563EB] text-white font-mono text-[9px] font-bold flex items-center gap-1 border border-[#0E1015]">
               <span>EV</span>
               <span>${disp.plate ? disp.plate.slice(-4) : 'FEED'}</span>
             </div>
@@ -439,9 +439,7 @@ export default function CommandCenterMap({ className = '' }) {
   return (
     <div className={`w-full flex-1 flex flex-col min-h-0 ${className}`}>
       {/* Map Canvas Frame */}
-      <div className={`relative w-full flex-1 min-h-[420px] rounded-md overflow-hidden border ${
-        theme === 'dark' ? 'border-[#2A2F3D] bg-[#0E1015]' : 'border-[#CED2DA] bg-[#EBECEF]'
-      }`}>
+      <div className="relative w-full flex-1 min-h-[420px] rounded-md overflow-hidden border border-[#CED2DA] bg-[#EBECEF]">
         {/* Leaflet Map Canvas */}
         <div ref={mapContainerRef} className="w-full h-full z-0" />
 
@@ -459,11 +457,7 @@ export default function CommandCenterMap({ className = '' }) {
                 map.setView([cLat, cLng], activeCorridor.zoom || 13);
               }
             }}
-            className={`px-3 py-1.5 rounded-md border text-xs font-mono font-bold transition ${
-              theme === 'dark'
-                ? 'bg-[#151820] border-[#2A2F3D] text-[#DC2626] hover:bg-[#1D212C]'
-                : 'bg-[#F4F5F7] border-[#CED2DA] text-[#DC2626] hover:bg-[#DFE2E7]'
-            }`}
+            className="px-3 py-1.5 rounded-md border border-[#CED2DA] bg-[#F4F5F7] text-[#0E1015] hover:bg-[#DFE2E7] text-xs font-mono font-bold transition cursor-pointer"
             title="Recenter Map on Corridor"
           >
             Recenter
@@ -472,33 +466,27 @@ export default function CommandCenterMap({ className = '' }) {
       </div>
 
       {/* Control Bar Below the Map Border */}
-      <div className={`mt-2.5 px-3 py-2 rounded-md border flex flex-wrap items-center justify-between gap-3 text-xs font-mono ${
-        theme === 'dark'
-          ? 'bg-[#151820] border-[#2A2F3D] text-[#949AA8]'
-          : 'bg-[#F4F5F7] border-[#CED2DA] text-[#0E1015]'
-      }`}>
+      <div className="mt-2.5 px-3 py-2 rounded-md border border-[#CED2DA] bg-[#F4F5F7] text-[#0E1015] flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
         {/* Left: Map Mode Toggle, Station Dropdown (Expands Upwards) & Legend */}
         <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap">
           {/* Roadmap vs Satellite Toggle (Text Buttons) */}
-          <div className={`flex items-center p-0.5 rounded-md border ${
-            theme === 'dark' ? 'bg-[#0E1015] border-[#2A2F3D]' : 'bg-[#DFE2E7] border-[#CED2DA]'
-          }`}>
+          <div className="flex items-center p-0.5 rounded-md border border-[#CED2DA] bg-[#DFE2E7]">
             <button
               onClick={() => setMapType('roadmap')}
-              className={`px-2 py-1 rounded text-[11px] font-bold transition ${
+              className={`px-2 py-1 rounded text-[11px] font-bold transition cursor-pointer ${
                 mapType === 'roadmap'
-                  ? 'bg-[#DC2626] text-white'
-                  : theme === 'dark' ? 'text-[#949AA8] hover:text-[#F4F5F7]' : 'text-[#475060] hover:text-[#0E1015]'
+                  ? 'bg-[#0E1015] text-[#F4F5F7]'
+                  : 'text-[#475060] hover:text-[#0E1015]'
               }`}
             >
               Road
             </button>
             <button
               onClick={() => setMapType('satellite')}
-              className={`px-2 py-1 rounded text-[11px] font-bold transition ${
+              className={`px-2 py-1 rounded text-[11px] font-bold transition cursor-pointer ${
                 mapType === 'satellite'
-                  ? 'bg-[#DC2626] text-white'
-                  : theme === 'dark' ? 'text-[#949AA8] hover:text-[#F4F5F7]' : 'text-[#475060] hover:text-[#0E1015]'
+                  ? 'bg-[#0E1015] text-[#F4F5F7]'
+                  : 'text-[#475060] hover:text-[#0E1015]'
               }`}
             >
               Satellite
@@ -509,24 +497,18 @@ export default function CommandCenterMap({ className = '' }) {
           <div className="relative" ref={stationMenuRef}>
             <button
               onClick={() => setStationMenuOpen(!stationMenuOpen)}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-md border text-xs font-mono font-bold transition ${
-                theme === 'dark'
-                  ? 'bg-[#0E1015] border-[#2A2F3D] text-[#F4F5F7] hover:bg-[#1D212C]'
-                  : 'bg-[#DFE2E7] border-[#CED2DA] text-[#0E1015] hover:bg-[#CED2DA]'
-              }`}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-md border border-[#CED2DA] bg-[#DFE2E7] text-[#0E1015] hover:bg-[#CED2DA] text-xs font-mono font-bold transition cursor-pointer"
               title="Click to select station on map"
             >
               <span
                 className="w-2 h-2 rounded-full shrink-0"
-                style={{ backgroundColor: currentStation?.lmsi?.color || '#10B981' }}
+                style={{ backgroundColor: currentStation?.lmsi?.color || '#059669' }}
               />
               <span className="truncate max-w-[140px] sm:max-w-[190px]">
                 {currentStation ? currentStation.name.split(' (')[0] : 'Select Station'}
               </span>
               {currentStation && (
-                <span className={`text-[10px] shrink-0 font-bold ${
-                  theme === 'dark' ? 'text-[#6B7280]' : 'text-[#6B7280]'
-                }`}>
+                <span className="text-[10px] shrink-0 font-bold text-[#6B7280]">
                   ({currentStation.code})
                 </span>
               )}
@@ -537,14 +519,8 @@ export default function CommandCenterMap({ className = '' }) {
 
             {/* Dropup List (Expands Upwards) */}
             {stationMenuOpen && (
-              <div className={`absolute bottom-full left-0 mb-2 w-72 max-h-64 overflow-y-auto rounded-md border p-1.5 z-50 ${
-                theme === 'dark'
-                  ? 'bg-[#151820] border-[#2A2F3D] text-[#F4F5F7]'
-                  : 'bg-[#F4F5F7] border-[#CED2DA] text-[#0E1015]'
-              }`}>
-                <div className={`text-[9px] font-mono uppercase tracking-wider px-2 py-1 font-bold ${
-                  theme === 'dark' ? 'text-[#6B7280]' : 'text-[#6B7280]'
-                }`}>
+              <div className="absolute bottom-full left-0 mb-2 w-72 max-h-64 overflow-y-auto rounded-md border border-[#CED2DA] bg-[#F4F5F7] text-[#0E1015] p-1.5 z-50">
+                <div className="text-[9px] font-mono uppercase tracking-wider px-2 py-1 font-bold text-[#6B7280]">
                   {activeCorridor.shortName} Stations ({computedStations.length})
                 </div>
 
@@ -558,20 +534,16 @@ export default function CommandCenterMap({ className = '' }) {
                           setSelectedStationId(stn.id);
                           setStationMenuOpen(false);
                         }}
-                        className={`w-full text-left px-2.5 py-1.5 rounded-md flex items-center justify-between text-xs font-mono transition ${
+                        className={`w-full text-left px-2.5 py-1.5 rounded-md flex items-center justify-between text-xs font-mono transition cursor-pointer ${
                           isSelected
-                            ? theme === 'dark'
-                              ? 'bg-[#1D212C] text-[#DC2626] font-bold border border-[#DC2626]/40'
-                              : 'bg-[#DFE2E7] text-[#DC2626] font-bold border border-[#DC2626]/40'
-                            : theme === 'dark'
-                              ? 'hover:bg-[#1D212C] text-[#949AA8]'
-                              : 'hover:bg-[#DFE2E7] text-[#475060]'
+                            ? 'bg-[#DFE2E7] text-[#DC2626] font-bold border border-[#DC2626]/40'
+                            : 'hover:bg-[#DFE2E7] text-[#475060]'
                         }`}
                       >
                         <div className="flex items-center gap-2 min-w-0">
                           <span
                             className="w-2 h-2 rounded-full shrink-0"
-                            style={{ backgroundColor: stn.lmsi?.color || '#10B981' }}
+                            style={{ backgroundColor: stn.lmsi?.color || '#059669' }}
                           />
                           <span className="truncate">{stn.name.split(' (')[0]}</span>
                         </div>
@@ -592,20 +564,18 @@ export default function CommandCenterMap({ className = '' }) {
           </div>
 
           {/* Stress Halos Legend */}
-          <div className={`hidden sm:flex items-center gap-2.5 text-[10px] pl-2 border-l ${
-            theme === 'dark' ? 'border-[#2A2F3D]' : 'border-[#CED2DA]'
-          }`}>
+          <div className="hidden sm:flex items-center gap-2.5 text-[10px] pl-2 border-l border-[#CED2DA]">
             <div className="flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-[#10B981]" />
-              <span className={theme === 'dark' ? 'text-[#949AA8]' : 'text-[#6B7280]'}>&lt;5m wait</span>
+              <span className="w-2 h-2 rounded-full bg-[#059669]" />
+              <span className="text-[#6B7280]">&lt;5m wait</span>
             </div>
             <div className="flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-[#F59E0B]" />
-              <span className={theme === 'dark' ? 'text-[#949AA8]' : 'text-[#6B7280]'}>5-12m</span>
+              <span className="w-2 h-2 rounded-full bg-[#D97706]" />
+              <span className="text-[#6B7280]">5-12m</span>
             </div>
             <div className="flex items-center gap-1">
               <span className="w-2 h-2 rounded-full bg-[#DC2626]" />
-              <span className={theme === 'dark' ? 'text-[#949AA8]' : 'text-[#6B7280]'}>&gt;15m</span>
+              <span className="text-[#6B7280]">&gt;15m</span>
             </div>
           </div>
         </div>
@@ -617,42 +587,30 @@ export default function CommandCenterMap({ className = '' }) {
           </span>
           <button
             onClick={() => toggleMapFilter('showHeatRings')}
-            className={`px-2.5 py-1 rounded-md text-[10px] font-mono transition border ${
+            className={`px-2.5 py-1 rounded-md text-[10px] font-mono transition border cursor-pointer ${
               showHeatRings
-                ? theme === 'dark'
-                  ? 'bg-[#1D212C] text-[#DC2626] border-[#DC2626]/40 font-bold'
-                  : 'bg-[#DFE2E7] text-[#DC2626] border-[#DC2626]/40 font-bold'
-                : theme === 'dark'
-                  ? 'bg-[#0E1015] border-[#2A2F3D] text-[#6B7280]'
-                  : 'bg-[#DFE2E7] border-[#CED2DA] text-[#6B7280]'
+                ? 'bg-[#DFE2E7] text-[#DC2626] border-[#DC2626]/40 font-bold'
+                : 'bg-[#DFE2E7] border-[#CED2DA] text-[#6B7280]'
             }`}
           >
             Stress Rings
           </button>
           <button
             onClick={() => toggleMapFilter('showStands')}
-            className={`px-2.5 py-1 rounded-md text-[10px] font-mono transition border ${
+            className={`px-2.5 py-1 rounded-md text-[10px] font-mono transition border cursor-pointer ${
               showStands
-                ? theme === 'dark'
-                  ? 'bg-[#1D212C] text-[#F59E0B] border-[#F59E0B]/40 font-bold'
-                  : 'bg-[#DFE2E7] text-[#D97706] border-[#F59E0B]/40 font-bold'
-                : theme === 'dark'
-                  ? 'bg-[#0E1015] border-[#2A2F3D] text-[#6B7280]'
-                  : 'bg-[#DFE2E7] border-[#CED2DA] text-[#6B7280]'
+                ? 'bg-[#DFE2E7] text-[#D97706] border-[#D97706]/40 font-bold'
+                : 'bg-[#DFE2E7] border-[#CED2DA] text-[#6B7280]'
             }`}
           >
             Feeder Stands
           </button>
           <button
             onClick={() => toggleMapFilter('showVehicles')}
-            className={`px-2.5 py-1 rounded-md text-[10px] font-mono transition border ${
+            className={`px-2.5 py-1 rounded-md text-[10px] font-mono transition border cursor-pointer ${
               showVehicles
-                ? theme === 'dark'
-                  ? 'bg-[#1D212C] text-[#2563EB] border-[#2563EB]/40 font-bold'
-                  : 'bg-[#DFE2E7] text-[#2563EB] border-[#2563EB]/40 font-bold'
-                : theme === 'dark'
-                  ? 'bg-[#0E1015] border-[#2A2F3D] text-[#6B7280]'
-                  : 'bg-[#DFE2E7] border-[#CED2DA] text-[#6B7280]'
+                ? 'bg-[#DFE2E7] text-[#2563EB] border-[#2563EB]/40 font-bold'
+                : 'bg-[#DFE2E7] border-[#CED2DA] text-[#6B7280]'
             }`}
           >
             Active Fleet

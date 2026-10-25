@@ -88,7 +88,7 @@ export default function HeroCanvas() {
         ctx.fill();
 
         ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.fillStyle = 'rgba(148, 163, 184, 0.6)';
+        ctx.fillStyle = '#475060';
         ctx.fillText(b.label, tx + 6, ty + 3);
       });
 
@@ -125,11 +125,11 @@ export default function HeroCanvas() {
 
         ctx.beginPath();
         ctx.arc(sx, sy, 4.5, 0, Math.PI * 2);
-        ctx.fillStyle = '#FFFFFF';
+        ctx.fillStyle = '#0E1015';
         ctx.fill();
 
         ctx.font = '11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-        ctx.fillStyle = '#E2E8F0';
+        ctx.fillStyle = '#0E1015';
         ctx.textAlign = 'center';
         ctx.fillText(s.name, sx, sy + 20);
 

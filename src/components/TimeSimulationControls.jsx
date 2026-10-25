@@ -15,36 +15,36 @@ export default function TimeSimulationControls() {
   } = useSimulation();
 
   return (
-    <div className="p-3.5 sm:p-4 rounded-md bg-[#151820] border border-[#2A2F3D]">
+    <div className="p-3.5 sm:p-4 rounded-md bg-[#F4F5F7] border border-[#CED2DA] text-[#0E1015]">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
         
         {/* Left: Clock & Play/Pause */}
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-mono text-[#DC2626] font-bold">TIME:</span>
-            <span className="text-lg font-bold font-mono text-[#F4F5F7] tracking-tight">
+            <span className="text-xs font-mono text-[#475060] font-bold">TIME:</span>
+            <span className="text-lg font-bold font-mono text-[#0E1015] tracking-tight">
               {formattedTime}
             </span>
           </div>
 
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            className={`px-3 py-1.5 rounded-md font-bold text-xs transition ${
+            className={`px-3 py-1.5 rounded-md font-bold text-xs transition cursor-pointer ${
               isPlaying
-                ? 'bg-[#1D212C] hover:bg-[#2A2F3D] text-[#F4F5F7] border border-[#2A2F3D]'
+                ? 'bg-[#DFE2E7] hover:bg-[#CED2DA] text-[#0E1015] border border-[#CED2DA]'
                 : 'bg-[#DC2626] hover:bg-[#B91C1C] text-white'
             }`}
           >
             {isPlaying ? 'Pause' : 'Simulate'}
           </button>
 
-          <div className="flex items-center p-0.5 rounded-md bg-[#0E1015] border border-[#2A2F3D]">
+          <div className="flex items-center p-0.5 rounded-md bg-[#DFE2E7] border border-[#CED2DA]">
             {[1, 2, 5].map((spd) => (
               <button
                 key={spd}
                 onClick={() => setPlaySpeed(spd)}
-                className={`px-2 py-0.5 rounded text-[11px] font-mono font-bold transition ${
-                  playSpeed === spd ? 'bg-[#1D212C] text-[#DC2626]' : 'text-[#6B7280] hover:text-[#949AA8]'
+                className={`px-2 py-0.5 rounded text-[11px] font-mono font-bold transition cursor-pointer ${
+                  playSpeed === spd ? 'bg-[#F4F5F7] text-[#0E1015] border border-[#CED2DA]' : 'text-[#6B7280] hover:text-[#0E1015]'
                 }`}
               >
                 {spd}x
@@ -63,7 +63,7 @@ export default function TimeSimulationControls() {
             step="0.25"
             value={timeOfDay}
             onChange={(e) => setTimeOfDay(parseFloat(e.target.value))}
-            className="w-full h-1.5 bg-[#2A2F3D] rounded-md appearance-none cursor-pointer accent-[#DC2626]"
+            className="w-full h-1.5 bg-[#CED2DA] rounded-md appearance-none cursor-pointer accent-[#2563EB]"
           />
           <span className="text-[10px] font-mono text-[#6B7280]">11 PM</span>
         </div>
@@ -72,10 +72,10 @@ export default function TimeSimulationControls() {
         <div className="flex items-center gap-1.5 self-start md:self-center">
           <button
             onClick={() => toggleScenario('monsoon')}
-            className={`px-2.5 py-1 rounded-md text-xs font-bold border transition ${
+            className={`px-2.5 py-1 rounded-md text-xs font-bold border transition cursor-pointer ${
               scenarios.monsoon
-                ? 'bg-[#2563EB]/15 border-[#2563EB] text-[#60A5FA]'
-                : 'bg-[#0E1015] border-[#2A2F3D] text-[#949AA8] hover:text-[#F4F5F7]'
+                ? 'bg-[#2563EB]/10 border-[#2563EB] text-[#2563EB]'
+                : 'bg-[#DFE2E7] border-[#CED2DA] text-[#475060] hover:text-[#0E1015]'
             }`}
           >
             Monsoon Surge
@@ -83,10 +83,10 @@ export default function TimeSimulationControls() {
 
           <button
             onClick={() => toggleScenario('doubleTrain')}
-            className={`px-2.5 py-1 rounded-md text-xs font-bold border transition ${
+            className={`px-2.5 py-1 rounded-md text-xs font-bold border transition cursor-pointer ${
               scenarios.doubleTrain
-                ? 'bg-[#DC2626]/15 border-[#DC2626] text-[#DC2626]'
-                : 'bg-[#0E1015] border-[#2A2F3D] text-[#949AA8] hover:text-[#F4F5F7]'
+                ? 'bg-[#D97706]/15 border-[#D97706] text-[#D97706]'
+                : 'bg-[#DFE2E7] border-[#CED2DA] text-[#475060] hover:text-[#0E1015]'
             }`}
           >
             Peak Local Rush
@@ -94,10 +94,10 @@ export default function TimeSimulationControls() {
 
           <button
             onClick={() => toggleScenario('evChargingSurge')}
-            className={`px-2.5 py-1 rounded-md text-xs font-bold border transition ${
+            className={`px-2.5 py-1 rounded-md text-xs font-bold border transition cursor-pointer ${
               scenarios.evChargingSurge
-                ? 'bg-[#F59E0B]/15 border-[#F59E0B] text-[#F59E0B]'
-                : 'bg-[#0E1015] border-[#2A2F3D] text-[#949AA8] hover:text-[#F4F5F7]'
+                ? 'bg-[#059669]/15 border-[#059669] text-[#059669]'
+                : 'bg-[#DFE2E7] border-[#CED2DA] text-[#475060] hover:text-[#0E1015]'
             }`}
           >
             Charging Shift

@@ -17,8 +17,8 @@ export const ACCOUNTS = {
     title: 'Fleet Dispatch Director',
     organization: 'Mumbai Feeder Syndicate & EV Fleet Alliance',
     initials: 'RM',
-    badgeColor: '#DC2626',
-    badgeBg: 'bg-[#DC2626]/15 text-[#DC2626] border-[#DC2626]/30',
+    badgeColor: '#D97706',
+    badgeBg: 'bg-[#D97706]/15 text-[#D97706] border-[#D97706]/30',
     description: 'Live dynamic dispatch, station vehicle deficits, driver queue & unit economics',
     viewLabel: 'Fleet Dispatch Director Console',
   },
@@ -92,37 +92,21 @@ class SoundFx {
 const soundFx = new SoundFx();
 
 export function SimulationProvider({ children }) {
-  // Universal Light/Dark Theme State ('dark' | 'light')
-  const [theme, setTheme] = useState('dark');
+  // Locked to Light Mode per user directive
+  const [theme, setTheme] = useState('light');
 
   const toggleTheme = useCallback(() => {
-    setTheme((prev) => {
-      const next = prev === 'dark' ? 'light' : 'dark';
-      if (typeof document !== 'undefined') {
-        if (next === 'dark') {
-          document.documentElement.classList.add('dark');
-          document.documentElement.classList.remove('light');
-        } else {
-          document.documentElement.classList.add('light');
-          document.documentElement.classList.remove('dark');
-        }
-      }
-      return next;
-    });
+    // Light mode locked
+    setTheme('light');
   }, []);
 
-  // Sync theme class to root HTML
+  // Sync light class to root HTML
   useEffect(() => {
     if (typeof document !== 'undefined') {
-      if (theme === 'dark') {
-        document.documentElement.classList.add('dark');
-        document.documentElement.classList.remove('light');
-      } else {
-        document.documentElement.classList.add('light');
-        document.documentElement.classList.remove('dark');
-      }
+      document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
     }
-  }, [theme]);
+  }, []);
 
   // Account Role: 'fleet' (Fleet Dispatch Director) or 'planner' (Transit Planner)
   const [activeAccountRole, setActiveAccountRole] = useState('fleet');
