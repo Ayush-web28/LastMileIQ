@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SimulationProvider, useSimulation } from './context/SimulationContext';
 import CommandCenterMap from './components/CommandCenterMap';
 import PredictiveDispatchPanel from './components/PredictiveDispatchPanel';
@@ -14,15 +14,18 @@ import { CORRIDORS } from './data/corridors';
 function DashboardLayout() {
   const { 
     theme, 
-    activeView, 
-    setActiveView, 
-    isCollapsed, 
-    setIsCollapsed,
     activeToast,
     activeAccountRole,
   } = useSimulation();
 
-  // Role-based view protection
+  // Tab View Switcher (Controlled exclusively via Sidebar Navigation)
+  // Default based on active persona role
+  const [activeView, setActiveView] = useState(
+    activeAccountRole === 'planner' ? 'planner' : 'dispatch'
+  );
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  // Auto-sync view when account role changes
   useEffect(() => {
     if (activeAccountRole === 'fleet') {
       if (activeView === 'planner' || activeView === 'policy') {
@@ -82,7 +85,7 @@ function DashboardLayout() {
         {/* Main Tab Canvas */}
         <main className="flex-1 overflow-hidden flex flex-col min-h-0">
           
-          {/* Tab: Live Dispatch */}
+          {/* Tab: Live Dispatch (Fleet Operator) */}
           {activeView === 'dispatch' && (
             <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 scrollbar-thin animate-fade-in">
               <PredictiveDispatchPanel />
@@ -97,7 +100,7 @@ function DashboardLayout() {
             </div>
           )}
 
-          {/* Tab: Fleet Analytics */}
+          {/* Tab: Fleet Analytics (Fleet Operator) */}
           {activeView === 'analytics' && (
             <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 scrollbar-thin animate-fade-in">
               <DashboardMetrics />
@@ -105,14 +108,14 @@ function DashboardLayout() {
             </div>
           )}
 
-          {/* Tab: Municipal Planning */}
+          {/* Tab: Municipal Planning (Transit Planner) */}
           {activeView === 'planner' && (
             <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 scrollbar-thin animate-fade-in">
               <CityPlannerView />
             </div>
           )}
 
-          {/* Tab: Feeder Curb Policy */}
+          {/* Tab: Feeder Curb Policy (Transit Planner) */}
           {activeView === 'policy' && (
             <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 scrollbar-thin animate-fade-in">
               <TransitPolicyView />
