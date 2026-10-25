@@ -151,9 +151,9 @@ export function calculateLMSI(demandRateOrOptions = 25, maybeSupplyRate = 10, ma
     return {
       score: rawScore,
       level: 'OPTIMAL',
-      color: '#3DB87E', // Ease Health Mint / Sage
-      tailwindColor: 'text-[#3DB87E]',
-      tailwindBg: 'bg-[#3DB87E]/20',
+      color: '#10B981', // Status Green
+      tailwindColor: 'text-[#10B981]',
+      tailwindBg: 'bg-[#10B981]/15',
       badge: 'BALANCED SUPPLY',
       waitCategory: '< 5 min wait',
       expectedWaitMinutes: Math.min(expectedWaitMinutes, 4.8),
@@ -162,20 +162,20 @@ export function calculateLMSI(demandRateOrOptions = 25, maybeSupplyRate = 10, ma
     return {
       score: rawScore,
       level: 'WARNING',
-      color: '#C4829E', // Ease Health Signature Mauve
-      tailwindColor: 'text-[#C4829E]',
-      tailwindBg: 'bg-[#C4829E]/20',
+      color: '#F59E0B', // Signal Amber
+      tailwindColor: 'text-[#F59E0B]',
+      tailwindBg: 'bg-[#F59E0B]/15',
       badge: 'MODERATE SURGE',
-      waitCategory: '5–12 min wait',
+      waitCategory: '5-12 min wait',
       expectedWaitMinutes: Math.max(5.2, Math.min(expectedWaitMinutes, 12.0)),
     };
   } else {
     return {
       score: rawScore,
       level: 'CRITICAL',
-      color: '#F43F5E', // Clinical Crimson Rose
-      tailwindColor: 'text-rose-400',
-      tailwindBg: 'bg-rose-500/20',
+      color: '#DC2626', // Swiss Signal Red
+      tailwindColor: 'text-[#DC2626]',
+      tailwindBg: 'bg-[#DC2626]/15',
       badge: 'ACUTE TRANSIT DEFICIT',
       waitCategory: '> 15 min wait',
       expectedWaitMinutes: Math.max(15.0, expectedWaitMinutes),

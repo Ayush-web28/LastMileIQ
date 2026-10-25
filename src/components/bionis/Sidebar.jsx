@@ -92,26 +92,30 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
     <aside
       className={`fixed lg:sticky top-0 left-0 z-40 h-screen transition-all duration-200 border-r flex flex-col justify-between select-none ${
         theme === 'dark'
-          ? 'border-[#1E3A2C] bg-[#0B1612] text-[#F2F7F4]'
-          : 'border-[#D1E0D6] bg-[#F3F7F4] text-[#132A1C]'
+          ? 'border-[#2A2F3D] bg-[#0E1015] text-[#F4F5F7]'
+          : 'border-[#CED2DA] bg-[#EBECEF] text-[#0E1015]'
       } ${isCollapsed ? 'w-20' : 'w-72'}`}
     >
       {/* Top Section: Brand Header & Selected Corridor Display */}
-      <div className={`p-4 space-y-3 border-b ${theme === 'dark' ? 'border-[#1E3A2C]' : 'border-[#D1E0D6]'}`}>
+      <div className={`p-4 space-y-3 border-b ${theme === 'dark' ? 'border-[#2A2F3D]' : 'border-[#CED2DA]'}`}>
         
-        {/* Brand Header with Subtle Minimal Light/Dark Toggle */}
+        {/* Brand Header with Minimal Light/Dark Toggle */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 overflow-hidden">
             <div>
               <div className="flex items-center gap-1.5">
-                <span className={`font-black text-base tracking-tight ${theme === 'dark' ? 'text-white' : 'text-[#132A1C]'}`}>
-                  LastMile<span className="text-[#3DB87E]">IQ</span>
+                <span className={`font-black text-base tracking-tight ${theme === 'dark' ? 'text-[#F4F5F7]' : 'text-[#0E1015]'}`}>
+                  LastMile<span className="text-[#DC2626]">IQ</span>
                 </span>
-                <span className="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-[#3DB87E]/15 text-[#3DB87E] border border-[#3DB87E]/30">
+                <span className={`text-[9px] font-mono font-bold px-1.5 py-0.2 rounded border ${
+                  theme === 'dark' 
+                    ? 'bg-[#DC2626]/15 text-[#DC2626] border-[#DC2626]/30' 
+                    : 'bg-[#DC2626]/10 text-[#DC2626] border-[#DC2626]/40'
+                }`}>
                   Mumbai
                 </span>
               </div>
-              <p className={`text-[9px] font-mono tracking-wider ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
+              <p className={`text-[9px] font-mono tracking-wider ${theme === 'dark' ? 'text-[#949AA8]' : 'text-[#6B7280]'}`}>
                 DISPATCH OS
               </p>
             </div>
@@ -122,17 +126,17 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
             onClick={toggleTheme}
             className={`p-1.5 rounded-md border transition-colors ${
               theme === 'dark'
-                ? 'border-[#1E3A2C] hover:border-[#2C523F] bg-[#11231B]'
-                : 'border-[#D1E0D6] hover:border-[#B5C9BC] bg-[#EBF2EE]'
+                ? 'border-[#2A2F3D] hover:border-[#3B4254] bg-[#151820]'
+                : 'border-[#CED2DA] hover:border-[#949AA8] bg-[#DFE2E7]'
             }`}
             title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
           >
             {theme === 'dark' ? (
-              <svg className="w-3.5 h-3.5 text-slate-300" viewBox="0 0 24 24" fill="currentColor">
+              <svg className="w-3.5 h-3.5 text-[#94A3B8]" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
               </svg>
             ) : (
-              <svg className="w-3.5 h-3.5 text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <svg className="w-3.5 h-3.5 text-[#FBBF24]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <circle cx="12" cy="12" r="5" fill="currentColor"/>
                 <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
               </svg>
@@ -144,10 +148,10 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
         {!isCollapsed && (
           <div className="relative space-y-2" ref={corridorRef}>
             {/* Segmented Slider Track */}
-            <div className={`p-1 rounded-lg border flex items-center relative transition-colors ${
+            <div className={`p-1 rounded-md border flex items-center relative transition-colors ${
               theme === 'dark' 
-                ? 'bg-[#0B1612] border-[#1E3A2C]' 
-                : 'bg-[#EAF1EC] border-[#D1E0D6]'
+                ? 'bg-[#151820] border-[#2A2F3D]' 
+                : 'bg-[#DFE2E7] border-[#CED2DA]'
             }`}>
               <button
                 type="button"
@@ -161,14 +165,14 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
                     }
                   }
                 }}
-                className={`flex-1 py-1.5 px-2 rounded-md text-[11px] font-mono font-bold transition-colors text-center cursor-pointer ${
+                className={`flex-1 py-1.5 px-2 rounded text-[11px] font-mono font-bold transition-colors text-center cursor-pointer ${
                   corridorCategory === 'metro'
                     ? theme === 'dark'
-                      ? 'bg-[#183327] text-[#3DB87E] border border-[#3DB87E]/40'
-                      : 'bg-[#F3F7F4] text-[#206644] border border-[#D1E0D6]'
+                      ? 'bg-[#2A2F3D] text-white border border-[#DC2626]/60'
+                      : 'bg-[#F4F5F7] text-[#DC2626] border border-[#CED2DA]'
                     : theme === 'dark'
-                      ? 'text-slate-400 hover:text-slate-200 border border-transparent'
-                      : 'text-slate-600 hover:text-slate-900 border border-transparent'
+                      ? 'text-[#949AA8] hover:text-white border border-transparent'
+                      : 'text-[#475060] hover:text-[#0E1015] border border-transparent'
                 }`}
                 title="Switch to Mumbai Metro Lines"
               >
@@ -187,14 +191,14 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
                     }
                   }
                 }}
-                className={`flex-1 py-1.5 px-2 rounded-md text-[11px] font-mono font-bold transition-colors text-center cursor-pointer ${
+                className={`flex-1 py-1.5 px-2 rounded text-[11px] font-mono font-bold transition-colors text-center cursor-pointer ${
                   corridorCategory === 'local'
                     ? theme === 'dark'
-                      ? 'bg-[#183327] text-[#C4829E] border border-[#C4829E]/40'
-                      : 'bg-[#F3F7F4] text-[#843A5D] border border-[#D1E0D6]'
+                      ? 'bg-[#2A2F3D] text-white border border-[#2563EB]/60'
+                      : 'bg-[#F4F5F7] text-[#2563EB] border border-[#CED2DA]'
                     : theme === 'dark'
-                      ? 'text-slate-400 hover:text-slate-200 border border-transparent'
-                      : 'text-slate-600 hover:text-slate-900 border border-transparent'
+                      ? 'text-[#949AA8] hover:text-white border border-transparent'
+                      : 'text-[#475060] hover:text-[#0E1015] border border-transparent'
                 }`}
                 title="Switch to Mumbai Suburban Local Lines"
               >
@@ -206,10 +210,10 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
             <button
               type="button"
               onClick={() => setCorridorMenuOpen(!corridorMenuOpen)}
-              className={`w-full flex items-center justify-between p-2.5 rounded-lg border transition-colors text-left cursor-pointer ${
+              className={`w-full flex items-center justify-between p-2.5 rounded-md border transition-colors text-left cursor-pointer ${
                 theme === 'dark'
-                  ? 'bg-[#11231B] border-[#1E3A2C] hover:border-[#3DB87E]/50 hover:bg-[#183327]'
-                  : 'bg-[#F3F7F4] border-[#D1E0D6] hover:border-[#3DB87E]/50'
+                  ? 'bg-[#151820] border-[#2A2F3D] hover:border-[#DC2626]/50 hover:bg-[#1D212C]'
+                  : 'bg-[#F4F5F7] border-[#CED2DA] hover:border-[#DC2626]/50'
               }`}
               title={`Click to choose from ${corridorCategory === 'metro' ? 'Mumbai Metro Lines' : 'Mumbai Suburban Local Lines'}`}
             >
@@ -221,38 +225,38 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
                 <div className="min-w-0 flex-1">
                   <span className={`text-[9px] font-mono font-bold block uppercase tracking-wide leading-none mb-1 ${
                     corridorCategory === 'metro'
-                      ? (theme === 'dark' ? 'text-[#3DB87E]' : 'text-[#206644]')
-                      : (theme === 'dark' ? 'text-[#C4829E]' : 'text-[#843A5D]')
+                      ? (theme === 'dark' ? 'text-[#DC2626]' : 'text-[#DC2626]')
+                      : (theme === 'dark' ? 'text-[#60A5FA]' : 'text-[#2563EB]')
                   }`}>
                     {corridorCategory === 'metro' ? 'Metro Line' : 'Suburban Local'}
                   </span>
-                  <span className={`font-black text-xs leading-tight block break-words ${
-                    theme === 'dark' ? 'text-white' : 'text-[#132A1C]'
+                  <span className={`font-bold text-xs leading-tight block break-words ${
+                    theme === 'dark' ? 'text-[#F4F5F7]' : 'text-[#0E1015]'
                   }`}>
                     {activeCorridor.shortName}
                   </span>
                   <span className={`text-[10px] block leading-tight mt-0.5 ${
-                    theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
+                    theme === 'dark' ? 'text-[#949AA8]' : 'text-[#6B7280]'
                   }`}>
                     {activeCorridor.stationsCount} Stations • {activeCorridor.lengthKm} km
                   </span>
                 </div>
               </div>
 
-              <span className={`text-[10px] text-slate-400 transition-transform ${corridorMenuOpen ? 'rotate-180' : ''}`}>▼</span>
+              <span className={`text-[10px] text-[#6B7280] transition-transform ${corridorMenuOpen ? 'rotate-180' : ''}`}>▼</span>
             </button>
 
             {/* Categorized Corridor Dropdown Menu */}
             {corridorMenuOpen && (
-              <div className={`absolute left-0 mt-1.5 w-full rounded-lg border p-2 z-50 animate-in fade-in zoom-in-95 max-h-[360px] overflow-y-auto ${
+              <div className={`absolute left-0 mt-1.5 w-full rounded-md border p-2 z-50 animate-in fade-in zoom-in-95 max-h-[360px] overflow-y-auto ${
                 theme === 'dark'
-                  ? 'bg-[#11231B] border-[#1E3A2C] text-[#F2F7F4]'
-                  : 'bg-[#F3F7F4] border-[#D1E0D6] text-slate-800'
+                  ? 'bg-[#151820] border-[#2A2F3D] text-[#F4F5F7]'
+                  : 'bg-[#F4F5F7] border-[#CED2DA] text-[#0E1015]'
               }`}>
                 {corridorCategory === 'metro' ? (
                   <>
-                    <div className="px-2 py-1 mb-1 border-b border-[#1E3A2C]/60">
-                      <span className="text-[10px] font-mono text-[#3DB87E] uppercase tracking-wider font-bold block w-full">
+                    <div className={`px-2 py-1 mb-1 border-b ${theme === 'dark' ? 'border-[#2A2F3D]' : 'border-[#CED2DA]'}`}>
+                      <span className="text-[10px] font-mono text-[#DC2626] uppercase tracking-wider font-bold block w-full">
                         Mumbai Metro (6 Lines)
                       </span>
                     </div>
@@ -268,29 +272,29 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
                           className={`w-full text-left p-2 rounded-md flex items-start gap-2.5 transition text-xs mb-1 ${
                             isSelected
                               ? theme === 'dark'
-                                ? 'bg-[#3DB87E]/20 border border-[#3DB87E]/50 text-white font-bold'
-                                : 'bg-[#3DB87E]/10 border border-[#3DB87E]/40 text-[#132A1C] font-bold'
+                                ? 'bg-[#2A2F3D] border border-[#DC2626]/50 text-white font-bold'
+                                : 'bg-[#DFE2E7] border border-[#DC2626]/40 text-[#0E1015] font-bold'
                               : theme === 'dark'
-                                ? 'hover:bg-[#183327] text-slate-300'
-                                : 'hover:bg-slate-200 text-slate-700'
+                                ? 'hover:bg-[#1D212C] text-[#949AA8]'
+                                : 'hover:bg-[#DFE2E7] text-[#475060]'
                           }`}
                         >
                           <span className="w-2.5 h-2.5 rounded-full mt-1 shrink-0" style={{ backgroundColor: item.color }} />
                           <div className="min-w-0 flex-1">
                             <div className="font-bold text-xs break-words">{item.shortName || item.name}</div>
-                            <div className={`text-[10px] ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
+                            <div className={`text-[10px] ${theme === 'dark' ? 'text-[#949AA8]' : 'text-[#6B7280]'}`}>
                               {item.stationsCount} Stations • {item.lengthKm} km
                             </div>
                           </div>
-                          {isSelected && <span className="text-[10px] text-[#3DB87E] font-mono font-bold shrink-0">Active</span>}
+                          {isSelected && <span className="text-[10px] text-[#DC2626] font-mono font-bold shrink-0">Active</span>}
                         </button>
                       );
                     })}
                   </>
                 ) : (
                   <>
-                    <div className="px-2 py-1 mb-1 border-b border-[#1E3A2C]/60">
-                      <span className="text-[10px] font-mono text-[#C4829E] uppercase tracking-wider font-bold block w-full">
+                    <div className={`px-2 py-1 mb-1 border-b ${theme === 'dark' ? 'border-[#2A2F3D]' : 'border-[#CED2DA]'}`}>
+                      <span className="text-[10px] font-mono text-[#2563EB] uppercase tracking-wider font-bold block w-full">
                         Mumbai Suburban Local (3 Lines)
                       </span>
                     </div>
@@ -306,21 +310,21 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
                           className={`w-full text-left p-2 rounded-md flex items-start gap-2.5 transition text-xs mb-1 ${
                             isSelected
                               ? theme === 'dark'
-                                ? 'bg-[#C4829E]/20 border border-[#C4829E]/50 text-white font-bold'
-                                : 'bg-[#C4829E]/10 border border-[#C4829E]/40 text-[#512137] font-bold'
+                                ? 'bg-[#2A2F3D] border border-[#2563EB]/50 text-white font-bold'
+                                : 'bg-[#DFE2E7] border border-[#2563EB]/40 text-[#0E1015] font-bold'
                               : theme === 'dark'
-                                ? 'hover:bg-[#183327] text-slate-300'
-                                : 'hover:bg-slate-200 text-slate-700'
+                                ? 'hover:bg-[#1D212C] text-[#949AA8]'
+                                : 'hover:bg-[#DFE2E7] text-[#475060]'
                           }`}
                         >
                           <span className="w-2.5 h-2.5 rounded-full mt-1 shrink-0" style={{ backgroundColor: item.color }} />
                           <div className="min-w-0 flex-1">
                             <div className="font-bold text-xs break-words">{item.shortName || item.name}</div>
-                            <div className={`text-[10px] ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
+                            <div className={`text-[10px] ${theme === 'dark' ? 'text-[#949AA8]' : 'text-[#6B7280]'}`}>
                               {item.stationsCount} Stations • {item.lengthKm} km
                             </div>
                           </div>
-                          {isSelected && <span className="text-[10px] text-[#C4829E] font-mono font-bold shrink-0">Active</span>}
+                          {isSelected && <span className="text-[10px] text-[#2563EB] font-mono font-bold shrink-0">Active</span>}
                         </button>
                       );
                     })}
@@ -338,14 +342,14 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
         {!isCollapsed && (
           <div className="px-2 mb-2 flex items-center justify-between">
             <span className={`text-[10px] font-mono uppercase tracking-wider font-bold ${
-              theme === 'dark' ? 'text-slate-500' : 'text-slate-400'
+              theme === 'dark' ? 'text-[#6B7280]' : 'text-[#6B7280]'
             }`}>
               Navigation Views
             </span>
             <span className={`text-[9px] font-mono font-bold px-1.5 py-0.2 rounded border ${
               activeAccountRole === 'fleet' 
-                ? 'bg-[#3DB87E]/15 text-[#3DB87E] border-[#3DB87E]/30' 
-                : 'bg-[#C4829E]/15 text-[#C4829E] border-[#C4829E]/30'
+                ? 'bg-[#DC2626]/15 text-[#DC2626] border-[#DC2626]/30' 
+                : 'bg-[#2563EB]/15 text-[#2563EB] border-[#2563EB]/30'
             }`}>
               {activeAccountRole === 'fleet' ? 'Fleet Ops' : 'MMRDA Policy'}
             </span>
@@ -358,14 +362,14 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
             <button
               key={item.id}
               onClick={() => setActiveView(item.id)}
-              className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors text-xs font-semibold ${
+              className={`w-full flex items-center justify-between px-3 py-2 rounded-md transition-colors text-xs font-semibold ${
                 isActive
                   ? activeAccountRole === 'fleet'
-                    ? 'bg-[#183327] border border-[#3DB87E]/50 text-[#E8F8F0]'
-                    : 'bg-[#183327] border border-[#C4829E]/50 text-[#F9EBF1]'
+                    ? theme === 'dark' ? 'bg-[#1D212C] border border-[#DC2626]/50 text-white font-bold' : 'bg-[#DFE2E7] border border-[#DC2626]/50 text-[#0E1015] font-bold'
+                    : theme === 'dark' ? 'bg-[#1D212C] border border-[#2563EB]/50 text-white font-bold' : 'bg-[#DFE2E7] border border-[#2563EB]/50 text-[#0E1015] font-bold'
                   : theme === 'dark'
-                    ? 'text-slate-400 hover:text-slate-100 hover:bg-[#11231B]'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
+                    ? 'text-[#949AA8] hover:text-white hover:bg-[#151820]'
+                    : 'text-[#475060] hover:text-[#0E1015] hover:bg-[#DFE2E7]'
               } ${isCollapsed ? 'justify-center' : ''}`}
               title={item.label}
             >
@@ -373,8 +377,8 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
               {!isCollapsed && item.badge && (
                 <span className={`px-1.5 py-0.2 rounded text-[9px] font-mono font-bold ${
                   activeAccountRole === 'fleet'
-                    ? 'bg-[#3DB87E]/20 text-[#3DB87E]'
-                    : 'bg-[#C4829E]/20 text-[#C4829E]'
+                    ? 'bg-[#DC2626]/20 text-[#DC2626]'
+                    : 'bg-[#2563EB]/20 text-[#2563EB]'
                 }`}>
                   {item.badge}
                 </span>
@@ -385,16 +389,16 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
       </div>
 
       {/* Bottom Section: 2-Account Persona Switcher */}
-      <div className={`p-3 border-t space-y-2.5 ${theme === 'dark' ? 'border-[#1E3A2C]' : 'border-[#D1E0D6]'}`}>
+      <div className={`p-3 border-t space-y-2.5 ${theme === 'dark' ? 'border-[#2A2F3D]' : 'border-[#CED2DA]'}`}>
         
-        {/* 2-Account System Role Switcher (Fleet Dispatch Director & Transit Planner) */}
+        {/* 2-Account System Role Switcher */}
         <div className="relative" ref={accountRef}>
           <button
             onClick={() => setAccountMenuOpen(!accountMenuOpen)}
-            className={`w-full flex items-center gap-2.5 p-2 rounded-lg border transition-colors text-left text-xs ${
+            className={`w-full flex items-center gap-2.5 p-2 rounded-md border transition-colors text-left text-xs ${
               theme === 'dark'
-                ? 'bg-[#11231B] border-[#1E3A2C] hover:border-[#3DB87E]/50'
-                : 'bg-[#F3F7F4] border-[#D1E0D6] hover:border-slate-300'
+                ? 'bg-[#151820] border-[#2A2F3D] hover:border-[#DC2626]/50'
+                : 'bg-[#F4F5F7] border-[#CED2DA] hover:border-[#DC2626]/50'
             } ${isCollapsed ? 'justify-center' : 'justify-between'}`}
             title="Switch Stakeholder Persona (Fleet Dispatch Director / Transit Planner)"
           >
@@ -412,10 +416,10 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
 
               {!isCollapsed && (
                 <div className="truncate min-w-0">
-                  <div className={`font-bold text-xs truncate ${theme === 'dark' ? 'text-white' : 'text-[#132A1C]'}`}>
+                  <div className={`font-bold text-xs truncate ${theme === 'dark' ? 'text-[#F4F5F7]' : 'text-[#0E1015]'}`}>
                     {currentAccount.name}
                   </div>
-                  <div className={`text-[10px] truncate ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
+                  <div className={`text-[10px] truncate ${theme === 'dark' ? 'text-[#949AA8]' : 'text-[#6B7280]'}`}>
                     {currentAccount.title}
                   </div>
                 </div>
@@ -423,18 +427,18 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
             </div>
 
             {!isCollapsed && (
-              <span className={`text-[10px] text-slate-400 transition-transform ${accountMenuOpen ? 'rotate-180' : ''}`}>▼</span>
+              <span className={`text-[10px] text-[#6B7280] transition-transform ${accountMenuOpen ? 'rotate-180' : ''}`}>▼</span>
             )}
           </button>
 
           {/* Account Profile Switcher Dropdown (2 Roles) */}
           {accountMenuOpen && (
-            <div className={`absolute bottom-full left-0 mb-1.5 w-72 rounded-lg border p-3 z-50 animate-in fade-in zoom-in-95 ${
-              theme === 'dark' ? 'bg-[#11231B] border-[#1E3A2C] text-white' : 'bg-[#F3F7F4] border-[#D1E0D6] text-slate-900'
+            <div className={`absolute bottom-full left-0 mb-1.5 w-72 rounded-md border p-3 z-50 animate-in fade-in zoom-in-95 ${
+              theme === 'dark' ? 'bg-[#151820] border-[#2A2F3D] text-[#F4F5F7]' : 'bg-[#F4F5F7] border-[#CED2DA] text-[#0E1015]'
             }`}>
-              <div className={`pb-2 mb-2 border-b ${theme === 'dark' ? 'border-[#1E3A2C]' : 'border-slate-200'}`}>
+              <div className={`pb-2 mb-2 border-b ${theme === 'dark' ? 'border-[#2A2F3D]' : 'border-[#CED2DA]'}`}>
                 <span className={`text-[10px] font-mono uppercase tracking-wider block font-bold ${
-                  theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
+                  theme === 'dark' ? 'text-[#949AA8]' : 'text-[#6B7280]'
                 }`}>
                   Signed-In Persona
                 </span>
@@ -443,8 +447,8 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
                 </div>
               </div>
 
-              <div className={`text-[10px] font-mono uppercase tracking-wider px-1 pb-1 font-semibold ${
-                theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
+              <div className={`text-[10px] font-mono uppercase tracking-wider px-1 pb-1 font-bold ${
+                theme === 'dark' ? 'text-[#949AA8]' : 'text-[#6B7280]'
               }`}>
                 Switch Stakeholder Role:
               </div>
@@ -464,11 +468,11 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
                       className={`w-full text-left p-2 rounded-md border transition flex items-start gap-2.5 ${
                         isSelected
                           ? theme === 'dark'
-                            ? 'bg-[#183327] border-[#3DB87E]/70'
-                            : 'bg-[#3DB87E]/10 border-[#3DB87E]/70'
+                            ? 'bg-[#1D212C] border-[#DC2626]/70'
+                            : 'bg-[#DFE2E7] border-[#DC2626]/70'
                           : theme === 'dark'
-                            ? 'bg-[#0B1612]/80 border-[#1E3A2C] hover:border-[#2C523F]'
-                            : 'bg-slate-50 border-[#D1E0D6] hover:border-slate-300'
+                            ? 'bg-[#0E1015] border-[#2A2F3D] hover:border-[#3B4254]'
+                            : 'bg-[#EBECEF] border-[#CED2DA] hover:border-[#949AA8]'
                       }`}
                     >
                       <div 
@@ -485,13 +489,13 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
                           <span className="text-xs font-bold truncate">{acc.name}</span>
-                          {isSelected && <span className="text-[10px] font-mono font-bold text-[#3DB87E]">Active</span>}
+                          {isSelected && <span className="text-[10px] font-mono font-bold text-[#DC2626]">Active</span>}
                         </div>
-                        <div className="text-[10px] font-semibold truncate" style={{ color: acc.badgeColor }}>
+                        <div className="text-[10px] font-bold truncate" style={{ color: acc.badgeColor }}>
                           {acc.title}
                         </div>
                         <div className={`text-[9px] truncate mt-0.5 ${
-                          theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
+                          theme === 'dark' ? 'text-[#949AA8]' : 'text-[#6B7280]'
                         }`}>
                           {acc.description}
                         </div>
@@ -502,7 +506,7 @@ export default function Sidebar({ activeView, setActiveView, isCollapsed, setIsC
               </div>
 
               <div className={`mt-2 pt-2 border-t text-[10px] font-mono text-center ${
-                theme === 'dark' ? 'border-[#1E3A2C]/80 text-slate-500' : 'border-slate-200 text-slate-400'
+                theme === 'dark' ? 'border-[#2A2F3D] text-[#6B7280]' : 'border-[#CED2DA] text-[#6B7280]'
               }`}>
                 Mumbai Transit Authority SSO
               </div>

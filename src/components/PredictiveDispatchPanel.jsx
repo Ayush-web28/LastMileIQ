@@ -34,13 +34,13 @@ export default function PredictiveDispatchPanel() {
   return (
     <div className="space-y-3">
       {/* Top Strip: Scenario Injections & Quick Stress Test */}
-      <div className={`p-2 sm:px-3 rounded-lg border flex flex-wrap items-center justify-between gap-2 text-xs transition ${
+      <div className={`p-2 sm:px-3 rounded-md border flex flex-wrap items-center justify-between gap-2 text-xs transition ${
         theme === 'dark' 
-          ? 'bg-[#11231B] border-[#1E3A2C] text-[#F3F7F4]' 
-          : 'bg-[#F3F7F4] border-[#D1DDD6] text-[#0B1612]'
+          ? 'bg-[#151820] border-[#2A2F3D] text-[#F4F5F7]' 
+          : 'bg-[#F4F5F7] border-[#CED2DA] text-[#0E1015]'
       }`}>
         <div className="flex items-center gap-1.5">
-          <span className="text-[10px] font-mono uppercase font-bold tracking-wider text-[#3DB87E]">
+          <span className="text-[10px] font-mono uppercase font-bold tracking-wider text-[#DC2626]">
             Surge Stress Injection:
           </span>
         </div>
@@ -48,12 +48,12 @@ export default function PredictiveDispatchPanel() {
         <div className="flex items-center gap-1.5 flex-wrap">
           <button
             onClick={() => toggleScenario('monsoon')}
-            className={`px-2.5 py-1 rounded-md text-[10px] font-mono transition border ${
+            className={`px-2.5 py-1 rounded text-[10px] font-mono transition border ${
               scenarios.monsoon
-                ? 'bg-[#183327] text-[#3DB87E] border-[#3DB87E] font-bold'
+                ? theme === 'dark' ? 'bg-[#2563EB]/15 text-[#60A5FA] border-[#2563EB] font-bold' : 'bg-[#2563EB]/10 text-[#2563EB] border-[#2563EB] font-bold'
                 : theme === 'dark'
-                  ? 'bg-[#0B1612] border-[#1E3A2C] text-[#A0B0A6] hover:text-[#F3F7F4]'
-                  : 'bg-[#E5EDE8] border-[#D1DDD6] text-[#6E8277] hover:text-[#0B1612]'
+                  ? 'bg-[#0E1015] border-[#2A2F3D] text-[#949AA8] hover:text-[#F4F5F7]'
+                  : 'bg-[#DFE2E7] border-[#CED2DA] text-[#475060] hover:text-[#0E1015]'
             }`}
             title="Spikes commuter demand +50% due to rain"
           >
@@ -62,12 +62,12 @@ export default function PredictiveDispatchPanel() {
 
           <button
             onClick={() => toggleScenario('doubleTrain')}
-            className={`px-2.5 py-1 rounded-md text-[10px] font-mono transition border ${
+            className={`px-2.5 py-1 rounded text-[10px] font-mono transition border ${
               scenarios.doubleTrain
-                ? 'bg-[#843A5D]/20 text-[#C4829E] border-[#C4829E] font-bold'
+                ? 'bg-[#DC2626]/15 text-[#DC2626] border-[#DC2626] font-bold'
                 : theme === 'dark'
-                  ? 'bg-[#0B1612] border-[#1E3A2C] text-[#A0B0A6] hover:text-[#F3F7F4]'
-                  : 'bg-[#E5EDE8] border-[#D1DDD6] text-[#6E8277] hover:text-[#0B1612]'
+                  ? 'bg-[#0E1015] border-[#2A2F3D] text-[#949AA8] hover:text-[#F4F5F7]'
+                  : 'bg-[#DFE2E7] border-[#CED2DA] text-[#475060] hover:text-[#0E1015]'
             }`}
             title="Simulates dual trains discharging concurrently"
           >
@@ -76,12 +76,12 @@ export default function PredictiveDispatchPanel() {
 
           <button
             onClick={() => toggleScenario('evChargingSurge')}
-            className={`px-2.5 py-1 rounded-md text-[10px] font-mono transition border ${
+            className={`px-2.5 py-1 rounded text-[10px] font-mono transition border ${
               scenarios.evChargingSurge
-                ? 'bg-[#183327] text-[#3DB87E] border-[#3DB87E] font-bold'
+                ? theme === 'dark' ? 'bg-[#F59E0B]/15 text-[#F59E0B] border-[#F59E0B] font-bold' : 'bg-[#F59E0B]/10 text-[#D97706] border-[#F59E0B] font-bold'
                 : theme === 'dark'
-                  ? 'bg-[#0B1612] border-[#1E3A2C] text-[#A0B0A6] hover:text-[#F3F7F4]'
-                  : 'bg-[#E5EDE8] border-[#D1DDD6] text-[#6E8277] hover:text-[#0B1612]'
+                  ? 'bg-[#0E1015] border-[#2A2F3D] text-[#949AA8] hover:text-[#F4F5F7]'
+                  : 'bg-[#DFE2E7] border-[#CED2DA] text-[#475060] hover:text-[#0E1015]'
             }`}
             title="Removes 25% fleet to charging depot"
           >
@@ -93,7 +93,7 @@ export default function PredictiveDispatchPanel() {
       {/* Station Selector Chip Bar */}
       <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
         <span className={`text-[10px] font-mono uppercase font-bold shrink-0 mr-1 ${
-          theme === 'dark' ? 'text-[#6E8277]' : 'text-[#6E8277]'
+          theme === 'dark' ? 'text-[#6B7280]' : 'text-[#6B7280]'
         }`}>
           Select Station:
         </span>
@@ -105,10 +105,10 @@ export default function PredictiveDispatchPanel() {
               onClick={() => setSelectedStationId(stn.id)}
               className={`px-3 py-1 rounded-md text-xs font-mono transition whitespace-nowrap border ${
                 isSelected
-                  ? 'bg-[#3DB87E] text-[#0B1612] font-bold border-[#3DB87E]'
+                  ? 'bg-[#DC2626] text-white font-bold border-[#DC2626]'
                   : theme === 'dark'
-                    ? 'bg-[#0B1612] border-[#1E3A2C] text-[#A0B0A6] hover:text-[#F3F7F4]'
-                    : 'bg-[#F3F7F4] border-[#D1DDD6] text-[#2D483A] hover:text-[#0B1612]'
+                    ? 'bg-[#0E1015] border-[#2A2F3D] text-[#949AA8] hover:text-[#F4F5F7]'
+                    : 'bg-[#F4F5F7] border-[#CED2DA] text-[#475060] hover:text-[#0E1015]'
               }`}
             >
               {stn.name.split(' (')[0]}
@@ -118,36 +118,36 @@ export default function PredictiveDispatchPanel() {
       </div>
 
       {/* Streamlined Predictive Dispatch Card */}
-      <div className={`p-4 sm:p-5 rounded-lg border space-y-4 transition ${
+      <div className={`p-4 sm:p-5 rounded-md border space-y-4 transition ${
         theme === 'dark'
-          ? 'bg-[#11231B] border-[#1E3A2C] text-[#F3F7F4]'
-          : 'bg-[#F3F7F4] border-[#D1DDD6] text-[#0B1612]'
+          ? 'bg-[#151820] border-[#2A2F3D] text-[#F4F5F7]'
+          : 'bg-[#F4F5F7] border-[#CED2DA] text-[#0E1015]'
       }`}>
         
         {/* Header: Station & Status */}
         <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b ${
-          theme === 'dark' ? 'border-[#1E3A2C]' : 'border-[#D1DDD6]'
+          theme === 'dark' ? 'border-[#2A2F3D]' : 'border-[#CED2DA]'
         }`}>
           <div>
             <div className="flex items-center gap-2">
-              <span className={`text-lg font-bold ${theme === 'dark' ? 'text-[#F3F7F4]' : 'text-[#0B1612]'}`}>
+              <span className={`text-lg font-bold ${theme === 'dark' ? 'text-[#F4F5F7]' : 'text-[#0E1015]'}`}>
                 {name}
               </span>
               <span className={`text-xs font-mono font-bold px-1.5 py-0.5 rounded ${
-                theme === 'dark' ? 'bg-[#0B1612] text-[#A0B0A6] border border-[#1E3A2C]' : 'bg-[#E5EDE8] text-[#2D483A]'
+                theme === 'dark' ? 'bg-[#0E1015] text-[#949AA8] border border-[#2A2F3D]' : 'bg-[#DFE2E7] text-[#475060]'
               }`}>
                 {code}
               </span>
             </div>
-            <div className={`text-xs mt-0.5 ${theme === 'dark' ? 'text-[#A0B0A6]' : 'text-[#6E8277]'}`}>
+            <div className={`text-xs mt-0.5 ${theme === 'dark' ? 'text-[#949AA8]' : 'text-[#475060]'}`}>
               High-deficit concourse exit:{' '}
-              <strong className="text-[#3DB87E] font-bold">{highDeficitGate.gateName}</strong>
+              <strong className="text-[#DC2626] font-bold">{highDeficitGate.gateName}</strong>
             </div>
           </div>
 
           <div className="flex items-center gap-2 self-start sm:self-center">
             <span
-              className="px-2.5 py-1 rounded-md text-xs font-mono font-bold"
+              className="px-2.5 py-1 rounded text-xs font-mono font-bold"
               style={{
                 backgroundColor: `${lmsi.color}15`,
                 color: lmsi.color,
@@ -159,50 +159,54 @@ export default function PredictiveDispatchPanel() {
           </div>
         </div>
 
-        {/* Vital Stats Strip (Divided bar instead of 3 feature cards in a row) */}
+        {/* Vital Stats Strip */}
         <div className={`rounded-md border flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x ${
-          theme === 'dark' ? 'border-[#1E3A2C] divide-[#1E3A2C] bg-[#0B1612]' : 'border-[#D1DDD6] divide-[#D1DDD6] bg-[#E5EDE8]'
+          theme === 'dark' ? 'border-[#2A2F3D] divide-[#2A2F3D] bg-[#0E1015]' : 'border-[#CED2DA] divide-[#CED2DA] bg-[#EBECEF]'
         }`}>
           <div className="p-3.5 flex-1 text-left">
             <div className={`text-[10px] font-mono uppercase font-bold ${
-              theme === 'dark' ? 'text-[#6E8277]' : 'text-[#6E8277]'
+              theme === 'dark' ? 'text-[#6B7280]' : 'text-[#6B7280]'
             }`}>
               NEXT TRAIN ARRIVAL
             </div>
             <div className={`text-xl font-bold font-mono mt-0.5 ${
-              theme === 'dark' ? 'text-[#F3F7F4]' : 'text-[#0B1612]'
+              theme === 'dark' ? 'text-[#F4F5F7]' : 'text-[#0E1015]'
             }`}>
               {formatCountdown(trainCountdown)}
             </div>
-            <div className={`text-[10px] mt-0.5 ${theme === 'dark' ? 'text-[#A0B0A6]' : 'text-[#6E8277]'}`}>
+            <div className={`text-[10px] mt-0.5 ${theme === 'dark' ? 'text-[#949AA8]' : 'text-[#475060]'}`}>
               ~{forecast.baseTrainEgress} alighting passengers
             </div>
           </div>
 
           <div className="p-3.5 flex-1 text-left">
             <div className={`text-[10px] font-mono uppercase font-bold ${
-              theme === 'dark' ? 'text-[#6E8277]' : 'text-[#6E8277]'
+              theme === 'dark' ? 'text-[#6B7280]' : 'text-[#6B7280]'
             }`}>
               VEHICLE SHORTAGE
             </div>
-            <div className="text-xl font-bold font-mono text-[#F43F5E] mt-0.5">
+            <div className="text-xl font-bold font-mono text-[#DC2626] mt-0.5">
               {highDeficitGate.deficit} Vehicles
             </div>
-            <div className={`text-[10px] mt-0.5 ${theme === 'dark' ? 'text-[#A0B0A6]' : 'text-[#6E8277]'}`}>
+            <div className={`text-[10px] mt-0.5 ${theme === 'dark' ? 'text-[#949AA8]' : 'text-[#475060]'}`}>
               {forecast.totalSupply} available at gate
             </div>
           </div>
 
           <div className="p-3.5 flex-1 text-left">
             <div className={`text-[10px] font-mono uppercase font-bold ${
-              theme === 'dark' ? 'text-[#6E8277]' : 'text-[#6E8277]'
+              theme === 'dark' ? 'text-[#6B7280]' : 'text-[#6B7280]'
             }`}>
               PROJECTED COMMUTER WAIT
             </div>
-            <div className="text-xl font-bold font-mono text-[#C4829E] mt-0.5">
+            <div className={`text-xl font-bold font-mono mt-0.5 ${
+              theme === 'dark' ? 'text-[#F59E0B]' : 'text-[#D97706]'
+            }`}>
               {highDeficitGate.waitTimeMinutes} min
             </div>
-            <div className="text-[10px] text-[#3DB87E] font-bold mt-0.5">
+            <div className={`text-[10px] font-bold mt-0.5 ${
+              theme === 'dark' ? 'text-[#10B981]' : 'text-[#059669]'
+            }`}>
               SLA Cap: &lt;5.0 mins
             </div>
           </div>
@@ -212,20 +216,20 @@ export default function PredictiveDispatchPanel() {
         {rebalancingPlan && (
           <div className={`p-3.5 rounded-md border flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
             theme === 'dark' 
-              ? 'bg-[#0B1612] border-[#3DB87E]/30 text-[#A0B0A6]' 
-              : 'bg-[#E5EDE8] border-[#3DB87E]/30 text-[#0B1612]'
+              ? 'bg-[#0E1015] border-[#DC2626]/30 text-[#949AA8]' 
+              : 'bg-[#EBECEF] border-[#DC2626]/30 text-[#0E1015]'
           }`}>
             <div className="text-xs">
-              <span className="text-[#3DB87E] font-bold font-mono mr-1.5 uppercase">DISPATCH ACTION:</span>
-              Rebalance <strong className={theme === 'dark' ? 'text-[#F3F7F4]' : 'text-[#0B1612]'}>{rebalancingPlan.dispatchCount} EV feeder vehicles</strong> from{' '}
-              <strong className="text-[#3DB87E]">{rebalancingPlan.sourceStand}</strong> to{' '}
-              <strong className={theme === 'dark' ? 'text-[#F3F7F4]' : 'text-[#0B1612]'}>{highDeficitGate.gateName}</strong>. Wait time drops to{' '}
-              <strong className="text-[#3DB87E] font-bold">{rebalancingPlan.projectedWaitTimeDrop.to} mins</strong>.
+              <span className="text-[#DC2626] font-bold font-mono mr-1.5 uppercase">DISPATCH ACTION:</span>
+              Rebalance <strong className={theme === 'dark' ? 'text-[#F4F5F7]' : 'text-[#0E1015]'}>{rebalancingPlan.dispatchCount} EV feeder vehicles</strong> from{' '}
+              <strong className="text-[#DC2626]">{rebalancingPlan.sourceStand}</strong> to{' '}
+              <strong className={theme === 'dark' ? 'text-[#F4F5F7]' : 'text-[#0E1015]'}>{highDeficitGate.gateName}</strong>. Wait time drops to{' '}
+              <strong className={theme === 'dark' ? 'text-[#10B981] font-bold' : 'text-[#059669] font-bold'}>{rebalancingPlan.projectedWaitTimeDrop.to} mins</strong>.
             </div>
 
             <button
               onClick={() => executeAutoDispatch(currentStation.id)}
-              className="inline-flex items-center justify-center px-5 py-2.5 rounded-md bg-[#3DB87E] hover:bg-[#34A074] text-[#0B1612] font-bold text-xs transition shrink-0"
+              className="inline-flex items-center justify-center px-5 py-2.5 rounded-md bg-[#DC2626] hover:bg-[#B91C1C] text-white font-bold text-xs transition shrink-0"
             >
               Execute Dynamic Dispatch
             </button>

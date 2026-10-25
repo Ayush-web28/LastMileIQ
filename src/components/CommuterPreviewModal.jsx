@@ -22,48 +22,48 @@ export default function CommuterPreviewModal() {
         particleCount: 40,
         spread: 45,
         origin: { y: 0.6 },
-        colors: ['#3DB87E', '#C4829E'],
+        colors: ['#DC2626', '#2563EB'],
       });
     } catch (e) {}
   };
 
   return (
-    <div className="p-5 rounded-lg bg-[#0B1612] border border-[#1E3A2C] flex flex-col items-center">
+    <div className="p-5 rounded-md bg-[#0E1015] border border-[#2A2F3D] flex flex-col items-center">
       
       {/* Top Header */}
-      <div className="w-full max-w-sm flex items-center justify-between pb-3 mb-4 border-b border-[#1E3A2C]">
+      <div className="w-full max-w-sm flex items-center justify-between pb-3 mb-4 border-b border-[#2A2F3D]">
         <div>
-          <div className="text-xs font-mono text-[#3DB87E] font-bold uppercase">
+          <div className="text-xs font-mono text-[#DC2626] font-bold uppercase">
             MUMBAI COMMUTER ONDC PREVIEW
           </div>
-          <h3 className="text-base font-bold text-[#F3F7F4]">
+          <h3 className="text-base font-bold text-[#F4F5F7]">
             {stationName.split(' (')[0]} Concourse
           </h3>
         </div>
-        <div className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#183327] text-[#3DB87E] border border-[#3DB87E]/30 font-bold">
+        <div className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#1D212C] text-[#DC2626] border border-[#DC2626]/30 font-bold">
           ONDC PROTOCOL
         </div>
       </div>
 
       {/* Mobile Device Frame */}
-      <div className="relative w-full max-w-[340px] rounded-lg bg-[#0B1612] p-3 border border-[#1E3A2C]">
+      <div className="relative w-full max-w-[340px] rounded-md bg-[#0E1015] p-3 border border-[#2A2F3D]">
         
         {/* Notch Header */}
-        <div className="w-full pb-2 mb-2 border-b border-[#1E3A2C] flex items-center justify-between text-[10px] font-mono text-[#6E8277]">
+        <div className="w-full pb-2 mb-2 border-b border-[#2A2F3D] flex items-center justify-between text-[10px] font-mono text-[#6B7280]">
           <span>9:41 AM</span>
-          <span className="text-[#3DB87E] font-bold">ONDC Feeder App</span>
+          <span className="text-[#DC2626] font-bold">ONDC Feeder App</span>
         </div>
 
         {/* Mobile Screen */}
-        <div className="rounded-md bg-[#11231B] text-[#F3F7F4] p-3.5 overflow-hidden flex flex-col justify-between min-h-[460px] border border-[#1E3A2C]">
+        <div className="rounded-md bg-[#151820] text-[#F4F5F7] p-3.5 overflow-hidden flex flex-col justify-between min-h-[460px] border border-[#2A2F3D]">
           
           <div className="space-y-2.5">
             {/* Station Exit Banner */}
-            <div className="p-2.5 rounded-md bg-[#0B1612] border border-[#1E3A2C] text-left">
-              <div className="text-[10px] font-mono text-[#3DB87E] font-bold uppercase">
+            <div className="p-2.5 rounded-md bg-[#0E1015] border border-[#2A2F3D] text-left">
+              <div className="text-[10px] font-mono text-[#DC2626] font-bold uppercase">
                 Exiting {stationName.split(' (')[0]}
               </div>
-              <div className="text-xs font-bold text-[#F3F7F4] mt-0.5">
+              <div className="text-xs font-bold text-[#F4F5F7] mt-0.5">
                 Take {gateName}
               </div>
             </div>
@@ -71,7 +71,7 @@ export default function CommuterPreviewModal() {
             {/* Feeder Options */}
             {!isBooked ? (
               <div className="space-y-2 pt-1 text-left">
-                <div className="text-[10px] font-mono text-[#6E8277] uppercase font-bold">
+                <div className="text-[10px] font-mono text-[#6B7280] uppercase font-bold">
                   Available Feeder Rides
                 </div>
 
@@ -80,23 +80,23 @@ export default function CommuterPreviewModal() {
                   onClick={() => setSelectedFeeder('shared_ev')}
                   className={`p-2.5 rounded-md border transition cursor-pointer ${
                     selectedFeeder === 'shared_ev'
-                      ? 'bg-[#183327] border-[#3DB87E]'
-                      : 'bg-[#0B1612] border-[#1E3A2C]'
+                      ? 'bg-[#1D212C] border-[#DC2626]'
+                      : 'bg-[#0E1015] border-[#2A2F3D]'
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-xs font-bold text-[#F3F7F4] flex items-center gap-1">
+                      <div className="text-xs font-bold text-[#F4F5F7] flex items-center gap-1">
                         <span>Shared EV Auto</span>
-                        <span className="text-[9px] px-1 rounded bg-[#183327] text-[#3DB87E] font-mono font-bold">
+                        <span className="text-[9px] px-1 rounded bg-[#DC2626]/20 text-[#DC2626] font-mono font-bold">
                           Pool
                         </span>
                       </div>
-                      <div className="text-[10px] text-[#A0B0A6]">Mahindra Treo • 2 seats left</div>
+                      <div className="text-[10px] text-[#949AA8]">Mahindra Treo • 2 seats left</div>
                     </div>
                     <div className="text-right">
-                      <div className="text-sm font-bold font-mono text-[#3DB87E]">₹20</div>
-                      <div className="text-[9px] text-[#6E8277]">2 min wait</div>
+                      <div className="text-sm font-bold font-mono text-[#DC2626]">₹20</div>
+                      <div className="text-[9px] text-[#6B7280]">2 min wait</div>
                     </div>
                   </div>
                 </div>
@@ -106,20 +106,20 @@ export default function CommuterPreviewModal() {
                   onClick={() => setSelectedFeeder('bus')}
                   className={`p-2.5 rounded-md border transition cursor-pointer ${
                     selectedFeeder === 'bus'
-                      ? 'bg-[#183327] border-[#C4829E]'
-                      : 'bg-[#0B1612] border-[#1E3A2C]'
+                      ? 'bg-[#1D212C] border-[#2563EB]'
+                      : 'bg-[#0E1015] border-[#2A2F3D]'
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-xs font-bold text-[#F3F7F4]">
+                      <div className="text-xs font-bold text-[#F4F5F7]">
                         BEST Feeder Bus (A-12)
                       </div>
-                      <div className="text-[10px] text-[#A0B0A6]">AC Electric Minibus</div>
+                      <div className="text-[10px] text-[#949AA8]">AC Electric Minibus</div>
                     </div>
                     <div className="text-right">
-                      <div className="text-sm font-bold font-mono text-[#C4829E]">₹15</div>
-                      <div className="text-[9px] text-[#6E8277]">4 min wait</div>
+                      <div className="text-sm font-bold font-mono text-[#2563EB]">₹15</div>
+                      <div className="text-[9px] text-[#6B7280]">4 min wait</div>
                     </div>
                   </div>
                 </div>
@@ -129,56 +129,56 @@ export default function CommuterPreviewModal() {
                   onClick={() => setSelectedFeeder('private')}
                   className={`p-2.5 rounded-md border transition cursor-pointer ${
                     selectedFeeder === 'private'
-                      ? 'bg-[#183327] border-[#3DB87E]'
-                      : 'bg-[#0B1612] border-[#1E3A2C]'
+                      ? 'bg-[#1D212C] border-[#F59E0B]'
+                      : 'bg-[#0E1015] border-[#2A2F3D]'
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-xs font-bold text-[#F3F7F4]">
+                      <div className="text-xs font-bold text-[#F4F5F7]">
                         Direct Auto (Metered)
                       </div>
-                      <div className="text-[10px] text-[#A0B0A6]">Doorstep drop</div>
+                      <div className="text-[10px] text-[#949AA8]">Doorstep drop</div>
                     </div>
                     <div className="text-right">
-                      <div className="text-sm font-bold font-mono text-[#F3F7F4]">₹40</div>
-                      <div className="text-[9px] text-[#6E8277]">1 min wait</div>
+                      <div className="text-sm font-bold font-mono text-[#F4F5F7]">₹40</div>
+                      <div className="text-[9px] text-[#6B7280]">1 min wait</div>
                     </div>
                   </div>
                 </div>
               </div>
             ) : (
               /* Booking Confirmed State */
-              <div className="p-3.5 rounded-md bg-[#183327] border border-[#3DB87E]/50 text-left space-y-2.5">
-                <div className="text-[#3DB87E] font-bold text-xs">
+              <div className="p-3.5 rounded-md bg-[#1D212C] border border-[#10B981]/50 text-left space-y-2.5">
+                <div className="text-[#10B981] font-bold text-xs">
                   Ride Confirmed on ONDC
                 </div>
 
-                <div className="p-2.5 rounded-md bg-[#0B1612] text-center border border-[#1E3A2C]">
-                  <div className="text-[9px] font-mono text-[#6E8277] uppercase">Boarding OTP</div>
-                  <div className="text-xl font-bold font-mono text-[#3DB87E]">
+                <div className="p-2.5 rounded-md bg-[#0E1015] text-center border border-[#2A2F3D]">
+                  <div className="text-[9px] font-mono text-[#6B7280] uppercase">Boarding OTP</div>
+                  <div className="text-xl font-bold font-mono text-[#10B981]">
                     {bookingPin}
                   </div>
                 </div>
 
                 <div className="text-xs space-y-1">
                   <div className="flex justify-between">
-                    <span className="text-[#6E8277]">Driver:</span>
-                    <strong className="text-[#F3F7F4]">Sachin Shinde</strong>
+                    <span className="text-[#6B7280]">Driver:</span>
+                    <strong className="text-[#F4F5F7]">Sachin Shinde</strong>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-[#6E8277]">Vehicle:</span>
-                    <strong className="text-[#3DB87E] font-mono">MH-02-ER-4192</strong>
+                    <span className="text-[#6B7280]">Vehicle:</span>
+                    <strong className="text-[#DC2626] font-mono">MH-02-ER-4192</strong>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-[#6E8277]">Fare:</span>
-                    <strong className="text-[#3DB87E] font-mono">₹20 (Pre-paid)</strong>
+                    <span className="text-[#6B7280]">Fare:</span>
+                    <strong className="text-[#10B981] font-mono">₹20 (Pre-paid)</strong>
                   </div>
                 </div>
 
                 <button
                   onClick={() => setIsBooked(false)}
-                  className="w-full py-1.5 rounded-md bg-[#0B1612] text-xs font-bold text-[#A0B0A6] border border-[#1E3A2C] hover:text-[#F3F7F4]"
+                  className="w-full py-1.5 rounded-md bg-[#0E1015] text-xs font-bold text-[#949AA8] border border-[#2A2F3D] hover:text-[#F4F5F7]"
                 >
                   Book Another Ride
                 </button>
@@ -190,7 +190,7 @@ export default function CommuterPreviewModal() {
             <div className="pt-3">
               <button
                 onClick={handleBookRide}
-                className="w-full py-2.5 rounded-md bg-[#3DB87E] hover:bg-[#34A074] text-[#0B1612] font-bold text-xs tracking-wide transition flex items-center justify-center"
+                className="w-full py-2.5 rounded-md bg-[#DC2626] hover:bg-[#B91C1C] text-white font-bold text-xs tracking-wide transition flex items-center justify-center"
               >
                 Reserve ONDC Seat (₹20)
               </button>

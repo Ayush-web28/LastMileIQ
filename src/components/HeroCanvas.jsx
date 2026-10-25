@@ -23,10 +23,10 @@ export default function HeroCanvas() {
     const stations = [
       { name: 'Versova', x: 0.10, y: 0.45, color: '#0284C7' },
       { name: 'D.N. Nagar (Line 2A)', x: 0.25, y: 0.47, color: '#EAB308' },
-      { name: 'Andheri (WR Local)', x: 0.42, y: 0.43, color: '#10B981' },
+      { name: 'Andheri (WR Local)', x: 0.42, y: 0.43, color: '#DC2626' },
       { name: 'Marol Naka (Line 3)', x: 0.60, y: 0.45, color: '#06B6D4' },
-      { name: 'Saki Naka', x: 0.76, y: 0.42, color: '#3DB87E' },
-      { name: 'Ghatkopar (CR Local)', x: 0.92, y: 0.44, color: '#C4829E' },
+      { name: 'Saki Naka', x: 0.76, y: 0.42, color: '#DC2626' },
+      { name: 'Ghatkopar (CR Local)', x: 0.92, y: 0.44, color: '#2563EB' },
     ];
 
     // Mumbai Feeder corridors to employment clusters
@@ -51,9 +51,9 @@ export default function HeroCanvas() {
         size: isVehicle ? 3.5 : 2,
         color: isVehicle
           ? Math.random() > 0.3
-            ? '#3DB87E'
-            : '#4EBA86'
-          : 'rgba(196, 130, 158, 0.8)',
+            ? '#DC2626'
+            : '#E11D48'
+          : 'rgba(37, 99, 235, 0.8)',
         isVehicle,
         trail: [],
       });
@@ -73,7 +73,7 @@ export default function HeroCanvas() {
         const tx = b.to.x * width;
         const ty = b.to.y * height;
 
-        ctx.strokeStyle = 'rgba(61, 184, 126, 0.25)';
+        ctx.strokeStyle = 'rgba(220, 38, 38, 0.25)';
         ctx.lineWidth = 1.5;
         ctx.setLineDash([4, 6]);
         ctx.beginPath();
@@ -84,7 +84,7 @@ export default function HeroCanvas() {
 
         ctx.beginPath();
         ctx.arc(tx, ty, 4, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(61, 184, 126, 0.7)';
+        ctx.fillStyle = 'rgba(220, 38, 38, 0.7)';
         ctx.fill();
 
         ctx.font = '10px "JetBrains Mono", monospace';
@@ -100,11 +100,11 @@ export default function HeroCanvas() {
         if (i === 0) ctx.moveTo(sx, sy);
         else ctx.lineTo(sx, sy);
       });
-      ctx.strokeStyle = 'rgba(61, 184, 126, 0.3)';
+      ctx.strokeStyle = 'rgba(220, 38, 38, 0.3)';
       ctx.lineWidth = 8;
       ctx.stroke();
 
-      ctx.strokeStyle = '#3DB87E';
+      ctx.strokeStyle = '#DC2626';
       ctx.lineWidth = 3;
       ctx.stroke();
 
@@ -118,6 +118,7 @@ export default function HeroCanvas() {
         ctx.arc(sx, sy, 12 * ringScale, 0, Math.PI * 2);
         ctx.fillStyle = `${s.color}20`;
         ctx.fill();
+
         ctx.strokeStyle = s.color;
         ctx.lineWidth = 1;
         ctx.stroke();
@@ -127,7 +128,7 @@ export default function HeroCanvas() {
         ctx.fillStyle = '#FFFFFF';
         ctx.fill();
 
-        ctx.font = '11px "Inter", sans-serif';
+        ctx.font = '11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
         ctx.fillStyle = '#E2E8F0';
         ctx.textAlign = 'center';
         ctx.fillText(s.name, sx, sy + 20);

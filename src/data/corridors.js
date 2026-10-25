@@ -29,7 +29,7 @@ export const CORRIDORS = {
     id: 'mumbai-metro-2a',
     category: 'metro',
     categoryLabel: 'Metro Line',
-    name: 'Metro Line 2A: Dahisar East – D.N. Nagar (Yellow Line)',
+    name: 'Metro Line 2A: Dahisar East - D.N. Nagar (Yellow Line)',
     shortName: 'Metro 2A: Dahisar - D.N. Nagar',
     lineCode: 'Line 2A',
     color: '#EAB308', // Bright Yellow
@@ -52,7 +52,7 @@ export const CORRIDORS = {
     id: 'mumbai-metro-7',
     category: 'metro',
     categoryLabel: 'Metro Line',
-    name: 'Metro Line 7: Dahisar East – Gundavali / Andheri East (Red Line)',
+    name: 'Metro Line 7: Dahisar East - Gundavali / Andheri East (Red Line)',
     shortName: 'Metro 7: Dahisar - Gundavali',
     lineCode: 'Line 7',
     color: '#F97316', // Red-Orange Line
@@ -75,7 +75,7 @@ export const CORRIDORS = {
     id: 'mumbai-metro-3',
     category: 'metro',
     categoryLabel: 'Metro Line',
-    name: 'Metro Line 3: Aarey JVLR – BKC – Colaba (Aqua Line)',
+    name: 'Metro Line 3: Aarey JVLR - BKC - Colaba (Aqua Line)',
     shortName: 'Metro 3: Aarey - BKC - Colaba',
     lineCode: 'Line 3',
     color: '#06B6D4', // Aqua Cyan
@@ -85,7 +85,7 @@ export const CORRIDORS = {
     primaryHub: 'BKC Financial District & SEEPZ Hub',
     mapCenter: [19.0950, 72.8550],
     defaultZoom: 12,
-    description: 'Mumbai’s first fully underground metro connecting Aarey JVLR, SEEPZ, CSMIA Airport Terminals T1/T2, and Bandra-Kurla Complex (BKC).',
+    description: 'Mumbais first fully underground metro connecting Aarey JVLR, SEEPZ, CSMIA Airport Terminals T1/T2, and Bandra-Kurla Complex (BKC).',
     keyStations: ['Aarey JVLR', 'SEEPZ', 'Marol Naka', 'CSMIA T2', 'CSMIA T1', 'BKC'],
     fleetSummary: {
       activeRickshaws: 220,
@@ -98,7 +98,7 @@ export const CORRIDORS = {
     id: 'mumbai-metro-2b',
     category: 'metro',
     categoryLabel: 'Metro Line',
-    name: 'Metro Line 2B: D.N. Nagar – BKC – Mandale (Yellow Line Ext)',
+    name: 'Metro Line 2B: D.N. Nagar - BKC - Mandale (Yellow Line Ext)',
     shortName: 'Metro 2B: D.N. Nagar - BKC - Mandale',
     lineCode: 'Line 2B',
     color: '#D97706', // Warm Amber
@@ -121,7 +121,7 @@ export const CORRIDORS = {
     id: 'mumbai-metro-6',
     category: 'metro',
     categoryLabel: 'Metro Line',
-    name: 'Metro Line 6: Swami Samarth Nagar – JVLR – Vikhroli (Pink Line)',
+    name: 'Metro Line 6: Swami Samarth Nagar - JVLR - Vikhroli (Pink Line)',
     shortName: 'Metro 6: Lokhandwala - JVLR - Vikhroli',
     lineCode: 'Line 6',
     color: '#EC4899', // Hot Pink
@@ -141,15 +141,15 @@ export const CORRIDORS = {
     }
   },
 
-  // --- 3 MUMBAI SUBURBAN LOCAL LINES (Distinct High-Contrast Dot Colors) ---
+  // --- 3 MUMBAI SUBURBAN LOCAL LINES ---
   'mumbai-local-western': {
     id: 'mumbai-local-western',
     category: 'local',
     categoryLabel: 'Suburban Local Line',
-    name: 'Western Railway Local: Churchgate – Dadar – Andheri – Borivali',
+    name: 'Western Railway Local: Churchgate - Dadar - Andheri - Borivali',
     shortName: 'Western Local: Churchgate - Borivali',
     lineCode: 'WR Local',
-    color: '#EF4444', // Distinct Vibrant Crimson Red
+    color: '#DC2626', // Swiss Signal Red
     city: 'Mumbai',
     stationsCount: 16,
     lengthKm: 34.2,
@@ -169,10 +169,10 @@ export const CORRIDORS = {
     id: 'mumbai-local-central',
     category: 'local',
     categoryLabel: 'Suburban Local Line',
-    name: 'Central Railway Local: CSMT – Dadar – Kurla – Ghatkopar – Thane',
+    name: 'Central Railway Local: CSMT - Dadar - Kurla - Ghatkopar - Thane',
     shortName: 'Central Local: CSMT - Dadar - Thane',
     lineCode: 'CR Local',
-    color: '#F59E0B', // Distinct Vibrant Electric Amber / Gold
+    color: '#D97706', // Signal Amber / Gold
     city: 'Mumbai',
     stationsCount: 15,
     lengthKm: 33.8,
@@ -195,7 +195,7 @@ export const CORRIDORS = {
     name: 'Harbour Railway Local: CSMT - Vadala - Kurla - Vashi - Panvel',
     shortName: 'Harbour Local: CSMT - Vashi - Panvel',
     lineCode: 'HR Local',
-    color: '#843A5D', // Signature Ease Mulberry
+    color: '#2563EB', // Industrial Cobalt Blue
     city: 'Mumbai',
     stationsCount: 14,
     lengthKm: 48.5,
